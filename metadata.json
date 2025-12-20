@@ -1,0 +1,7 @@
+{
+  "name": "Virtual Photography Studio Alternate Version",
+  "description": "A comprehensive AI-powered photography suite for generating portraits, landscapes, and architectural visualizations with precise creative control.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, FC } from 'react';
 import { PromptTemplate } from '../types';
 
 interface PromptTemplatesProps {
@@ -9,7 +9,7 @@ interface PromptTemplatesProps {
   onDelete: (id: string) => void;
 }
 
-const PromptTemplates: React.FC<PromptTemplatesProps> = ({ templates, currentPrompt, onSave, onApply, onDelete }) => {
+const PromptTemplates: FC<PromptTemplatesProps> = ({ templates, currentPrompt, onSave, onApply, onDelete }) => {
   const [templateName, setTemplateName] = useState('');
 
   const handleSaveClick = () => {
@@ -25,7 +25,7 @@ const PromptTemplates: React.FC<PromptTemplatesProps> = ({ templates, currentPro
   return (
     <div className="w-full pt-4 border-t border-gray-700">
       <h3 className="text-lg font-bold text-gray-300 mb-3">Prompt Templates</h3>
-      
+
       <div className="flex gap-2 mb-4">
         <input
           type="text"

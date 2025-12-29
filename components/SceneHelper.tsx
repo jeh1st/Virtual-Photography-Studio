@@ -1,5 +1,5 @@
 
-import React from 'react';
+import { FC } from 'react';
 
 interface SceneSuggestion {
   name: string;
@@ -11,7 +11,7 @@ interface SceneHelperProps {
   onSelect: (description: string) => void;
 }
 
-const SceneHelper: React.FC<SceneHelperProps> = ({ suggestions, onSelect }) => {
+const SceneHelper: FC<SceneHelperProps> = ({ suggestions, onSelect }) => {
   return (
     <div className="w-full mt-2">
       <p className="text-xs text-gray-400 mb-2">Click a suggestion to add a starting point for your scene:</p>

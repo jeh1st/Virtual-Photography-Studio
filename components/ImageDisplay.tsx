@@ -1,5 +1,5 @@
 
-import React from 'react';
+import { FC, CSSProperties } from 'react';
 import LoadingPlaceholder from './LoadingPlaceholder';
 
 interface GeneratedImage {
@@ -15,9 +15,9 @@ interface ImageDisplayProps {
   customCSS?: string;
 }
 
-const ImageDisplay: React.FC<ImageDisplayProps> = ({ images, isLoading, onImageClick, onIterateClick, customCSS }) => {
+const ImageDisplay: FC<ImageDisplayProps> = ({ images, isLoading, onImageClick, onIterateClick, customCSS }) => {
   // Safe CSS parsing
-  let styleObj: React.CSSProperties = {};
+  let styleObj: CSSProperties = {};
   if (customCSS) {
       // Very basic parser for inline style string to object
       // e.g. "border: 1px solid red; filter: blur(5px)" -> { border: "1px solid red", filter: "blur(5px)" }

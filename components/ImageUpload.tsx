@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, FC, DragEvent as ReactDragEvent, ChangeEvent } from 'react';
 import { db } from '../services/idbService';
 import { processToMannequin } from '../utils/MannequinProcessor';
 import ToggleSwitch from './ToggleSwitch';
@@ -8,7 +8,7 @@ interface ImageUploadProps {
     onUploadComplete?: () => void;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete }) => {
+const ImageUpload: FC<ImageUploadProps> = ({ onUploadComplete }) => {
     const [isPrivate, setIsPrivate] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
@@ -55,7 +55,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete }) => {
         }
     };
 
-    const handleDragOver = (e: React.DragEvent) => {
+    const handleDragOver = (e: ReactDragEvent) => {
         e.preventDefault();
         setIsDragActive(true);
     };
@@ -64,7 +64,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete }) => {
         setIsDragActive(false);
     };
 
-    const handleDrop = (e: React.DragEvent) => {
+    const handleDrop = (e: ReactDragEvent) => {
         e.preventDefault();
         setIsDragActive(false);
         if (e.dataTransfer.files) {
@@ -72,7 +72,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete }) => {
         }
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             processFiles(e.target.files);
         }

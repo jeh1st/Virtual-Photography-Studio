@@ -1,7 +1,9 @@
-
-import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { GraphNode, Edge, NodeType } from '../types';
+import { useState, useRef, useEffect, useMemo, FC, MouseEvent } from 'react';
+import { GraphNode, Edge, NodeType, NodeData, ConsistencyMode } from '../types';
+import { NodeContent } from './nodes/NodeContent';
+import { getNodeStyles, getNodeIcon, getNodeSummary, getEdgeColor } from '../utils/nodeUtils';
 import { buildSubjectDescription, buildEnvironmentDescription, buildCameraDescription, buildLightingDescription, buildCompositionDescription } from '../utils/promptBuilder';
+import { isValidConnection } from '../utils/connection_rules';
 
 interface NodeGraphProps {
     nodes: GraphNode[];
@@ -10,20 +12,22 @@ interface NodeGraphProps {
     onEdgesChange: (edges: Edge[]) => void;
     onSelectionChange: (nodeIds: string[]) => void;
     onDeleteNode: (nodeId: string) => void;
+    onAddNode: (type: NodeType, position?: { x: number, y: number }) => void;
     selectedNodeIds: string[];
 }
 
-const NodeGraph: React.FC<NodeGraphProps> = ({ 
-    nodes, edges, onNodesChange, onEdgesChange, onSelectionChange, onDeleteNode, selectedNodeIds 
+const NodeGraph: FC<NodeGraphProps> = ({
+    nodes, edges, onNodesChange, onEdgesChange, onSelectionChange, onDeleteNode, selectedNodeIds, onAddNode
 }) => {
     const [pan, setPan] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [isPanning, setIsPanning] = useState(false);
     const [lastPanMouse, setLastPanMouse] = useState({ x: 0, y: 0 });
-    const [dragState, setDragState] = useState<{ nodeIds: string[], startMouse: { x: number, y: number }, startPositions: { [id: string]: { x: number, y: number } } } | null>(null);
+    const [dragState, setDragState] = useState<{ nodeIds: string[], startMouse: { x: number, y: number }, startPositions: { [id: string]: { x: number, y: number } }, currentMouse?: { x: number, y: number } } | null>(null);
     const [connectState, setConnectState] = useState<{ sourceNodeId: string, mousePos: { x: number, y: number } } | null>(null);
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number, nodeId: string } | null>(null);
-    
+    const [localPositions, setLocalPositions] = useState<{ [id: string]: { x: number, y: number } }>({});
+
     const canvasRef = useRef<HTMLDivElement>(null);
 
     // Close context menu on global click
@@ -33,22 +37,61 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
         return () => window.removeEventListener('click', handleClick);
     }, []);
 
-    const toggleCollapse = (e: React.MouseEvent, nodeId: string) => {
+    const toggleCollapse = (e: MouseEvent, nodeId: string) => {
         e.stopPropagation();
+        const node = nodes.find(n => n.id === nodeId);
+        if (!node) return;
+
+        const isExpanding = node.isCollapsed;
+        const nextCollapsed = !node.isCollapsed;
+
+        const updatedNodes = nodes.map(n => {
+            if (n.id === nodeId) {
+                return { ...n, isCollapsed: nextCollapsed };
+            }
+            return n;
+        });
+
+        if (isExpanding) {
+            // Check for collision after expansion
+            const expandedRect = getNodeRect(nodeId, node.position, false);
+            let changed = false;
+
+            const resolve = (movedId: string, rect: any, depth: number) => {
+                if (depth > 5) return;
+                updatedNodes.forEach((other, idx) => {
+                    if (other.id === movedId || other.type === NodeType.Group) return;
+                    const otherRect = getNodeRect(other.id, other.position, other.isCollapsed);
+                    if (isOverlapping(rect, otherRect)) {
+                        const pushX = rect.x + rect.w + 20 - otherRect.x;
+                        const newPos = { ...other.position, x: other.position.x + pushX };
+                        updatedNodes[idx] = { ...other, position: newPos };
+                        changed = true;
+                        resolve(other.id, getNodeRect(other.id, newPos, other.isCollapsed), depth + 1);
+                    }
+                });
+            };
+            resolve(nodeId, expandedRect, 0);
+        }
+
+        onNodesChange(updatedNodes);
+    };
+
+    const handleDataChange = (nodeId: string, newData: Partial<NodeData>) => {
         onNodesChange(nodes.map(n => {
-            if(n.id === nodeId) {
-                return { ...n, isCollapsed: !n.isCollapsed };
+            if (n.id === nodeId) {
+                return { ...n, data: { ...n.data, ...newData } };
             }
             return n;
         }));
     };
 
-    const handleCanvasMouseDown = (e: React.MouseEvent) => {
-        if (e.shiftKey) return; 
+    const handleCanvasMouseDown = (e: MouseEvent) => {
+        if (e.shiftKey) return;
         if (e.button !== 0) return; // Only left click pans
         setIsPanning(true);
         setLastPanMouse({ x: e.clientX, y: e.clientY });
-        onSelectionChange([]); 
+        onSelectionChange([]);
         setContextMenu(null);
     };
 
@@ -57,10 +100,10 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
             if (!canvasRef.current) return;
             e.preventDefault();
             const isPinch = e.ctrlKey;
-            const delta = -e.deltaY; 
-            const factor = isPinch ? 0.05 : 0.001; 
-            const zoomChange = delta * factor * zoom; 
-            const newZoom = Math.min(Math.max(zoom + zoomChange, 0.1), 5); 
+            const delta = -e.deltaY;
+            const factor = isPinch ? 0.05 : 0.001;
+            const zoomChange = delta * factor * zoom;
+            const newZoom = Math.min(Math.max(zoom + zoomChange, 0.1), 5);
             const rect = canvasRef.current.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
@@ -76,12 +119,12 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
         return () => { if (canvasEl) canvasEl.removeEventListener('wheel', handleWheel); };
     }, [zoom, pan]);
 
-    const handleNodeMouseDown = (e: React.MouseEvent, nodeId: string) => {
+    const handleNodeMouseDown = (e: MouseEvent, nodeId: string) => {
         if (e.button !== 0) return; // Allow right click to pass through to context menu handler
-        if ((e.target as HTMLElement).closest('button')) return;
+        if ((e.target as HTMLElement).closest('button') || (e.target as HTMLElement).closest('input') || (e.target as HTMLElement).closest('select') || (e.target as HTMLElement).closest('textarea')) return;
 
-        e.stopPropagation(); 
-        
+        e.stopPropagation();
+
         let newSelection = [...selectedNodeIds];
         if (e.shiftKey) {
             if (newSelection.includes(nodeId)) {
@@ -100,9 +143,9 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
             const rect = canvasRef.current.getBoundingClientRect();
             const worldMouseX = (e.clientX - rect.left - pan.x) / zoom;
             const worldMouseY = (e.clientY - rect.top - pan.y) / zoom;
-            
+
             const idsToDrag = new Set(newSelection);
-            
+
             // Drag children if group is selected
             nodes.forEach(n => {
                 if (n.parentId && idsToDrag.has(n.parentId)) {
@@ -125,7 +168,7 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
         }
     };
 
-    const handleNodeContextMenu = (e: React.MouseEvent, nodeId: string) => {
+    const handleNodeContextMenu = (e: MouseEvent, nodeId: string) => {
         e.preventDefault();
         e.stopPropagation();
         setContextMenu({ x: e.clientX, y: e.clientY, nodeId });
@@ -135,9 +178,27 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
         }
     };
 
-    const handleMouseMove = (e: React.MouseEvent) => {
+    const handleCanvasContextMenu = (e: MouseEvent) => {
+        e.preventDefault();
+        setContextMenu({ x: e.clientX, y: e.clientY, nodeId: '' });
+    }
+
+    const handleAddNodeFromContext = (type: NodeType) => {
+        if (!canvasRef.current || !contextMenu) return;
+
+        // Calculate position based on context menu location (approximate)
+        const rect = canvasRef.current.getBoundingClientRect();
+        const worldX = (contextMenu.x - rect.left - pan.x) / zoom;
+        const worldY = (contextMenu.y - rect.top - pan.y) / zoom;
+
+        // Call parent handler
+        onAddNode(type, { x: worldX, y: worldY });
+        setContextMenu(null);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
         if (!canvasRef.current) return;
-        
+
         if (isPanning) {
             const dx = e.clientX - lastPanMouse.x;
             const dy = e.clientY - lastPanMouse.y;
@@ -154,12 +215,51 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
             const dx = worldMouseX - dragState.startMouse.x;
             const dy = worldMouseY - dragState.startMouse.y;
 
-            onNodesChange(nodes.map(n => {
-                if (dragState.startPositions[n.id]) {
-                    return { ...n, position: { x: dragState.startPositions[n.id].x + dx, y: dragState.startPositions[n.id].y + dy } };
-                }
-                return n;
-            }));
+            setDragState(prev => prev ? { ...prev, currentMouse: { x: worldMouseX, y: worldMouseY } } : null);
+
+            // COLLISION AVOIDANCE (Local Only)
+            if (dragState.nodeIds.length > 0) {
+                const tempPositions: { [id: string]: { x: number, y: number } } = {};
+
+                // Initialize/Update temp positions for all nodes based on drag and current state
+                nodes.forEach(n => {
+                    if (dragState.nodeIds.includes(n.id)) {
+                        tempPositions[n.id] = {
+                            x: dragState.startPositions[n.id].x + dx,
+                            y: dragState.startPositions[n.id].y + dy
+                        };
+                    } else {
+                        tempPositions[n.id] = { ...n.position };
+                    }
+                });
+
+                const resolveRecursive = (movedId: string, depth: number) => {
+                    if (depth > 5) return;
+
+                    const movedPos = tempPositions[movedId];
+                    const movedNode = nodes.find(n => n.id === movedId);
+                    if (!movedNode) return;
+
+                    const movedRect = getNodeRect(movedId, movedPos, movedNode.isCollapsed);
+
+                    nodes.forEach((other) => {
+                        if (dragState.nodeIds.includes(other.id)) return;
+                        if (other.id === movedId || other.type === NodeType.Group) return;
+
+                        const otherRect = getNodeRect(other.id, tempPositions[other.id], other.isCollapsed);
+
+                        if (isOverlapping(movedRect, otherRect)) {
+                            const pushX = movedRect.x + movedRect.w + 20 - otherRect.x;
+                            tempPositions[other.id] = { ...tempPositions[other.id], x: tempPositions[other.id].x + pushX };
+                            resolveRecursive(other.id, depth + 1);
+                        }
+                    });
+                };
+
+                dragState.nodeIds.forEach(id => resolveRecursive(id, 0));
+                setLocalPositions(tempPositions);
+            }
+            return;
         }
 
         if (connectState) {
@@ -167,9 +267,25 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
         }
     };
 
-    const handleMouseUp = () => { setIsPanning(false); setDragState(null); setConnectState(null); };
+    const handleMouseUp = () => {
+        if (dragState && dragState.currentMouse) {
+            // Commit local positions (including pushed ones) to global state
+            const updatedNodes = nodes.map(n => {
+                const lp = localPositions[n.id];
+                if (lp) {
+                    return { ...n, position: lp };
+                }
+                return n;
+            });
+            onNodesChange(updatedNodes);
+        }
+        setIsPanning(false);
+        setDragState(null);
+        setConnectState(null);
+        setLocalPositions({});
+    };
 
-    const handlePortMouseDown = (e: React.MouseEvent, nodeId: string) => {
+    const handlePortMouseDown = (e: MouseEvent, nodeId: string) => {
         e.stopPropagation();
         if (e.button !== 0) return;
         if (!canvasRef.current) return;
@@ -179,14 +295,19 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
         setConnectState({ sourceNodeId: nodeId, mousePos: { x: worldMouseX, y: worldMouseY } });
     };
 
-    const handlePortMouseUp = (e: React.MouseEvent, targetNodeId: string) => {
+    const handlePortMouseUp = (e: MouseEvent, targetNodeId: string) => {
         e.stopPropagation();
+        if (!connectState) return;
+
+        const sourceNode = nodes.find(n => n.id === connectState.sourceNodeId);
         const targetNode = nodes.find(n => n.id === targetNodeId);
-        if (targetNode?.type !== NodeType.Output) { setConnectState(null); return; }
-        if (connectState && connectState.sourceNodeId !== targetNodeId) {
-            const exists = edges.some(edge => 
-                (edge.source === connectState.sourceNodeId && edge.target === targetNodeId) ||
-                (edge.target === connectState.sourceNodeId && edge.source === targetNodeId)
+
+        if (!sourceNode || !targetNode) { setConnectState(null); return; }
+
+        // Use connection rules logic
+        if (sourceNode.id !== targetNode.id && isValidConnection(sourceNode.type, targetNode.type)) {
+            const exists = edges.some(edge =>
+                (edge.source === connectState.sourceNodeId && edge.target === targetNodeId)
             );
             if (!exists) {
                 onEdgesChange([...edges, { id: `e-${Date.now()}`, source: connectState.sourceNodeId, target: targetNodeId }]);
@@ -194,109 +315,17 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
         }
         setConnectState(null);
     };
-
-    const getNodeStyles = (type: NodeType) => {
-        switch (type) {
-            case NodeType.Subject:
-                return {
-                    container: 'border-fuchsia-500 bg-gray-900',
-                    header: 'bg-gradient-to-r from-fuchsia-900/80 to-purple-900/80',
-                    iconColor: 'text-fuchsia-300',
-                    shadow: 'shadow-[0_0_20px_rgba(192,38,211,0.2)]'
-                };
-            case NodeType.Environment:
-                return {
-                    container: 'border-emerald-500 bg-gray-900',
-                    header: 'bg-gradient-to-r from-emerald-900/80 to-teal-900/80',
-                    iconColor: 'text-emerald-300',
-                    shadow: 'shadow-[0_0_20px_rgba(16,185,129,0.2)]'
-                };
-            case NodeType.Camera:
-                return {
-                    container: 'border-blue-500 bg-gray-900',
-                    header: 'bg-gradient-to-r from-blue-900/80 to-indigo-900/80',
-                    iconColor: 'text-blue-300',
-                    shadow: 'shadow-[0_0_20px_rgba(59,130,246,0.2)]'
-                };
-            case NodeType.Lighting:
-                return {
-                    container: 'border-amber-500 bg-gray-900',
-                    header: 'bg-gradient-to-r from-amber-900/80 to-yellow-900/80',
-                    iconColor: 'text-amber-300',
-                    shadow: 'shadow-[0_0_20px_rgba(245,158,11,0.2)]'
-                };
-            case NodeType.Composition:
-                return {
-                    container: 'border-rose-500 bg-gray-900',
-                    header: 'bg-gradient-to-r from-rose-900/80 to-pink-900/80',
-                    iconColor: 'text-rose-300',
-                    shadow: 'shadow-[0_0_20px_rgba(244,63,94,0.2)]'
-                };
-            case NodeType.Cameo:
-                return {
-                    container: 'border-red-600 bg-gray-900',
-                    header: 'bg-gradient-to-r from-red-900/90 to-red-800/80',
-                    iconColor: 'text-red-300',
-                    shadow: 'shadow-[0_0_20px_rgba(220,38,38,0.25)]'
-                };
-            case NodeType.Group:
-                return {
-                    container: 'border-gray-500 border-dashed bg-white/5 backdrop-blur-sm',
-                    header: 'bg-transparent',
-                    iconColor: 'text-gray-400',
-                    shadow: ''
-                };
-            case NodeType.Output:
-                return {
-                    container: 'border-white bg-gray-800',
-                    header: 'bg-gray-700',
-                    iconColor: 'text-white',
-                    shadow: 'shadow-[0_0_30px_rgba(255,255,255,0.15)]'
-                };
-            default:
-                return {
-                    container: 'border-gray-500 bg-gray-900',
-                    header: 'bg-gray-800',
-                    iconColor: 'text-gray-400',
-                    shadow: ''
-                };
-        }
+    const getNodeRect = (id: string, pos: { x: number, y: number }, isCollapsed: boolean) => {
+        const w = 240;
+        const h = isCollapsed ? 50 : 180; // Estimated height
+        return { x: pos.x, y: pos.y, w, h };
     };
 
-    const getNodeIcon = (type: NodeType) => {
-        switch (type) {
-            case NodeType.Subject:
-                return <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>;
-            case NodeType.Environment:
-                return <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 011 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-            case NodeType.Camera:
-                return <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
-            case NodeType.Lighting:
-                return <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>;
-            case NodeType.Composition:
-                return <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>;
-            case NodeType.Cameo:
-                return <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>;
-            case NodeType.Group:
-                return <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></svg>;
-            case NodeType.Output:
-                return <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>;
-            default:
-                return null;
-        }
+    const isOverlapping = (r1: any, r2: any) => {
+        return !(r1.x + r1.w < r2.x || r2.x + r2.w < r1.x || r1.y + r1.h < r2.y || r2.y + r2.h < r1.y);
     };
 
-    const getNodeSummary = (node: GraphNode) => {
-        if (node.type === NodeType.Subject) return buildSubjectDescription(node.data);
-        if (node.type === NodeType.Environment) return buildEnvironmentDescription(node.data);
-        if (node.type === NodeType.Camera) return buildCameraDescription(node.data);
-        if (node.type === NodeType.Lighting) return buildLightingDescription(node.data);
-        if (node.type === NodeType.Composition) return buildCompositionDescription(node.data);
-        if (node.type === NodeType.Cameo) return node.data.cameoSelection ? `${node.data.cameoType}: ${node.data.cameoSelection}` : "Select a Cameo";
-        if (node.type === NodeType.Output) return "Combines connected nodes into final image prompt.";
-        if (node.type === NodeType.Group) return "Group Container";
-        return "";
-    };
+
 
     const getGroupStyle = (groupNode: GraphNode) => {
         if (groupNode.isCollapsed) {
@@ -309,18 +338,18 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
 
         const children = nodes.filter(n => n.parentId === groupNode.id);
         if (children.length === 0) {
-             return {
+            return {
                 transform: `translate(${groupNode.position.x}px, ${groupNode.position.y}px)`,
                 width: 240,
                 height: 100,
                 zIndex: 5
-             };
+            };
         }
 
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
         children.forEach(c => {
-            const w = 240; 
-            const h = c.isCollapsed ? 50 : 120; 
+            const w = 240;
+            const h = c.isCollapsed ? 50 : 120;
             minX = Math.min(minX, c.position.x);
             minY = Math.min(minY, c.position.y);
             maxX = Math.max(maxX, c.position.x + w);
@@ -329,26 +358,26 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
 
         const padding = 20;
         return {
-            transform: `translate(${minX - padding}px, ${minY - padding - 30}px)`, 
+            transform: `translate(${minX - padding}px, ${minY - padding - 30}px)`,
             width: (maxX - minX) + (padding * 2),
             height: (maxY - minY) + (padding * 2) + 30,
-            zIndex: 5 
+            zIndex: 5
         };
     };
 
-    const renderConnectionLine = (x1: number, y1: number, x2: number, y2: number, active = false, valid = false) => {
+    const renderConnectionLine = (x1: number, y1: number, x2: number, y2: number, active = false, valid = false, color = "#4b5563") => {
         const cX = (x1 + x2) / 2;
         const cY1 = y1;
         const cY2 = y2;
         return (
-             <path 
+            <path
                 d={`M ${x1} ${y1} C ${cX} ${cY1}, ${cX} ${cY2}, ${x2} ${y2}`}
-                stroke={active ? (valid ? "#4ade80" : "#a855f7") : "#4b5563"}
+                stroke={active ? (valid ? "#4ade80" : "#a855f7") : color}
                 strokeWidth={active ? 3 : 2}
                 fill="none"
                 strokeDasharray={active ? "5,5" : "none"}
                 className="transition-all duration-300 pointer-events-none"
-             />
+            />
         );
     };
 
@@ -361,39 +390,44 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
     }, [nodes]);
 
     return (
-        <div 
+        <div
             ref={canvasRef}
             className={`w-full h-full relative bg-gray-950 overflow-hidden ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
             onMouseDown={handleCanvasMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
-            onContextMenu={(e) => { e.preventDefault(); setContextMenu(null); }}
+            onContextMenu={handleCanvasContextMenu}
         >
-            <div 
+            <div
                 className="absolute inset-0 w-full h-full origin-top-left"
                 style={{
                     transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
                 }}
             >
                 {/* Grid Background */}
-                <div 
+                <div
                     className="absolute inset-[-4000px] w-[8000px] h-[8000px] pointer-events-none opacity-20"
                     style={{
-                        backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)', 
+                        backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)',
                         backgroundSize: '24px 24px',
                     }}
                 />
 
                 {/* Edges Layer */}
                 <svg className="absolute -top-[4000px] -left-[4000px] w-[8000px] h-[8000px] pointer-events-none overflow-visible">
-                     <g transform={`translate(4000, 4000)`}>
+                    <g transform={`translate(4000, 4000)`}>
                         {edges.map(edge => {
                             const source = nodes.find(n => n.id === edge.source);
                             const target = nodes.find(n => n.id === edge.target);
                             if (!source || !target) return null;
 
                             const getPos = (n: GraphNode) => {
+                                // Use local drag position if available
+                                if (localPositions[n.id]) {
+                                    return localPositions[n.id];
+                                }
+
                                 if (n.parentId) {
                                     const parent = nodes.find(p => p.id === n.parentId);
                                     if (parent && parent.isCollapsed) return parent.position;
@@ -408,7 +442,10 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
                                 <g key={edge.id}>
                                     {renderConnectionLine(
                                         sPos.x + 240, sPos.y + 24, // Source Anchor at fixed 24px top offset
-                                        tPos.x, tPos.y + 24        // Target Anchor at fixed 24px top offset
+                                        tPos.x, tPos.y + 24,       // Target Anchor at fixed 24px top offset
+                                        false,
+                                        false,
+                                        getEdgeColor(source.type)
                                     )}
                                 </g>
                             );
@@ -431,81 +468,113 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
                     const isSelected = selectedNodeIds.includes(node.id);
                     const isOutput = node.type === NodeType.Output;
                     const isGroup = node.type === NodeType.Group;
-                    const highlightInput = connectState && isOutput; 
+                    const highlightInput = connectState && isOutput;
                     const isCollapsed = node.isCollapsed ?? true;
-                    const showLabel = node.data.label && node.data.label.trim() !== '';
-                    const styles = getNodeStyles(node.type);
-                    
+
                     if (node.parentId) {
                         const parent = nodes.find(p => p.id === node.parentId);
                         if (parent && parent.isCollapsed) return null;
                     }
 
-                    const style = isGroup ? getGroupStyle(node) : {
-                        transform: `translate(${node.position.x}px, ${node.position.y}px)`,
-                        cursor: 'grab'
-                    };
+
+                    // Calculate visual position (prioritize local drag state)
+                    let displayPos = localPositions[node.id] || node.position;
+                    let displayStyle: any = null;
+
+                    // For groups, we need to recalculate bounds if children are being dragged? 
+                    // No, existing logic calculates based on children's stored positions. 
+                    // If we only visually move children, group box won't update until drop.
+                    // That's acceptable for performance, OR we pass the modified node list to getGroupStyle.
+
+                    if (isGroup) {
+                        // Simple optimization: render group at original position during drag, 
+                        // or ideally re-calculate. For now, let's just stick to standard render 
+                        // because groups aren't usually dragged *with* children in this specific logic 
+                        // (though they can be).
+                        displayStyle = getGroupStyle(node);
+                    } else {
+                        displayStyle = {
+                            transform: `translate(${displayPos.x}px, ${displayPos.y}px)`,
+                        };
+                    }
+
+                    // Specialized render for edges needs to know about temporary positions too.
+                    // We need to update the edges map loop above as well.
+
+                    const sourceNode = connectState ? nodes.find(n => n.id === connectState.sourceNodeId) : null;
+                    const isPotentiallyValid = connectState && sourceNode && isValidConnection(sourceNode.type, node.type);
 
                     return (
                         <div
                             key={node.id}
-                            className={`absolute rounded-lg border flex flex-col select-none transition-all duration-200 group
-                                ${styles.container}
-                                ${isSelected ? `ring-2 ring-white scale-105 ${styles.shadow}` : (isGroup && !isCollapsed ? '' : `hover:shadow-xl`)}
-                                ${connectState && !isOutput && node.id !== connectState.sourceNodeId ? 'opacity-40 grayscale' : 'opacity-100'}
-                                ${(!isGroup && isCollapsed) ? 'h-auto w-[240px]' : (isGroup && !isCollapsed ? 'py-4' : 'min-h-[120px] w-[240px]')}
-                            `}
-                            style={style}
-                            onMouseDown={(e) => handleNodeMouseDown(e, node.id)}
-                            onContextMenu={(e) => handleNodeContextMenu(e, node.id)}
-                        >
-                            {/* Input Port (for Output Node) */}
-                            {isOutput && (
-                                <div 
-                                    className={`w-6 h-6 rounded-full border-4 absolute -left-3 top-6 -translate-y-1/2 transition-all duration-300 flex items-center justify-center z-30 pointer-events-auto
-                                        ${highlightInput ? 'bg-green-500 border-green-200 scale-125 shadow-[0_0_15px_rgba(74,222,128,0.8)]' : 'bg-gray-800 border-gray-500'}
+                            className={`absolute flex flex-col transition-all duration-200 group
+                                        ${connectState && node.id !== connectState.sourceNodeId && !isPotentiallyValid ? 'opacity-40 grayscale' : 'opacity-100'}
+                                        ${isGroup ? '' : 'pointer-events-none'} 
                                     `}
-                                    onMouseUp={(e) => handlePortMouseUp(e, node.id)}
-                                >
-                                </div>
-                            )}
-                            
-                            {/* Node Header */}
-                            <div className={`flex items-center px-3 py-2 border-b border-black/20 ${styles.header} ${(!isGroup && isCollapsed) ? 'rounded-lg' : 'rounded-t-lg'}`}>
-                                <div className={`mr-2 ${styles.iconColor}`}>
-                                    {getNodeIcon(node.type)}
-                                </div>
-                                <div className="flex flex-col flex-grow min-w-0">
-                                    <span className="text-[10px] font-black text-white/60 uppercase tracking-widest leading-none mb-0.5">{node.type}</span>
-                                    {showLabel && <span className="text-xs font-bold text-white truncate leading-tight">{node.data.label}</span>}
-                                </div>
-                                {!isOutput && (
-                                    <button 
-                                        type="button"
-                                        onMouseDown={(e) => e.stopPropagation()}
-                                        onClick={(e) => toggleCollapse(e, node.id)}
-                                        className="w-5 h-5 text-white/50 hover:text-white flex items-center justify-center pointer-events-auto -mr-1"
+                            style={displayStyle}
+                        >
+                            {/* Wrapper for interaction (Drag / Context Menu) */}
+                            {/* Pointer events need to be auto for the inner content, but we want the wrapper to handle drag?
+                                Actually, existing logic used onMouseDown on the wrapper.
+                                BaseNode has its own header for drag. 
+                                We should wrap NodeContent in a div that handles positioning but let BaseNode handle visuals.
+                            */}
+
+                            <div
+                                className="pointer-events-auto"
+                                onMouseDown={(e) => handleNodeMouseDown(e, node.id)}
+                                onContextMenu={(e) => handleNodeContextMenu(e, node.id)}
+                            >
+                                {/* Input Port (for Output Node) */}
+                                {isOutput && (
+                                    <div
+                                        className="absolute -left-3 top-6 -translate-y-1/2 w-10 h-10 flex items-center justify-center z-50 pointer-events-auto group/input"
+                                        onMouseUp={(e) => handlePortMouseUp(e, node.id)}
                                     >
-                                        <svg className={`w-3 h-3 transition-transform duration-200 ${isCollapsed ? '' : 'rotate-180'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                                    </button>
+                                        <div
+                                            className={`w-6 h-6 rounded-full border-4 transition-all duration-300 flex items-center justify-center
+                                                ${highlightInput ? 'bg-green-500 border-green-200 scale-125 shadow-[0_0_15px_rgba(74,222,128,0.8)]' : 'bg-gray-800 border-gray-500 group-hover/input:scale-110'}
+                                            `}
+                                        >
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Input Port (for Container Nodes: SubjectRoot, CameraRoot, Body, etc.) */}
+                                {(!isOutput && !isGroup && node.type !== NodeType.Composition && node.type !== NodeType.Lighting && node.type !== NodeType.Environment) && (
+                                    <div
+                                        className="absolute -left-3 top-6 -translate-y-1/2 w-10 h-10 flex items-center justify-center z-50 pointer-events-auto group/input"
+                                        onMouseUp={(e) => handlePortMouseUp(e, node.id)}
+                                    >
+                                        <div
+                                            className={`w-4 h-4 rounded-full border-2 transition-all duration-300
+                                                ${connectState ? 'bg-blue-500 border-white scale-125 animate-pulse cursor-copy' : 'bg-gray-700 border-gray-900 group-hover/input:scale-125 group-hover/input:border-blue-400'}
+                                            `}
+                                        >
+                                        </div>
+                                    </div>
+                                )}
+
+                                <NodeContent
+                                    id={node.id}
+                                    type={node.type}
+                                    data={node.data}
+                                    selected={isSelected}
+                                    collapsed={isCollapsed}
+                                    onToggleCollapse={(e) => toggleCollapse(e, node.id)}
+                                    onDelete={() => onDeleteNode(node.id)}
+                                    onDataChange={handleDataChange}
+                                    nodes={nodes}
+                                    edges={edges}
+                                />
+
+                                {/* Output Port */}
+                                {(!isOutput && !isGroup) && (
+                                    <div className="absolute -right-3 top-6 -translate-y-1/2 w-10 h-10 flex items-center justify-center group/port z-50 pointer-events-auto cursor-crosshair" onMouseDown={(e) => handlePortMouseDown(e, node.id)}>
+                                        <div className="w-4 h-4 rounded-full bg-gray-400 border-2 border-gray-700 group-hover/port:bg-white group-hover/port:border-purple-500 group-hover/port:scale-125 transition-all shadow-md"></div>
+                                    </div>
                                 )}
                             </div>
-                            
-                            {/* Node Body */}
-                            {(!isCollapsed && !isGroup) && (
-                                <div className="p-3 text-[10px] text-gray-300 font-medium leading-relaxed flex-grow overflow-hidden text-ellipsis">
-                                    {getNodeSummary(node)}
-                                </div>
-                            )}
-
-                            {/* Output Port */}
-                            {(!isOutput && !isGroup) && (
-                                <div 
-                                    className="w-4 h-4 rounded-full bg-gray-400 border-2 border-gray-700 absolute -right-2 top-6 -translate-y-1/2 cursor-crosshair hover:bg-white hover:border-purple-500 hover:scale-125 transition-all shadow-md z-30 pointer-events-auto"
-                                    onMouseDown={(e) => handlePortMouseDown(e, node.id)}
-                                ></div>
-                            )}
-
                         </div>
                     );
                 })}
@@ -513,43 +582,109 @@ const NodeGraph: React.FC<NodeGraphProps> = ({
 
             {/* Context Menu */}
             {contextMenu && (
-                <div 
-                    className="absolute z-[100] bg-gray-800 border border-gray-600 rounded-lg shadow-2xl py-1 min-w-[150px] animate-fade-in"
+                <div
+                    className="absolute z-[100] bg-gray-900 border border-gray-700/50 rounded-lg shadow-2xl py-1 min-w-[180px] animate-fade-in backdrop-blur-md"
                     style={{ top: contextMenu.y, left: contextMenu.x }}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <div className="px-3 py-2 border-b border-gray-700">
-                        <span className="text-xs font-bold text-gray-400 uppercase">Node Actions</span>
-                    </div>
-                    {nodes.find(n => n.id === contextMenu.nodeId)?.type !== NodeType.Output && (
-                        <button 
-                            onClick={() => { onDeleteNode(contextMenu.nodeId); setContextMenu(null); }}
-                            className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 flex items-center gap-2"
-                        >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                            Delete
-                        </button>
+                    {contextMenu.nodeId ? (
+                        // Node Specific Actions
+                        <>
+                            <div className="px-3 py-2 border-b border-white/5">
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Node Actions</span>
+                            </div>
+                            {nodes.find(n => n.id === contextMenu.nodeId)?.type !== NodeType.Output && (
+                                <button
+                                    onClick={() => { onDeleteNode(contextMenu.nodeId!); setContextMenu(null); }}
+                                    className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 flex items-center gap-2 transition-colors"
+                                >
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    Delete Node
+                                </button>
+                            )}
+                        </>
+                    ) : (
+                        // Canvas Actions (Add Node)
+                        <>
+                            <div className="px-3 py-2 border-b border-white/5">
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Add Node</span>
+                            </div>
+
+                            {/* Subject Category */}
+                            <div className="group relative">
+                                <button className="w-full text-left px-4 py-2 text-xs text-fuchsia-300 hover:bg-white/5 flex items-center justify-between">
+                                    <span>Subject</span>
+                                    <svg className="w-3 h-3 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                                </button>
+                                <div className="absolute left-full top-0 ml-1 bg-gray-900 border border-gray-700/50 rounded shadow-xl py-1 min-w-[140px] hidden group-hover:block">
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.SubjectRoot)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-fuchsia-500/20 hover:text-fuchsia-200">Subject Root</button>
+                                    <div className="border-t border-white/5 my-1"></div>
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.Body)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-fuchsia-500/20 hover:text-fuchsia-200">Body</button>
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.Face)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-fuchsia-500/20 hover:text-fuchsia-200">Face</button>
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.Hair)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-fuchsia-500/20 hover:text-fuchsia-200">Hair</button>
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.Attire)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-fuchsia-500/20 hover:text-fuchsia-200">Attire</button>
+                                </div>
+                            </div>
+
+                            {/* Camera Category */}
+                            <div className="group relative">
+                                <button className="w-full text-left px-4 py-2 text-xs text-blue-300 hover:bg-white/5 flex items-center justify-between">
+                                    <span>Camera</span>
+                                    <svg className="w-3 h-3 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                                </button>
+                                <div className="absolute left-full top-0 ml-1 bg-gray-900 border border-gray-700/50 rounded shadow-xl py-1 min-w-[140px] hidden group-hover:block">
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.CameraRoot)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-blue-500/20 hover:text-blue-200">Camera Root</button>
+                                    <div className="border-t border-white/5 my-1"></div>
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.Lens)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-blue-500/20 hover:text-blue-200">Lens</button>
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.Film)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-blue-500/20 hover:text-blue-200">Film Stock</button>
+                                </div>
+                            </div>
+
+                            {/* Lighting Category */}
+                            <div className="group relative">
+                                <button className="w-full text-left px-4 py-2 text-xs text-amber-300 hover:bg-white/5 flex items-center justify-between">
+                                    <span>Lighting</span>
+                                    <svg className="w-3 h-3 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                                </button>
+                                <div className="absolute left-full top-0 ml-1 bg-gray-900 border border-gray-700/50 rounded shadow-xl py-1 min-w-[140px] hidden group-hover:block">
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.LightSource)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-amber-500/20 hover:text-amber-200">Light Source</button>
+                                </div>
+                            </div>
+
+                            {/* Utility Category */}
+                            <div className="group relative">
+                                <button className="w-full text-left px-4 py-2 text-xs text-emerald-300 hover:bg-white/5 flex items-center justify-between">
+                                    <span>Utility</span>
+                                    <svg className="w-3 h-3 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                                </button>
+                                <div className="absolute left-full top-0 ml-1 bg-gray-900 border border-gray-700/50 rounded shadow-xl py-1 min-w-[140px] hidden group-hover:block">
+                                    <button onClick={() => handleAddNodeFromContext(NodeType.Reference)} className="w-full text-left px-4 py-1.5 text-xs text-gray-300 hover:bg-emerald-500/20 hover:text-emerald-200">Reference Image</button>
+                                </div>
+                            </div>
+                        </>
                     )}
-                    <button 
+
+                    <div className="border-t border-white/5 my-1"></div>
+                    <button
                         onClick={() => { setContextMenu(null); }}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                        className="w-full text-left px-4 py-2 text-xs text-gray-400 hover:bg-gray-700 hover:text-white transition-colors"
                     >
-                        Close
+                        Close Menu
                     </button>
                 </div>
             )}
-            
+
             <div className="absolute bottom-4 left-4 flex gap-2 pointer-events-none z-50">
-                 <div className="bg-gray-900/80 backdrop-blur text-gray-400 text-[10px] px-3 py-1 rounded border border-white/5 shadow-lg">
-                     Right-Click for Menu • Shift+Click Multi-Select • Scroll to Zoom
-                 </div>
+                <div className="bg-gray-900/80 backdrop-blur text-gray-400 text-[10px] px-3 py-1 rounded border border-white/5 shadow-lg">
+                    Right-Click for Menu • Shift+Click Multi-Select • Scroll to Zoom
+                </div>
             </div>
-             <div className="absolute bottom-4 right-4 flex gap-2 z-50">
-                 <button onClick={() => setZoom(z => Math.min(z + 0.1, 5))} className="bg-gray-800 hover:bg-gray-700 text-white w-8 h-8 rounded flex items-center justify-center border border-gray-600 shadow-lg">+</button>
-                 <button onClick={() => setZoom(z => Math.max(z - 0.1, 0.1))} className="bg-gray-800 hover:bg-gray-700 text-white w-8 h-8 rounded flex items-center justify-center border border-gray-600 shadow-lg">-</button>
-                 <button onClick={() => { setZoom(1); setPan({x:0, y:0}); }} className="bg-gray-800 hover:bg-gray-700 text-white px-2 h-8 rounded flex items-center justify-center border border-gray-600 text-xs shadow-lg">Reset</button>
+            <div className="absolute bottom-4 right-4 flex gap-2 z-50">
+                <button onClick={() => setZoom(z => Math.min(z + 0.1, 5))} className="bg-gray-800 hover:bg-gray-700 text-white w-8 h-8 rounded flex items-center justify-center border border-gray-600 shadow-lg">+</button>
+                <button onClick={() => setZoom(z => Math.max(z - 0.1, 0.1))} className="bg-gray-800 hover:bg-gray-700 text-white w-8 h-8 rounded flex items-center justify-center border border-gray-600 shadow-lg">-</button>
+                <button onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }} className="bg-gray-800 hover:bg-gray-700 text-white px-2 h-8 rounded flex items-center justify-center border border-gray-600 text-xs shadow-lg">Reset</button>
             </div>
-            
+
             <style>{`
                 .animate-fade-in { animation: fadeIn 0.1s ease-out forwards; }
                 @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }

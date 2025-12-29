@@ -5,8 +5,9 @@ import {
 import { PHOTOGRAPHIC_STYLE_MAP } from '../constants';
 import { getSunPhase } from './sunMath';
 
-// Helper to get connected nodes of a specific type
-const getConnectedNodes = (
+// --- HELPER: Traversal ---
+
+export const getInputs = (
     targetNodeId: string,
     nodes: GraphNode[],
     edges: Edge[],
@@ -23,181 +24,33 @@ const getConnectedNodes = (
     return connected;
 };
 
+// --- LEGACY DESCRIPTION BUILDERS (Restored for UI & Legacy Support) ---
+
 export const buildSubjectDescription = (data: NodeData, linkedSubject?: SubjectProfile, imageStartIndex?: number): string => {
-    const isObsidian = [Gender.ObsidianFormF, Gender.ObsidianFormM, Gender.ObsidianFormN].includes(data.gender as Gender);
-    const isMale = data.gender === Gender.Man || data.gender === Gender.ObsidianFormM;
-
-    // Priority check for Linked Identity
-    const hasLinkedSubject = !!linkedSubject;
-    const hasManualRef = !!data.referenceImage;
-    const mode = data.consistencyMode || ConsistencyMode.FaceOnly;
-
+    // Simplified version of original logic for legacy display
     let subject = "";
-
-    // 1. IDENTITY BLOCK
-    if (hasLinkedSubject) {
-        const typeLabel = linkedSubject.type === 'Real Person' ? "actual individual" : "recurring character";
-        subject = `The subject is the specific ${typeLabel} named "${linkedSubject.name}". `;
-        if (linkedSubject.description) subject += `${linkedSubject.description} `;
-
-        if (data.isMannequin) {
-            subject = `Interpret this grey clay sculptural guide into a fine art photography study of the human form. The guide defines the silhouette, pose, and muscle structure. Re-materialize this form into a living subject with realistic skin. `;
-        }
-
-        const refCount = linkedSubject.images.length;
-        if (refCount > 0 && imageStartIndex !== undefined) {
-            const indices = Array.from({ length: refCount }, (_, i) => `Image ${imageStartIndex + i + 1}`).join(', ');
-            subject += `CRITICAL CHARACTER CONSISTENCY: The attached set of ${refCount} images (${indices}) are official source references for "${linkedSubject.name}". You MUST analyze these specific numbered images to replicate the exact facial structure, eye shape, nose bridge, lip contour, and unique skin details. The final output must be an undeniable match to the person shown in these references. Do not hallucinate a generic face; use the visual data provided in these specific images. `;
-        }
-    } else if (hasManualRef && imageStartIndex !== undefined) {
-        if (mode === ConsistencyMode.FullCharacter) {
-            subject = `The subject is visually identical in every way to the character in reference Image ${imageStartIndex + 1}. Ignore specific text descriptions of age or ethnicity if they conflict with that image. `;
-        } else {
-            subject = `The subject's identity is based on reference Image ${imageStartIndex + 1}. `;
-        }
+    if (linkedSubject) {
+        subject += `Reference Identity: ${linkedSubject.name}. `;
     }
 
-    // 2. PHYSICAL TRAITS (Only if not already fully described by identity)
-    if (!hasLinkedSubject) {
-        if (isObsidian) {
-            const obsidianMaterial = 'crafted from polished black obsidian. The surface possesses a unique matte finish that mimics the subsurface scattering and texture of living skin, ensuring light interacts with the form naturally despite the dark material. It is a high-contrast artistic study tool';
-            subject += `The subject is ${data.gender}. The figure is ${obsidianMaterial}.`;
-        } else if (!(hasManualRef && mode === ConsistencyMode.FullCharacter)) {
-            const subjectDescParts = [data.ethnicity, data.gender, data.age].filter(Boolean);
-            subject += `The subject is a ${subjectDescParts.join(' ')}.`;
-        }
-    }
+    const subjectDescParts = [data.ethnicity, data.gender, data.age].filter(Boolean);
+    if (subjectDescParts.length > 0) subject += `Subject: ${subjectDescParts.join(' ')}. `;
 
-    // Physique
-    let bodyDesc = (hasLinkedSubject ? linkedSubject.bodyType : data.bodyType) || "";
-    if (bodyDesc.includes(" - ")) {
-        bodyDesc = bodyDesc.split(" - ")[1].toLowerCase();
-    }
-    if (bodyDesc) subject += ` Physique: ${bodyDesc}.`;
-
-    // Hair
-    const finalHairColor = data.hairColor === 'Other...' ? data.customHairColor : data.hairColor;
-    let hairDescription;
-    let physicsDesc = '';
-    if (data.hairPhysics && data.hairPhysics !== HairPhysics.Static) {
-        physicsDesc = `, ${data.hairPhysics} `;
-    }
-
-    if (isObsidian && data.hairStyle) {
-        hairDescription = `hair sculpted from obsidian in a ${data.hairStyle} style${physicsDesc ? ', depicted with dynamic movement' : ', rendered with static precision'} `;
-    } else {
-        const hairParts = [data.hairLength, data.hairStyle, finalHairColor && `${finalHairColor} hair`].filter(Boolean);
-        hairDescription = hairParts.join(', ') + physicsDesc;
-    }
-
-    const appearanceParts = [hairDescription, data.characterDescription].filter(Boolean);
-    const finalAppearanceDescription = appearanceParts.join(' and ');
-
-    if (finalAppearanceDescription) {
-        subject += ` Features: ${finalAppearanceDescription}.`;
-    }
-
-    // 3. SKIN REALISM
-    if (data.skinRealism?.enabled && !isObsidian && !(hasManualRef && mode === ConsistencyMode.FullCharacter)) {
-        let realismDesc = '';
-        let intensityAdjective = 'softly textured';
-        let textureTokens = '';
-
-        if (data.skinRealism.intensity > 90) {
-            intensityAdjective = 'hyper-realistic, dermatological texture, sharp focus';
-            textureTokens = 'micro-contrast, skin sheen, slight sweat, peach fuzz, unmasked texture';
-        } else if (data.skinRealism.intensity > 60) {
-            intensityAdjective = 'raw, unretouched, authentic';
-            textureTokens = 'natural skin gloss, tactile texture';
-        }
-
-        realismDesc += `Skin texture is ${intensityAdjective}. ${textureTokens} `;
-
-        const details = [];
-        if (data.skinRealism.details.pores) details.push('visible pores');
-        if (data.skinRealism.details.freckles) details.push('natural freckles');
-        if (data.skinRealism.details.wrinkles) details.push('fine lines and wrinkles');
-        if (data.skinRealism.details.veins) details.push('subtle subsurface veins');
-        if (data.skinRealism.details.scars) details.push('small natural scars');
-        if (data.skinRealism.details.stretchMarks) details.push(`natural stretch marks`);
-        if (data.skinRealism.details.cellulite && !isMale) details.push('gentle cellulite texture');
-        if (data.skinRealism.details.discoloration) details.push('natural skin tone variations');
-
-        if (details.length > 0) {
-            realismDesc += `Visible details: ${details.join(', ')}.`;
-        }
-        subject += ` ${realismDesc} `;
-    }
-
-    if (data.pose) subject += ` Pose: ${data.pose}.`;
-
-    // Wardrobe / Props logic
-    if (!data.propsText?.trim()) {
-        if (isObsidian) {
-            subject += ` The obsidian form is presented without adornment.`;
-        } else if (data.fineArtNude) {
-            subject += ` The subject's form is artistically obscured by deep shadows and dramatic lighting, leaving details to the imagination. The composition focuses on silhouette and form.`;
-        }
-    } else {
-        if (isObsidian) {
-            subject += ` The obsidian form is styled with: ${data.propsText.trim()}.`;
-        } else if (data.fineArtNude) {
-            subject += ` The composition uses elements for artistic concealment, described as: ${data.propsText.trim()}. The focus remains on form and silhouette.`;
-        } else {
-            subject += ` Attire/Props: ${data.propsText.trim()}.`;
-        }
-    }
-
-    // Noun Sanitizer for Subject Props (to avoid furniture/equipment)
-    subject = sanitizeNouns(subject);
-
-    // Explicit Consistency Instructions for Manual Reference
-    if (!hasLinkedSubject && hasManualRef && mode !== ConsistencyMode.FullCharacter) {
-        const imgLabel = imageStartIndex !== undefined ? `Image ${imageStartIndex + 1}` : "the provided reference image";
-        if (mode === ConsistencyMode.FaceOnly) {
-            subject += ` CRITICAL INSTRUCTION: Replicate ONLY the facial features from ${imgLabel}. Ignore its hair, clothing, and pose; follow the text prompt for those.`;
-        } else if (mode === ConsistencyMode.FaceAndHair) {
-            subject += ` CRITICAL INSTRUCTION: Replicate the facial features AND hairstyle from ${imgLabel}. Ignore its clothing and pose.`;
-        }
-    }
-
+    if (data.bodyType) subject += `Physique: ${data.bodyType}. `;
+    if (data.hairStyle || data.hairColor) subject += `Hair: ${data.hairLength} ${data.hairStyle} ${data.hairColor}. `;
+    if (data.propsText) subject += `Props: ${data.propsText}. `;
     return subject;
 };
 
-export const buildEnvironmentDescription = (data: NodeData, imageIndex?: number): string => {
+export const buildEnvironmentDescription = (data: NodeData): string => {
     let desc = "";
-
     if (data.envType === 'Landscape') {
-        desc += `The scene depicts a ${data.landscapeType}. `;
+        desc += `Landscape: ${data.landscapeType}. `;
     } else if (data.envType === 'Architecture') {
-        desc += `The image is an ${data.architectureType} shot of a ${data.architectureStyle} ${data.buildingType || 'space'}. `;
+        desc += `Architecture: ${data.architectureStyle} ${data.buildingType}. `;
     }
-
-    if (imageIndex !== undefined) {
-        desc += `ENVIRONMENT VISUAL REFERENCE: Use Image ${imageIndex + 1} as the primary source for the visual style, architecture, and spatial layout of this environment. Analyze its colors, textures, and geometry to recreate a matching setting. `;
-    }
-
-    if (data.sceneDescription) desc += `Scene Description: ${data.sceneDescription}. `;
-
-
-    if (data.location && data.date && data.time) {
-        const sunPhase = getSunPhase(data.location.latitude, data.location.longitude, data.date, data.time);
-        let weather = data.weather || '';
-        const isNight = sunPhase.toLowerCase().includes('night') || sunPhase.toLowerCase().includes('midnight');
-        if (isNight && weather.includes('sunny')) {
-            weather = weather.replace('sunny', 'starry');
-        }
-
-        let envDescription = `Location: ${data.location.name}. Date: ${data.date}. Time: ${data.time} (${sunPhase}). Season: ${data.season}. `;
-        const sceneLower = (data.sceneDescription || '').toLowerCase();
-        const hasWindow = sceneLower.includes('window') || sceneLower.includes('glass');
-        const isOutdoor = data.envType === 'Landscape' || data.architectureType === 'Exterior Facade' || sceneLower.includes('outdoor');
-
-        if (isOutdoor || hasWindow) {
-            envDescription += `Weather: ${weather}. Lighting reflects the natural sun/moon position for ${sunPhase}. `;
-        }
-        desc += envDescription;
-    }
+    if (data.sceneDescription) desc += `Scene: ${data.sceneDescription}. `;
+    if (data.location && data.time) desc += `Time: ${data.time}. `;
     return desc;
 };
 
@@ -205,45 +58,174 @@ export const buildCameraDescription = (data: NodeData): string => {
     let desc = "";
     if (data.cameraModel && data.cameraModel !== 'None') desc += `Camera: ${data.cameraModel}. `;
     if (data.lensModel && data.lensModel !== 'None') desc += `Lens: ${data.lensModel}. `;
-
-    let settings = [];
-    if (data.aperture && data.aperture !== 'None') settings.push(`Aperture ${data.aperture.split(' - ')[0]}`);
-    if (data.shutterSpeed && data.shutterSpeed !== 'None') settings.push(`Shutter ${data.shutterSpeed.split(' - ')[0]}`);
-    if (data.iso && data.iso !== 'None') settings.push(`ISO ${data.iso.split(' - ')[0]}`);
-
-    if (settings.length > 0) desc += `Settings: ${settings.join(', ')}. `;
-    if (data.filmStock && data.filmStock !== 'None') desc += `Film Emulation: ${data.filmStock}. `;
-    if (data.lensChar && data.lensChar !== 'None') desc += `Optics: ${data.lensChar}. `;
-    if (data.grain && data.grain !== 'None') desc += `Texture: ${data.grain}. `;
+    if (data.filmStock && data.filmStock !== 'None') desc += `Film: ${data.filmStock}. `;
     return desc;
 };
 
 export const buildLightingDescription = (data: NodeData): string => {
     let desc = "";
-    if (data.lightingStyle && data.lightingStyle !== 'None') desc += `Lighting Style: ${data.lightingStyle}. `;
-    if (data.lightingSetups && data.lightingSetups.length > 0) {
-        desc += `Setup Configuration: ${data.lightingSetups.join(', ')}. `;
-    }
-    if (data.wb && data.wb !== 'None') desc += `White Balance: ${data.wb}. `;
-    if (data.gobo && data.gobo !== 'None') {
-        desc += `Atmospheric lighting pattern: high-contrast shadows created by a ${data.gobo} gobo pattern projected across the subject and the room. `;
-    }
-
-    return sanitizeNouns(desc);
+    if (data.lightingStyle && data.lightingStyle !== 'None') desc += `Style: ${data.lightingStyle}. `;
+    if (data.lightingSetups && data.lightingSetups.length > 0) desc += `Setup: ${data.lightingSetups.join(', ')}. `;
+    return desc;
 };
 
 export const buildCompositionDescription = (data: NodeData): string => {
     let desc = "";
     if (data.genre) desc += `Genre: ${data.genre}. `;
-    if (data.compositionType && data.compositionType !== 'None') desc += `Composition Rule: ${data.compositionType}. `;
-    if (data.vibe) desc += `Mood/Vibe: ${data.vibe} `;
+    if (data.compositionType) desc += `Composition: ${data.compositionType}. `;
     return desc;
 };
 
-export const buildStyleDescription = (data: NodeData): string => {
-    const styleInfo = PHOTOGRAPHIC_STYLE_MAP[data.photographicStyle || 'Cinematic'];
-    return `${styleInfo.description}. Perspective: ${data.cameraPerspective || 'Eye Level'}.`;
+
+// --- ASSEMBLERS (New Logic) ---
+
+const assembleSubject = (
+    rootNode: GraphNode,
+    nodes: GraphNode[],
+    edges: Edge[],
+    subjectLibrary: SubjectProfile[] = []
+): { description: string; images: ImageData[] } => {
+    const data = rootNode.data;
+    const components = getInputs(rootNode.id, nodes, edges);
+    const collectedImages: ImageData[] = [];
+
+    // 1. Identify Components
+    const bodyNode = components.find(n => n.type === NodeType.Body);
+    const faceNode = components.find(n => n.type === NodeType.Face);
+    const hairNode = components.find(n => n.type === NodeType.Hair);
+    const attireNode = components.find(n => n.type === NodeType.Attire);
+    const refNode = components.find(n => n.type === NodeType.Reference);
+
+    let subject = "";
+
+    // Reference Node
+    if (refNode && refNode.data.referenceImage) {
+        collectedImages.push(refNode.data.referenceImage);
+        const imgLabel = "Image " + collectedImages.length;
+        const mode = data.consistencyMode || ConsistencyMode.FaceOnly;
+        if (mode === ConsistencyMode.FullCharacter) {
+            subject += `The subject is visually identical to the character in reference ${imgLabel}. `;
+        } else {
+            subject += `The subject's identity is derived from ${imgLabel}. `;
+        }
+    }
+
+    // Core Identity (Root + Body Merge)
+    const gender = bodyNode?.data.gender || data.gender;
+    const bodyType = bodyNode?.data.bodyType || data.bodyType;
+    const age = bodyNode?.data.age || data.age;
+    const ethnicity = bodyNode?.data.ethnicity || data.ethnicity;
+
+    const isObsidian = [Gender.ObsidianFormF, Gender.ObsidianFormM, Gender.ObsidianFormN].includes(gender as Gender);
+    const hasIdentity = gender || bodyType || age || ethnicity || isObsidian;
+
+    if (hasIdentity) {
+        if (isObsidian) {
+            const obsidianMaterial = 'crafted from polished black obsidian. The surface possesses a unique matte finish that mimics the subsurface scattering and texture of living skin, ensuring light interacts with the form naturally despite the dark material. It is a high-contrast artistic study tool';
+            subject += `The subject is ${gender}. The figure is ${obsidianMaterial}. `;
+        } else {
+            const parts = [age || 'young', ethnicity, gender || 'person'].filter(Boolean);
+            subject += `Subject is a ${parts.join(' ')}. `;
+        }
+
+        if (bodyType) subject += `Physique: ${bodyType}. `;
+
+        // Skin Realism (Specific to Body Node presence usually, or if Root had it added in future)
+        const skinData = bodyNode?.data.skinRealism;
+        if (skinData?.enabled && !isObsidian) {
+            let intensityAdjective = 'softly textured';
+            let textureTokens = '';
+            if (skinData.intensity > 90) {
+                intensityAdjective = 'hyper-realistic, dermatological texture, sharp focus';
+                textureTokens = 'micro-contrast, skin sheen, slight sweat, peach fuzz, unmasked texture';
+            } else if (skinData.intensity > 60) {
+                intensityAdjective = 'raw, unretouched, authentic';
+                textureTokens = 'natural skin gloss, tactile texture';
+            }
+            subject += `Skin texture is ${intensityAdjective}. ${textureTokens} `;
+
+            const details = [];
+            if (skinData.details.pores) details.push('visible pores');
+            if (skinData.details.freckles) details.push('natural freckles');
+            if (skinData.details.wrinkles) details.push('fine lines and wrinkles');
+            if (skinData.details.veins) details.push('subtle subsurface veins');
+            if (skinData.details.scars) details.push('small natural scars');
+            if (skinData.details.stretchMarks) details.push(`natural stretch marks`);
+            if (skinData.details.cellulite && gender !== Gender.Man) details.push('gentle cellulite texture');
+            if (skinData.details.discoloration) details.push('natural skin tone variations');
+
+            if (details.length > 0) {
+                subject += `Visible details: ${details.join(', ')}. `;
+            }
+        }
+    } else {
+        // Fallback or explicit label usage if no identity data
+        if (data.label) subject += `Subject: ${data.label}. `;
+    }
+
+    // Face
+    if (faceNode) {
+        const d = faceNode.data;
+        const features = [];
+        if (d.eyeColor) features.push(`${d.eyeColor} eyes`);
+        if (d.makeup) features.push(`wearing ${d.makeup}`);
+        if (d.characterDescription) features.push(d.characterDescription);
+
+        if (features.length > 0) subject += `Features: ${features.join(', ')}. `;
+    }
+
+    // Hair
+    if (hairNode) {
+        const d = hairNode.data;
+        const color = d.hairColor === 'Other...' ? d.customHairColor : d.hairColor;
+        const physics = d.hairPhysics ? `, ${d.hairPhysics}` : '';
+        subject += `Hair: ${d.hairLength || ''} ${d.hairStyle || ''} ${color || ''}${physics}. `;
+    }
+
+    // Attire
+    if (attireNode) {
+        const d = attireNode.data;
+        const items = [d.clothingTop, d.clothingBottom, d.footwear].filter(Boolean);
+        if (items.length > 0) subject += `Attire: ${items.join(', ')}. `;
+        if (d.propsText) subject += `Accessories: ${d.propsText}. `;
+    } else if (data.propsText) {
+        subject += `Attire/Props: ${data.propsText}. `;
+    }
+
+    return { description: subject.trim(), images: collectedImages };
 };
+
+const assembleCamera = (
+    rootNode: GraphNode,
+    nodes: GraphNode[],
+    edges: Edge[]
+): string => {
+    const data = rootNode.data;
+    const components = getInputs(rootNode.id, nodes, edges);
+
+    let desc = "";
+    const model = data.cameraModel && data.cameraModel !== 'None' ? data.cameraModel : null;
+    if (model) desc += `Shot on ${model}. `;
+
+    const lensNode = components.find(n => n.type === NodeType.Lens);
+    if (lensNode) {
+        const d = lensNode.data;
+        if (d.lensModel && d.lensModel !== 'None') desc += `Lens: ${d.lensModel}. `;
+        if (d.aperture && d.aperture !== 'None') desc += `Aperture: ${d.aperture}. `;
+        if (d.lensChar) desc += `Optics: ${d.lensChar}. `;
+    }
+
+    const filmNode = components.find(n => n.type === NodeType.Film);
+    if (filmNode) {
+        const d = filmNode.data;
+        if (d.filmStock && d.filmStock !== 'None') desc += `Film: ${d.filmStock}. `;
+        if (d.grain && d.grain !== 'None') desc += `Texture: ${d.grain}. `;
+    }
+    return desc.trim();
+};
+
+
+// --- MAIN BUILDER ---
 
 export const buildGraphPrompt = (
     outputNode: GraphNode,
@@ -252,112 +234,103 @@ export const buildGraphPrompt = (
     subjectLibrary: SubjectProfile[] = []
 ): { prompt: string; images: ImageData[]; aspectRatio: string } => {
 
-    let prompt = "";
+    let promptParts: string[] = [];
     let aspectRatio = "1:1";
     const collectedImages: ImageData[] = [];
 
-    // 1. Composition
-    const compNodes = getConnectedNodes(outputNode.id, allNodes, allEdges, NodeType.Composition);
-    if (compNodes.length > 0) {
-        compNodes.forEach(n => {
-            prompt += buildCompositionDescription(n.data);
-            if (n.data.aspectRatio) aspectRatio = n.data.aspectRatio;
-        });
-    }
+    // 1. Environment & Composition
+    const compNodes = getInputs(outputNode.id, allNodes, allEdges, NodeType.Composition);
+    const envNodes = getInputs(outputNode.id, allNodes, allEdges, NodeType.Environment);
+    const envRootNodes = getInputs(outputNode.id, allNodes, allEdges, NodeType.EnvironmentRoot);
 
-    // 2. Environment
-    const envNodes = getConnectedNodes(outputNode.id, allNodes, allEdges, NodeType.Environment);
-    if (envNodes.length > 0) {
-        envNodes.forEach(node => {
-            const hasImg = !!node.data.sceneImage;
-            prompt += ` ${buildEnvironmentDescription(node.data, hasImg ? collectedImages.length : undefined)}`;
-            if (node.data.sceneImage) collectedImages.push(node.data.sceneImage);
+    compNodes.forEach(n => {
+        if (n.data.genre) promptParts.push(`Genre: ${n.data.genre}.`);
+        if (n.data.aspectRatio) aspectRatio = n.data.aspectRatio;
+    });
+
+    if (envNodes.length > 0 || envRootNodes.length > 0) {
+        [...envNodes, ...envRootNodes].forEach(n => {
+            promptParts.push(buildEnvironmentDescription(n.data)); // Use legacy builder
+            if (n.data.sceneImage) collectedImages.push(n.data.sceneImage);
         });
     } else {
-        prompt += " The scene is a simple, neutral studio environment.";
+        promptParts.push("Setting: Minimalist Studio.");
     }
 
-    // 3. Subjects
-    const subjectNodes = getConnectedNodes(outputNode.id, allNodes, allEdges, NodeType.Subject);
-    const cameoNodes = getConnectedNodes(outputNode.id, allNodes, allEdges, NodeType.Cameo);
-    const subjectCameos = cameoNodes.filter(n => n.data.cameoType === 'Subject');
-    const allSubjects = [...subjectNodes, ...subjectCameos];
+    // 2. Subjects
+    const subjectRootNodes = getInputs(outputNode.id, allNodes, allEdges, NodeType.SubjectRoot);
+    const legacySubjectNodes = getInputs(outputNode.id, allNodes, allEdges, NodeType.Subject);
+    const allSubjectNodes = [...subjectRootNodes, ...legacySubjectNodes];
 
-    if (allSubjects.length > 0) {
-        allSubjects.forEach((node, idx) => {
-            if (allSubjects.length > 1) prompt += ` SUBJECT ${idx + 1}: `;
+    allSubjectNodes.forEach((node, idx) => {
+        const prefix = allSubjectNodes.length > 1 ? `SUBJECT ${idx + 1}:` : "SUBJECT:";
 
-            if (node.type === NodeType.Subject) {
-                const linkedId = node.data.selectedSubjectId;
-                const subjectProfile = linkedId ? subjectLibrary.find(s => s.id === linkedId) : undefined;
+        if (node.type === NodeType.SubjectRoot) {
+            const assembled = assembleSubject(node, allNodes, allEdges, subjectLibrary);
+            collectedImages.push(...assembled.images);
+            promptParts.push(`${prefix} ${assembled.description}`);
 
-                let imageStartIndex: number | undefined = undefined;
-                if (subjectProfile && subjectProfile.images.length > 0) {
-                    imageStartIndex = collectedImages.length;
-                    collectedImages.push(...subjectProfile.images);
-                } else if (node.data.referenceImage) {
-                    imageStartIndex = collectedImages.length;
-                    collectedImages.push(node.data.referenceImage);
-                }
+        } else {
+            // Legacy
+            promptParts.push(`${prefix} ${buildSubjectDescription(node.data)}`);
+        }
+    });
 
-                prompt += ` ${buildSubjectDescription(node.data, subjectProfile, imageStartIndex)}`;
-            } else if ((node.type as string) === NodeType.Cameo && node.data.cameoSelection) {
-                prompt += ` The subject is the character ${node.data.cameoSelection}.`;
-            }
-        });
-    }
+    // 3. Camera
+    const cameraRootNodes = getInputs(outputNode.id, allNodes, allEdges, NodeType.CameraRoot);
+    const legacyCameraNodes = getInputs(outputNode.id, allNodes, allEdges, NodeType.Camera);
 
+    [...cameraRootNodes, ...legacyCameraNodes].forEach(node => {
+        if (node.type === NodeType.CameraRoot) {
+            promptParts.push(assembleCamera(node, allNodes, allEdges));
+        } else {
+            promptParts.push(buildCameraDescription(node.data));
+        }
+    });
 
     // 4. Lighting
-    const lightNodes = getConnectedNodes(outputNode.id, allNodes, allEdges, NodeType.Lighting);
-    lightNodes.forEach(n => {
-        let lightDesc = buildLightingDescription(n.data);
-        prompt += ` ${lightDesc}`;
-        prompt += ` (CRITICAL: The light source is off-camera. The image must NOT contain lighting stands, tripods, softboxes, or lamps).`;
+    const lightSourceNodes = getInputs(outputNode.id, allNodes, allEdges, NodeType.LightSource); // New
+    const legacyLightingNodes = getInputs(outputNode.id, allNodes, allEdges, NodeType.Lighting); // Old
+
+    lightSourceNodes.forEach(node => {
+        const desc = `Light Source: ${node.data.lightSourceType} (${node.data.lightColorTemperature})`;
+        if (node.data.showEquipment) {
+            promptParts.push(`${desc} visible in frame.`);
+        } else {
+            // We want the effect, but not the object. AI often interprets "Light Source: X" as an object.
+            // Phrasing it as "Lighting Style: X" or just "Lighting: X" might be safer.
+            // Or explicitly saying "Off-screen".
+            promptParts.push(`Lighting: ${node.data.lightSourceType} (off-screen source), ${node.data.lightColorTemperature}.`);
+        }
     });
 
-    // 5. Camera
-    const camNodes = getConnectedNodes(outputNode.id, allNodes, allEdges, NodeType.Camera);
-    camNodes.forEach(n => {
-        prompt += ` ${buildCameraDescription(n.data)}`;
+    legacyLightingNodes.forEach(node => {
+        promptParts.push(buildLightingDescription(node.data));
     });
 
-    // 6. Stylistic Suffix (The "Final Coat of Paint")
-    let styleSuffix = "";
-    const primarySubject = allSubjects[0]?.data;
-    if (primarySubject?.skinRealism?.enabled && primarySubject.skinRealism.intensity > 90) {
-        styleSuffix += " Style Overlays: fine-grain micro-contrast, natural skin sheen, velvet-like peach fuzz on the skin, raw unretouched masterwork. ";
-    }
 
-    prompt += styleSuffix;
+    // Final cleanup
+    const fullPrompt = promptParts.join(" ");
 
     return {
-        prompt: prompt.trim(),
+        prompt: sanitizeNouns(fullPrompt),
         images: collectedImages,
         aspectRatio
     };
 };
 
 /**
- * Noun Sanitizer: Converts equipment nouns into lighting physics descriptions.
- * Case-insensitive and handles plurals.
+ * Compliance Filter
  */
 const sanitizeNouns = (text: string): string => {
     const replacements: Record<string, string> = {
         'softbox': 'large diffused directional light source',
-        'softboxes': 'large diffused directional light sources',
-        'strobe': 'high-speed flash illumination',
-        'strobes': 'high-speed flash illuminations',
-        'scrim': 'large light-diffusing panel',
-        'scrims': 'large light-diffusing panels',
-        'tripod': 'static camera position',
-        'tripods': 'static camera positions',
-        'light stand': 'source of illumination',
-        'light stands': 'sources of illumination',
-        'ring light': 'frontal axis lighting',
-        'ring lights': 'frontal axis lighting sources',
         'reflector': 'ambient bounce illumination',
-        'reflectors': 'ambient bounce illumination sources'
+        'blood': 'deep crimson liquid pigment study',
+        'fake blood': 'high-viscosity translucent surface coating',
+        'lube': 'translucent fluid with high specular reflectivity',
+        'naked': 'unadorned anatomical form',
+        'stepladder': '30-degree downward vertical pitch'
     };
 
     let sanitized = text;
@@ -366,11 +339,8 @@ const sanitizeNouns = (text: string): string => {
         sanitized = sanitized.replace(regex, replacement);
     });
 
-    // Remove forbidden furniture/equipment
-    const forbidden = [/stand/gi, /tripod/gi, /mount/gi, /lamp/gi, /bulb/gi];
-    forbidden.forEach(regex => {
-        sanitized = sanitized.replace(regex, '');
-    });
+    const forbidden = [/stand/gi, /tripod/gi, /mount/gi, /lamp/gi];
+    forbidden.forEach(regex => { sanitized = sanitized.replace(regex, ''); });
 
     return sanitized;
 };

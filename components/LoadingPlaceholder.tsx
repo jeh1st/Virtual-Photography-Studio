@@ -1,7 +1,7 @@
 
-import React from 'react';
+import { FC } from 'react';
 
-const LoadingPlaceholder: React.FC = () => {
+const LoadingPlaceholder: FC = () => {
   return (
     <div className="bg-gray-800 p-2 rounded-lg shadow-lg animate-pulse flex flex-col aspect-[4/5] w-full">
       <div className="bg-gray-700 rounded-md w-full h-full"></div>

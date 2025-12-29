@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, FC } from 'react';
 import { PhotographicStyle, LightColorTemperature, HairPhysics, Pose } from '../types';
 
 interface Suggestion {
@@ -16,7 +16,7 @@ interface ContextualSuggestionsProps {
     onSelect: (text: string, category: string) => void;
 }
 
-const ContextualSuggestions: React.FC<ContextualSuggestionsProps> = ({ activeTab, photographicStyle, lightTemp, hairPhysics, pose, onSelect }) => {
+const ContextualSuggestions: FC<ContextualSuggestionsProps> = ({ activeTab, photographicStyle, lightTemp, hairPhysics, pose, onSelect }) => {
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
     useEffect(() => {
@@ -48,22 +48,22 @@ const ContextualSuggestions: React.FC<ContextualSuggestionsProps> = ({ activeTab
                 newSuggestions.push({ category: 'scene', text: 'lens flare peaking through' });
             }
         }
-        
+
         if (activeTab === 'subject') {
             if (hairPhysics && hairPhysics !== 'perfectly still') {
-                 newSuggestions.push({ category: 'subject', text: 'hair glowing in backlight' });
-                 newSuggestions.push({ category: 'subject', text: 'detailed stray hairs' });
+                newSuggestions.push({ category: 'subject', text: 'hair glowing in backlight' });
+                newSuggestions.push({ category: 'subject', text: 'detailed stray hairs' });
             }
             if (pose.includes('mid-air') || pose.includes('jumping')) {
-                 newSuggestions.push({ category: 'subject', text: 'dynamic fabric motion' });
+                newSuggestions.push({ category: 'subject', text: 'dynamic fabric motion' });
             }
         }
 
         // General polish suggestions
         if (newSuggestions.length < 3) {
-             newSuggestions.push({ category: 'general', text: 'volumetric lighting' });
-             newSuggestions.push({ category: 'general', text: 'detailed skin texture' });
-             newSuggestions.push({ category: 'general', text: 'soft focus background' });
+            newSuggestions.push({ category: 'general', text: 'volumetric lighting' });
+            newSuggestions.push({ category: 'general', text: 'detailed skin texture' });
+            newSuggestions.push({ category: 'general', text: 'soft focus background' });
         }
 
         setSuggestions(newSuggestions);

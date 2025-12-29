@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef, ChangeEvent, FC } from 'react';
 import { ImageData } from '../types';
 
 interface ImageInputProps {
@@ -39,7 +39,7 @@ const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<s
           return reject(new Error('Could not get canvas context'));
         }
         ctx.drawImage(img, 0, 0, width, height);
-        
+
         // Use JPEG for better compression of photographic images
         resolve(canvas.toDataURL('image/jpeg', 0.9));
       };
@@ -50,10 +50,10 @@ const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<s
 };
 
 
-const ImageInput: React.FC<ImageInputProps> = ({ value, onImageSelect, label = 'Reference Image (Optional)', helpText }) => {
+const ImageInput: FC<ImageInputProps> = ({ value, onImageSelect, label = 'Reference Image (Optional)', helpText }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
       try {
@@ -107,14 +107,14 @@ const ImageInput: React.FC<ImageInputProps> = ({ value, onImageSelect, label = '
         </div>
         <input ref={fileInputRef} id={`file-upload-${label}`} name={`file-upload-${label}`} type="file" className="sr-only" onChange={handleFileChange} accept="image/*" />
       </div>
-       {value && (
-          <button
-            onClick={handleRemoveImage}
-            className="text-xs text-red-400 hover:text-red-300 mt-2 w-full text-center"
-          >
-            Remove Image
-          </button>
-        )}
+      {value && (
+        <button
+          onClick={handleRemoveImage}
+          className="text-xs text-red-400 hover:text-red-300 mt-2 w-full text-center"
+        >
+          Remove Image
+        </button>
+      )}
     </div>
   );
 };

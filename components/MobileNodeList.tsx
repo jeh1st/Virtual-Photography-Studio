@@ -1,5 +1,5 @@
 
-import React from 'react';
+import { FC } from 'react';
 import { GraphNode, NodeType } from '../types';
 import { buildSubjectDescription, buildEnvironmentDescription, buildCameraDescription, buildLightingDescription, buildCompositionDescription } from '../utils/promptBuilder';
 
@@ -12,10 +12,10 @@ interface MobileNodeListProps {
     selectedNodeIds: string[];
 }
 
-const MobileNodeList: React.FC<MobileNodeListProps> = ({ 
-    nodes, onSelectionChange, onDeleteNode, onAddNode, onClose, selectedNodeIds 
+const MobileNodeList: FC<MobileNodeListProps> = ({
+    nodes, onSelectionChange, onDeleteNode, onAddNode, onClose, selectedNodeIds
 }) => {
-    
+
     const getNodeSummary = (node: GraphNode) => {
         if (node.type === NodeType.Subject) return buildSubjectDescription(node.data).substring(0, 60) + "...";
         if (node.type === NodeType.Environment) return buildEnvironmentDescription(node.data).substring(0, 60) + "...";
@@ -43,9 +43,9 @@ const MobileNodeList: React.FC<MobileNodeListProps> = ({
     const renderNodeItem = (node: GraphNode) => {
         const isSelected = selectedNodeIds.includes(node.id);
         const isActiveColor = isSelected ? 'bg-purple-900/40 border-purple-500 text-white' : 'bg-gray-900 border-gray-800 text-gray-400 hover:bg-gray-800 hover:text-gray-200';
-        
+
         return (
-            <div 
+            <div
                 key={node.id}
                 onClick={() => { onSelectionChange([node.id]); onClose(); }}
                 className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer mb-2 transition-all ${isActiveColor}`}
@@ -60,7 +60,7 @@ const MobileNodeList: React.FC<MobileNodeListProps> = ({
                     </div>
                 </div>
                 {node.type !== NodeType.Output && (
-                    <button 
+                    <button
                         onClick={(e) => { e.stopPropagation(); onDeleteNode(node.id); }}
                         className="p-2 text-gray-600 hover:text-red-400 rounded-full"
                     >
@@ -88,20 +88,16 @@ const MobileNodeList: React.FC<MobileNodeListProps> = ({
             <div className="p-4 bg-gray-900/50 border-b border-white/5">
                 <p className="text-[10px] font-bold text-gray-500 uppercase mb-2">Quick Add</p>
                 <div className="flex flex-wrap gap-2">
-                    {[NodeType.Subject, NodeType.Environment, NodeType.Camera, NodeType.Lighting, NodeType.Composition, NodeType.Cameo].map(type => (
-                        <button 
-                            key={type}
-                            onClick={() => { onAddNode(type); onClose(); }}
-                            className="px-3 py-1.5 rounded-md bg-gray-800 border border-gray-700 text-[10px] font-bold text-gray-300 hover:text-white hover:border-purple-500 uppercase"
-                        >
-                            + {type}
-                        </button>
-                    ))}
+                    <button onClick={() => { onAddNode(NodeType.SubjectRoot); onClose(); }} className="px-3 py-1.5 rounded-md bg-gray-800 border border-gray-700 text-[10px] font-bold text-pink-300 hover:text-white hover:border-pink-500 uppercase">+ Subject</button>
+                    <button onClick={() => { onAddNode(NodeType.CameraRoot); onClose(); }} className="px-3 py-1.5 rounded-md bg-gray-800 border border-gray-700 text-[10px] font-bold text-blue-300 hover:text-white hover:border-blue-500 uppercase">+ Camera</button>
+                    <button onClick={() => { onAddNode(NodeType.Environment); onClose(); }} className="px-3 py-1.5 rounded-md bg-gray-800 border border-gray-700 text-[10px] font-bold text-teal-300 hover:text-white hover:border-teal-500 uppercase">+ Room</button>
+                    <button onClick={() => { onAddNode(NodeType.LightSource); onClose(); }} className="px-3 py-1.5 rounded-md bg-gray-800 border border-gray-700 text-[10px] font-bold text-amber-300 hover:text-white hover:border-amber-500 uppercase">+ Light</button>
+                    <button onClick={() => { onAddNode(NodeType.Reference); onClose(); }} className="px-3 py-1.5 rounded-md bg-gray-800 border border-gray-700 text-[10px] font-bold text-purple-300 hover:text-white hover:border-purple-500 uppercase">+ Ref Img</button>
                 </div>
             </div>
 
             <div className="flex-grow overflow-y-auto p-4 space-y-6">
-                
+
                 <div>
                     <h3 className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2 px-1">Goal</h3>
                     {outputNode && renderNodeItem(outputNode)}

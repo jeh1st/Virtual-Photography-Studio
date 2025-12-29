@@ -1,12 +1,13 @@
-// @ts-ignore
-import React, { useState, useEffect, useCallback, useMemo, useRef, Suspense } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef, Suspense, lazy, Component, type FC } from 'react';
+import * as React from 'react'; // Fix namespace issue
+import { useNodesState, useEdgesState, Node, Edge as FlowEdge, Connection, addEdge } from '@xyflow/react';
 import {
     NodeType, GraphNode, Edge, ImageData, NodeData,
     Gender, BodyType, HairLength, HairStyle, HairPhysics,
     LandscapeType, ArchitectureStyle, ArchitectureShotType,
     CameraPerspective, PhotographicStyle, CameraType, FilmStock,
     LightingPreset, LightColorTemperature, SkinRealismConfig,
-    TimeOfDay, Weather, Season, ConsistencyMode, LocationConfig, AspectRatio, GenerationMetadata, SubjectProfile, StudioImage
+    TimeOfDay, Weather, Season, ConsistencyMode, LocationConfig, AspectRatio, GenerationMetadata, SubjectProfile, StudioImage, SessionMode
 } from './types';
 import {
     POSE_OPTIONS, BODY_TYPE_OPTIONS, MALE_BODY_TYPE_OPTIONS,
@@ -20,13 +21,15 @@ import {
     WHITE_BALANCE_OPTIONS, GRAIN_OPTIONS, LENS_CHARACTERISTICS, LENSES_BY_GENRE,
     CAMEO_SUBJECTS, CAMEO_ARCHITECTURE_EXTERIOR, CAMEO_ARCHITECTURE_INTERIOR, CAMEO_LANDSCAPE,
     CONSISTENCY_MODE_OPTIONS, APERTURE_OPTIONS_EXTENDED, SHUTTER_SPEED_OPTIONS_EXTENDED, ISO_OPTIONS_EXTENDED,
-    ETHNICITY_OPTIONS, LIGHT_COLOR_TEMPERATURE_OPTIONS, GOBO_OPTIONS
+    ETHNICITY_OPTIONS, LIGHT_COLOR_TEMPERATURE_OPTIONS, GOBO_OPTIONS, LIQUID_COLOR_OPTIONS, LIQUID_THICKNESS_OPTIONS
 } from './constants';
 import { generateImage, upscaleImage } from './services/geminiService';
 import { db } from './services/idbService';
-import { buildGraphPrompt } from './utils/promptBuilder';
+import { buildGraphPrompt, getInputs } from './utils/promptBuilder';
+import { getDescription } from './utils/descriptions';
+import { getNodeSummary, getEdgeColor } from './utils/nodeUtils';
 import Header from './components/Header';
-import NodeGraph from './components/NodeGraph';
+import { ReactNodeGraph } from './components/ReactNodeGraph';
 import MobileNodeList from './components/MobileNodeList';
 import SelectInput from './components/SelectInput';
 import TextAreaInput from './components/TextAreaInput';
@@ -45,9 +48,13 @@ import ImageModal from './components/ImageModal';
 import Spinner from './components/Spinner';
 import ImageUpload from './components/ImageUpload';
 import SubjectLibrary from './components/SubjectLibrary';
+import { LogViewer } from './components/LogViewer';
+import { DocumentationViewer } from './components/DocumentationViewer';
+
+
 
 // Lazy load ImageEditor to prevent dependency blocking
-const ImageEditor = React.lazy(() => import('./components/ImageEditor'));
+const ImageEditor = lazy(() => import('./components/ImageEditor'));
 
 // Error Boundary for stability
 // Fixed: Explicitly defined Props and State interfaces for the ErrorBoundary class component to resolve 'Property state/props does not exist' TypeScript errors.
@@ -59,7 +66,7 @@ interface ErrorBoundaryState {
     hasError: boolean;
 }
 
-class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     state: ErrorBoundaryState = { hasError: false };
 
     constructor(props: ErrorBoundaryProps) {
@@ -104,61 +111,45 @@ interface GeneratedImage {
     isPrivate: boolean;
 }
 
-const App: React.FC = () => {
+const App: FC = () => {
     // --- GRAPH STATE ---
-    const [nodes, setNodes] = useState<GraphNode[]>([
+    // Explicitly type Node<NodeData> to fix TS errors accessing data properties
+    const [nodes, setNodes, onNodesChange] = useNodesState<Node<NodeData>>([
         {
-            id: 'n-subject-1', type: NodeType.Subject, position: { x: 50, y: 50 }, isCollapsed: true, data: {
-                label: 'Model Settings',
-                gender: Gender.Woman,
-                bodyType: BodyType.FullFigured,
-                pose: 'Reclining',
-                skinRealism: DEFAULT_SKIN_CONFIG,
-                hairLength: HairLength.Long,
-                hairStyle: HairStyle.LooseWaves,
-                hairColor: 'Brown',
-                propsText: 'sheer silk robe draping off shoulders',
-                age: 'in her 20s'
-            }
-        },
-        {
-            id: 'n-env-1', type: NodeType.Environment, position: { x: 50, y: 150 }, isCollapsed: true, data: {
-                label: 'Boudoir Setup',
-                envType: 'Architecture',
-                architectureStyle: ArchitectureStyle.Boudoir,
-                environmentShotContext: 'Interior',
-                location: DEFAULT_LOCATION,
-                sceneDescription: 'Elegant, sun-drenched boudoir studio with vintage velvet furniture and soft linen drapes.'
-            }
-        },
-        {
-            id: 'n-camera-1', type: NodeType.Camera, position: { x: 50, y: 250 }, isCollapsed: true, data: {
-                label: 'Professional Lens', activePresetId: 'none', cameraModel: 'Canon EOS R5 II', lensModel: '50mm prime', aperture: 'f/2.8', shutterSpeed: '1/125s', iso: '100'
-            }
-        },
-        {
-            id: 'n-light-1', type: NodeType.Lighting, position: { x: 50, y: 350 }, isCollapsed: true, data: {
-                label: 'Room Lighting', activePresetId: 'none', lightingStyle: 'Natural Light', lightingSetups: ['natural window light'], wb: 'Daylight Balanced'
-            }
-        },
-        {
-            id: 'n-comp-1', type: NodeType.Composition, position: { x: 50, y: 450 }, isCollapsed: true, data: {
-                label: 'Art Direction', activePresetId: 'none', genre: 'boudoir', compositionType: 'Rule of Thirds', aspectRatio: AspectRatio.Portrait_3_4, vibe: 'Sensual, elegant, soft morning light'
-            }
-        },
-        { id: 'n-output', type: NodeType.Output, position: { x: 600, y: 250 }, data: { label: 'Final Image' } }
+            id: 'n-output',
+            type: NodeType.Output,
+            position: { x: 500, y: 300 },
+            data: { label: 'Final Image', isCollapsed: false }
+        }
     ]);
 
-    const [edges, setEdges] = useState<Edge[]>([
-        { id: 'e-1', source: 'n-subject-1', target: 'n-output' },
-        { id: 'e-env', source: 'n-env-1', target: 'n-output' },
-        { id: 'e-2', source: 'n-camera-1', target: 'n-output' },
-        { id: 'e-3', source: 'n-light-1', target: 'n-output' },
-        { id: 'e-4', source: 'n-comp-1', target: 'n-output' }
-    ]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
     const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>(['n-output']);
-    const activeNodeId = selectedNodeIds.length === 1 ? selectedNodeIds[0] : null;
+    // Filter to ensure active node exists
+    const activeNodeId = selectedNodeIds.length > 0 ? selectedNodeIds[0] : null;
+
+    const onConnect = useCallback(
+        (params: Connection | FlowEdge) => {
+            const hasCycle = (target: string, source: string) => {
+                if (target === source) return true;
+                const neighbors = edges.filter((e) => e.source === target).map((e) => e.target);
+                return neighbors.some((n) => hasCycle(n, source));
+            };
+
+            if (hasCycle(params.target, params.source)) {
+                console.warn('Cycle detected, blocking connection');
+                return;
+            }
+
+            // Determine color from source node
+            const sourceNode = nodes.find(n => n.id === params.source);
+            const edgeColor = sourceNode ? getEdgeColor(sourceNode.type as NodeType) : '#555';
+
+            setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: edgeColor, strokeWidth: 2 } } as any, eds));
+        },
+        [edges, nodes]
+    );
 
     const [generatedImages, setGeneratedImages] = useState<GeneratedImage[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -167,6 +158,7 @@ const App: React.FC = () => {
     const [isUpscaling, setIsUpscaling] = useState(false);
     const [applyPresetToAll, setApplyPresetToAll] = useState(true);
     const [previewPrompt, setPreviewPrompt] = useState<string>('');
+    const [sessionMode, setSessionMode] = useState<SessionMode>(SessionMode.Standard);
 
     // Library & UI State
     const [subjects, setSubjects] = useState<SubjectProfile[]>([]);
@@ -175,8 +167,9 @@ const App: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editorBaseImage, setEditorBaseImage] = useState<GeneratedImage | null>(null);
 
-    const [activeTab, setActiveTab] = useState<'library' | 'studio' | 'gallery'>('studio');
+    const [activeTab, setActiveTab] = useState<'library' | 'studio' | 'gallery' | 'logs' | 'docs'>('studio');
     const [libraryImages, setLibraryImages] = useState<StudioImage[]>([]);
+    const [isGalleryMinimized, setIsGalleryMinimized] = useState(false);
 
     // Set initial selection for mobile
     useEffect(() => {
@@ -184,6 +177,23 @@ const App: React.FC = () => {
             const outNode = nodes.find(n => n.type === NodeType.Output);
             if (outNode) setSelectedNodeIds([outNode.id]);
         }
+
+        // Ensure Output Node exists (Recovery)
+        setNodes((currentNodes) => {
+            if (!currentNodes.some(n => n.type === NodeType.Output)) {
+                return [
+                    ...currentNodes,
+                    {
+                        id: 'n-output',
+                        type: NodeType.Output,
+                        position: { x: 500, y: 300 },
+                        data: { label: 'Final Image', isCollapsed: false }
+                    }
+                ];
+            }
+            return currentNodes;
+        });
+
         // Load gallery and subjects from IDB
         db.gallery.toArray().then(images => setGeneratedImages(images.reverse()));
         db.subjects.toArray().then(items => setSubjects(items));
@@ -195,6 +205,223 @@ const App: React.FC = () => {
         setLibraryImages(items.reverse());
     };
 
+
+
+    const clearGallery = () => {
+        if (window.confirm(`Delete all ${generatedImages.length} images?`)) {
+            db.gallery.clear().then(() => {
+                setGeneratedImages([]);
+            });
+        }
+    };
+
+    const [graphVersion, setGraphVersion] = React.useState(0);
+
+    const handleNodeDataChange = (nodeId: string, newData: any) => {
+        setNodes((prevNodes) =>
+            prevNodes.map((node) => {
+                if (node.id === nodeId) {
+                    return {
+                        ...node,
+                        data: {
+                            ...node.data,
+                            ...newData
+                        }
+                    };
+                }
+                return node;
+            })
+        );
+    };
+
+    const clearCanvas = () => {
+        if (window.confirm('Clear the entire studio workspace?')) {
+            requestAnimationFrame(() => {
+                console.log('Clear Canvas: Resetting state...');
+                const freshOutputId = 'n-output-' + Date.now();
+                setNodes([
+                    {
+                        id: freshOutputId,
+                        type: NodeType.Output,
+                        position: { x: 500, y: 300 },
+                        data: { label: 'Final Image', isCollapsed: false }
+                    }
+                ]);
+                setEdges([]);
+                setSelectedNodeIds([freshOutputId]);
+                setGraphVersion(v => {
+                    console.log('Update Graph Version:', v + 1);
+                    return v + 1;
+                });
+            });
+        }
+    };
+
+    const toggleCollapse = useCallback((e: React.MouseEvent, nodeId: string) => {
+        e.stopPropagation();
+        setNodes((nds) =>
+            nds.map((node) => {
+                if (node.id === nodeId) {
+                    return {
+                        ...node,
+                        data: {
+                            ...node.data,
+                            isCollapsed: !node.data.isCollapsed,
+                        },
+                    };
+                }
+                return node;
+            })
+        );
+    }, [setNodes]);
+
+    const addNode = (type: NodeType, position?: { x: number, y: number }) => {
+        // Calculate position if not provided (staggered)
+        const newPos = position || {
+            x: 100 + (nodes.length * 20) % 300,
+            y: 100 + (nodes.length * 20) % 300
+        };
+
+        const newNode: Node<NodeData> = {
+            id: `n-${Date.now()}`,
+            type: type, // React Flow uses string type. Our logic uses data.type as real source.
+            position: newPos,
+            data: {
+                label: type.replace(/_/g, ' '),
+                isCollapsed: false,
+                // Default data values can be added here based on type
+            },
+        };
+        setNodes((nds) => nds.concat(newNode));
+        setSelectedNodeIds([newNode.id]);
+        return newNode;
+    };
+
+    const addConnectedNode = (parentNodeId: string, type: NodeType) => {
+        const parentNode = nodes.find(n => n.id === parentNodeId);
+        if (!parentNode) return;
+
+        // Position new node to the right of parent (naive auto-layout)
+        const newPos = {
+            x: parentNode.position.x - 300, // Inputs usually on Left
+            y: parentNode.position.y
+        };
+
+        // If it's a "Child" that flows INTO the parent (e.g. Lens -> Camera), place on Left.
+        // If it's a "Result" that flows FROM the parent (e.g. Camera -> Output), place on Right.
+        // Simplified: Most things are inputs. Output is the only destination.
+        // Exception: If we add an output node? No, usually we add inputs.
+
+        const newNode = addNode(type, newPos);
+
+        // Connect Edge
+        // Default: New Node -> Parent Node
+        const newEdge: FlowEdge = {
+            id: `e-${newNode.id}-${parentNodeId}`,
+            source: newNode.id,
+            target: parentNodeId,
+            type: 'default'
+        };
+
+        // Check if connection is valid direction, if not swap?
+        // Our rule: Lens -> Camera.
+        // So Source=New, Target=Parent.
+        // But if Parent=SubjectRoot and we add Output? That's Parent -> New.
+        // We'll trust the user intends to add an INPUT to the current node mostly.
+
+        if (type === NodeType.Output) {
+            // Parent -> New
+            newEdge.source = parentNodeId;
+            newEdge.target = newNode.id;
+            newNode.position = { x: parentNode.position.x + 300, y: parentNode.position.y };
+        }
+
+        // Apply Color
+        const edgeColor = getEdgeColor(parentNode.type as NodeType);
+        newEdge.style = { stroke: edgeColor, strokeWidth: 2 };
+        newEdge.animated = true;
+
+        setEdges((eds) => addEdge(newEdge, eds));
+    };
+
+    const deleteNode = (nodeId: string) => {
+        // Prevent deleting output
+        const node = nodes.find(n => n.id === nodeId);
+        if (node?.type === NodeType.Output) return;
+
+        setNodes((nds) => nds.filter((n) => n.id !== nodeId));
+        setEdges((eds) => eds.filter((e) => e.source !== nodeId && e.target !== nodeId));
+        setSelectedNodeIds([]);
+    };
+
+    // --- SESSION MODE LOGIC ---
+    // Automatically apply a "Starter Kit" of settings when the mode changes
+    useEffect(() => {
+        setNodes(prevNodes => prevNodes.map(node => {
+            let newData = { ...node.data };
+
+            if (sessionMode === SessionMode.ViscosityGore) {
+                if (node.type === NodeType.Environment) {
+                    newData.envType = 'General';
+                    newData.sceneDescription = 'Abstract dark background, thick viscous liquid textures, dramatic studio setting.';
+                    newData.time = '00:00'; // Midnight
+                }
+                if (node.type === NodeType.Lighting) {
+                    newData.lightingStyle = 'Hard Strobe';
+                    newData.lightingSetups = ['hard directional strobe', 'rim light edge definition'];
+                    newData.gobo = 'Abstract Texture';
+                }
+                if (node.type === NodeType.Camera) {
+                    newData.lensModel = '100mm macro';
+                    newData.aperture = 'f/8'; // More depth for texture
+                    newData.lensChar = 'Clinical Sharp';
+                }
+                if (node.type === NodeType.Subject) {
+                    newData.propsText = 'covered in viscous black liquid, avant-garde makeup, high gloss texture';
+                    newData.fineArtNude = true; // Often required for texture studies
+                }
+            } else if (sessionMode === SessionMode.Nostalgia) {
+                if (node.type === NodeType.Environment) {
+                    newData.sceneDescription = 'Vintage 1970s interior, wood paneling, shag carpet, warm retro atmosphere.';
+                    newData.season = Season.Autumn;
+                }
+                if (node.type === NodeType.Lighting) {
+                    newData.lightingStyle = 'Candlelight';
+                    newData.wb = 'Warm Tungsten';
+                }
+                if (node.type === NodeType.Camera) {
+                    newData.filmStock = 'Kodak Portra 400';
+                    newData.lensChar = 'Vintage Softness';
+                    newData.grain = 'Medium Texture';
+                    newData.lensModel = '35mm prime';
+                }
+            } else if (sessionMode === SessionMode.AbstractArt) {
+                if (node.type === NodeType.Environment) {
+                    newData.envType = 'General';
+                    newData.sceneDescription = 'Minimalist void, floating geometric shapes, ethereal colorful fog, dreamscape.';
+                    newData.time = '12:00'; // Noon/Daylight for color
+                }
+                if (node.type === NodeType.Lighting) {
+                    newData.lightingStyle = 'Neon Practical';
+                    newData.gobo = 'Prism Shards';
+                }
+                if (node.type === NodeType.Composition) {
+                    newData.vibe = 'Surrealist composition, dreamlike atmosphere, floating elements, defiance of gravity.';
+                }
+                if (node.type === NodeType.Subject) {
+                    newData.hairPhysics = HairPhysics.ZeroGravity;
+                    newData.pose = 'MidAir';
+                }
+            } else if (sessionMode === SessionMode.Standard) {
+                if (node.type === NodeType.Environment) {
+                    newData.sceneDescription = 'Professional photography studio, seamless cyclorama background, clean neutral environment.';
+                }
+            }
+
+            return { ...node, data: newData };
+        }));
+    }, [sessionMode]);
+
     // --- KEYBOARD SHORTCUTS ---
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -203,7 +430,10 @@ const App: React.FC = () => {
 
             if (e.key === 'Delete' || e.key === 'Backspace') {
                 if (selectedNodeIds.length > 0) {
-                    deleteNodes(selectedNodeIds);
+                    const nodeToDelete = nodes.find(n => n.id === selectedNodeIds[0]);
+                    if (nodeToDelete && nodeToDelete.type !== NodeType.Output) {
+                        deleteNode(nodeToDelete.id);
+                    }
                 }
             }
         };
@@ -221,30 +451,41 @@ const App: React.FC = () => {
         }));
     };
 
-    const addNode = (type: NodeType) => {
-        const id = `n-${type.toLowerCase()}-${Date.now()}`;
-        let data: NodeData = { label: `New ${type}` };
-        if (type === NodeType.Subject) {
-            data = { ...data, gender: Gender.Woman, pose: 'Standing', skinRealism: DEFAULT_SKIN_CONFIG, bodyType: BodyType.FullFigured };
-        }
-        if (type === NodeType.Environment) {
-            data = { ...data, envType: 'General', location: DEFAULT_LOCATION, date: new Date().toISOString().split('T')[0], time: "12:00" }
-        }
-        if (type === NodeType.Camera) {
-            data = { ...data, cameraModel: 'None', lensModel: 'None', aperture: 'None', iso: 'None' }
-        }
+    const layoutNodes = () => {
+        setNodes(prev => {
+            const updated = [...prev];
+            const columns: { [key: number]: GraphNode[] } = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [] };
 
-        const newNode: GraphNode = {
-            id, type, position: { x: 100 + Math.random() * 50, y: 100 + Math.random() * 50 }, data, isCollapsed: true
-        };
+            updated.forEach(node => {
+                let col = 2; // Default to Subject column
+                if (node.type === NodeType.Output) col = 5;
+                else if ([NodeType.Reference, NodeType.Comment, NodeType.Cameo].includes(node.type)) col = 0;
+                else if (node.type.includes('environment') || node.type === NodeType.Location || node.type === NodeType.Environment) col = 1;
+                else if (node.type.includes('subject') || [NodeType.Body, NodeType.Face, NodeType.Hair, NodeType.Attire, NodeType.Pose].includes(node.type)) col = 2;
+                else if (node.type.includes('lighting') || node.type === NodeType.LightSource || node.type === NodeType.Lighting) col = 3;
+                else if (node.type.includes('camera') || [NodeType.Lens, NodeType.Film, NodeType.CameraSettings].includes(node.type)) col = 4;
 
-        const outputNode = nodes.find(n => n.type === NodeType.Output);
-        if (outputNode && type !== NodeType.Output && type !== NodeType.Group) {
-            setEdges(prev => [...prev, { id: `e-${Date.now()}-auto`, source: id, target: outputNode.id }]);
-        }
+                columns[col].push(node);
+            });
 
-        setNodes(prev => [...prev, newNode]);
-        setSelectedNodeIds([id]);
+            const colWidth = 300;
+            const startX = 50;
+            const startY = 100;
+
+            Object.keys(columns).forEach(colKey => {
+                const colIndex = parseInt(colKey);
+                const nodesInCol = columns[colIndex];
+                let currentY = startY;
+
+                nodesInCol.forEach(node => {
+                    const idx = updated.findIndex(n => n.id === node.id);
+                    updated[idx] = { ...node, position: { x: startX + colIndex * colWidth, y: currentY } };
+                    currentY += (node.isCollapsed ? 80 : 250);
+                });
+            });
+
+            return updated;
+        });
     };
 
     const deleteNodes = (ids: string[]) => {
@@ -337,7 +578,7 @@ const App: React.FC = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const { prompt, images, aspectRatio } = buildGraphPrompt(outputNode, nodes, edges, subjects);
+            const { prompt, images, aspectRatio } = buildGraphPrompt(outputNode as unknown as GraphNode, nodes as unknown as GraphNode[], edges, subjects);
             const cameraNode = nodes.find(n => n.type === NodeType.Camera);
             const envNode = nodes.find(n => n.type === NodeType.Environment);
 
@@ -355,12 +596,33 @@ const App: React.FC = () => {
             const src = await generateImage(prompt, images, aspectRatio, undefined, metadata);
             const id = await db.gallery.add({ src, prompt, isPrivate: false });
             setGeneratedImages(prev => [{ src, prompt, id: Number(id), isPrivate: false }, ...prev]);
+
+            // Log Success
+            await db.history.add({
+                timestamp: Date.now(),
+                status: 'SUCCESS',
+                prompt,
+                metadata,
+                sessionMode
+            });
+
         } catch (err: any) {
-            setError(err.message || "Failed to generate");
+            const errorMessage = err.message || "Failed to generate";
+            setError(errorMessage);
+            await db.history.add({
+                timestamp: Date.now(),
+                status: 'FAILED',
+                prompt: "Generation Failed",
+                error: errorMessage,
+                sessionMode
+            });
         } finally {
             setIsLoading(false);
         }
     };
+
+
+
 
     const handleOpenEditor = (image: GeneratedImage) => {
         setEditorBaseImage(image);
@@ -386,7 +648,7 @@ const App: React.FC = () => {
     useEffect(() => {
         const outputNode = nodes.find(n => n.type === NodeType.Output);
         if (outputNode) {
-            const { prompt } = buildGraphPrompt(outputNode, nodes, edges, subjects);
+            const { prompt } = buildGraphPrompt(outputNode as unknown as GraphNode, nodes as unknown as GraphNode[], edges, subjects);
             setPreviewPrompt(prompt);
         }
     }, [nodes, edges, subjects]);
@@ -423,8 +685,10 @@ const App: React.FC = () => {
         if (!node) return null;
         const { data } = node;
 
+
         const renderSpecificControls = () => {
-            if (node.type === NodeType.Subject) {
+            // --- SUBJECT GROUP ---
+            if (node.type === NodeType.Subject || node.type === NodeType.SubjectRoot) {
                 const isMale = data.gender === Gender.Man || data.gender === Gender.ObsidianFormM;
                 const bodyTypes = isMale ? MALE_BODY_TYPE_OPTIONS : BODY_TYPE_OPTIONS;
                 const linkedSubject = subjects.find(s => s.id === data.selectedSubjectId);
@@ -467,47 +731,68 @@ const App: React.FC = () => {
                                 </div>
                             </div>
                         )}
-
                         <SelectInput label="Model Pose" value={data.pose || ''} onChange={(e) => updateSelectedNodeData({ pose: e.target.value })} options={POSE_OPTIONS} />
+                    </div>
+                );
+            }
 
-                        <div className="bg-gray-900/50 p-4 rounded-xl border border-white/5">
-                            <h4 className="text-xs font-bold text-gray-500 uppercase mb-3">Hair & Style</h4>
-                            <div className="grid grid-cols-2 gap-3 mb-3">
-                                <SelectInput label="Length" value={data.hairLength || ''} onChange={(e) => updateSelectedNodeData({ hairLength: e.target.value as HairLength })} options={HAIR_LENGTH_OPTIONS} />
-                                <SelectInput label="Style" value={data.hairStyle || ''} onChange={(e) => updateSelectedNodeData({ hairStyle: e.target.value as HairStyle })} options={HAIR_STYLE_OPTIONS} />
-                            </div>
-                            <SelectInput label="Color" value={data.hairColor || ''} onChange={(e) => updateSelectedNodeData({ hairColor: e.target.value })} options={HAIR_COLOR_OPTIONS} />
-                        </div>
-
-                        <TextAreaInput label="Wardrobe & Props" value={data.propsText || ''} onChange={(e) => updateSelectedNodeData({ propsText: e.target.value })} placeholder="Clothing..." />
-
-                        <div className="bg-purple-900/10 p-3 rounded-lg border border-purple-500/30">
-                            <label className="flex items-center gap-3 cursor-pointer">
-                                <input type="checkbox" checked={data.fineArtNude || false} onChange={(e) => updateSelectedNodeData({ fineArtNude: e.target.checked })} className="w-5 h-5 rounded border-gray-600 text-purple-600 bg-gray-700" />
-                                <div>
-                                    <span className="text-sm font-bold text-purple-200">Fine Art Nude</span>
-                                    <p className="text-[10px] text-gray-400">Artistic study focus.</p>
-                                </div>
-                            </label>
+            if (node.type === NodeType.Body) {
+                const isMale = data.gender === Gender.Man || data.gender === Gender.ObsidianFormM;
+                const bodyTypes = isMale ? MALE_BODY_TYPE_OPTIONS : BODY_TYPE_OPTIONS;
+                return (
+                    <div className="space-y-6 animate-fade-in pb-8">
+                        <h3 className="text-xl font-bold text-white mb-4">Body Characteristics</h3>
+                        <SelectInput label="Gender" value={data.gender || ''} onChange={(e) => updateSelectedNodeData({ gender: e.target.value as Gender })} options={GENDER_OPTIONS} />
+                        <SelectInput label="Body Type" value={data.bodyType || ''} onChange={(e) => updateSelectedNodeData({ bodyType: e.target.value })} options={bodyTypes} />
+                        <div className="grid grid-cols-2 gap-4">
+                            <TextInput label="Age" value={data.age || ''} onChange={(e) => updateSelectedNodeData({ age: e.target.value })} placeholder="e.g. 20s" />
+                            <SelectInput label="Ethnicity" value={data.ethnicity || ''} onChange={(e) => updateSelectedNodeData({ ethnicity: e.target.value })} options={['', ...ETHNICITY_OPTIONS]} />
                         </div>
                         {data.skinRealism && (
                             <SkinRealismControls config={data.skinRealism} onChange={(c) => updateSelectedNodeData({ skinRealism: c })} />
-                        )}
-                        {!linkedSubject && (
-                            <>
-                                <SelectInput
-                                    label="Consistency Mode"
-                                    value={data.consistencyMode || ConsistencyMode.FaceOnly}
-                                    onChange={(e) => updateSelectedNodeData({ consistencyMode: e.target.value as ConsistencyMode })}
-                                    options={CONSISTENCY_MODE_OPTIONS}
-                                />
-                                <ImageInput value={data.referenceImage || null} onImageSelect={(img) => updateSelectedNodeData({ referenceImage: img })} label="Manual Face Reference" />
-                            </>
                         )}
                     </div>
                 );
             }
 
+            if (node.type === NodeType.Face) {
+                return (
+                    <div className="space-y-6 animate-fade-in pb-8">
+                        <h3 className="text-xl font-bold text-white mb-4">Face Details</h3>
+                        <TextInput label="Eye Color" value={data.eyeColor || ''} onChange={(e) => updateSelectedNodeData({ eyeColor: e.target.value })} placeholder="e.g. Green, Blue, Brown" />
+                        <TextInput label="Makeup" value={data.makeup || ''} onChange={(e) => updateSelectedNodeData({ makeup: e.target.value })} placeholder="e.g. Natural, Smokey Eye" />
+                        <TextAreaInput label="Features / Description" value={data.characterDescription || ''} onChange={(e) => updateSelectedNodeData({ characterDescription: e.target.value })} placeholder="Freckles, scar on cheek..." />
+                    </div>
+                );
+            }
+
+            if (node.type === NodeType.Hair) {
+                return (
+                    <div className="space-y-6 animate-fade-in pb-8">
+                        <h3 className="text-xl font-bold text-white mb-4">Hair Styling</h3>
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                            <SelectInput label="Length" value={data.hairLength || ''} onChange={(e) => updateSelectedNodeData({ hairLength: e.target.value as HairLength })} options={HAIR_LENGTH_OPTIONS} />
+                            <SelectInput label="Style" value={data.hairStyle || ''} onChange={(e) => updateSelectedNodeData({ hairStyle: e.target.value as HairStyle })} options={HAIR_STYLE_OPTIONS} />
+                        </div>
+                        <SelectInput label="Color" value={data.hairColor || ''} onChange={(e) => updateSelectedNodeData({ hairColor: e.target.value })} options={HAIR_COLOR_OPTIONS} />
+                        <SelectInput label="Physics / Movement" value={data.hairPhysics || ''} onChange={(e) => updateSelectedNodeData({ hairPhysics: e.target.value as HairPhysics })} options={Object.values(HairPhysics)} />
+                    </div>
+                );
+            }
+
+            if (node.type === NodeType.Attire) {
+                return (
+                    <div className="space-y-6 animate-fade-in pb-8">
+                        <h3 className="text-xl font-bold text-white mb-4">Wardrobe</h3>
+                        <TextInput label="Top" value={data.clothingTop || ''} onChange={(e) => updateSelectedNodeData({ clothingTop: e.target.value })} placeholder="e.g. Silk Blouse" />
+                        <TextInput label="Bottom" value={data.clothingBottom || ''} onChange={(e) => updateSelectedNodeData({ clothingBottom: e.target.value })} placeholder="e.g. Denim Jeans" />
+                        <TextInput label="Footwear" value={data.footwear || ''} onChange={(e) => updateSelectedNodeData({ footwear: e.target.value })} placeholder="e.g. Combat Boots" />
+                        <TextAreaInput label="Accessories / Props" value={data.propsText || ''} onChange={(e) => updateSelectedNodeData({ propsText: e.target.value })} placeholder="Necklace, holding a book..." />
+                    </div>
+                );
+            }
+
+            // --- ENVIRONMENT ---
             if (node.type === NodeType.Environment) {
                 const shotOptions = (data.environmentShotContext === 'Interior') ? INTERIOR_SHOT_OPTIONS : EXTERIOR_SHOT_OPTIONS;
                 return (
@@ -542,10 +827,15 @@ const App: React.FC = () => {
                 );
             }
 
-            if (node.type === NodeType.Camera) {
+            // --- CAMERA GROUP ---
+            if (node.type === NodeType.Camera || node.type === NodeType.CameraRoot) {
                 const compNode = nodes.find(n => n.type === NodeType.Composition);
                 const genre = compNode?.data.genre || 'portrait';
                 const lensOptions = LENSES_BY_GENRE[genre] || LENSES_BY_GENRE['portrait'];
+
+                // Check for Connected Granular Nodes
+                const attachedLens = getInputs(node.id, nodes as unknown as GraphNode[], edges, NodeType.Lens)[0];
+                const attachedFilm = getInputs(node.id, nodes as unknown as GraphNode[], edges, NodeType.Film)[0];
 
                 return (
                     <div className="space-y-6 animate-fade-in pb-8">
@@ -557,23 +847,76 @@ const App: React.FC = () => {
                                 <span className="text-[10px] text-gray-400 font-bold uppercase">Apply to all tech nodes</span>
                             </label>
                         </div>
-                        <SelectInput label="Camera Body" value={data.cameraModel || 'None'} onChange={(e) => updateSelectedNodeData({ cameraModel: e.target.value })} options={CAMERA_MODELS} />
-                        <SelectInput label="Lens" value={data.lensModel || 'None'} onChange={(e) => updateSelectedNodeData({ lensModel: e.target.value })} options={["None", ...lensOptions]} />
-                        <div className="bg-gray-900/50 p-4 rounded-xl border border-white/5 grid grid-cols-1 gap-4">
-                            <SelectInput label="Aperture" value={data.aperture || 'None'} onChange={(e) => updateSelectedNodeData({ aperture: e.target.value })} options={APERTURE_OPTIONS_EXTENDED} />
-                            <SelectInput label="Shutter" value={data.shutterSpeed || 'None'} onChange={(e) => updateSelectedNodeData({ shutterSpeed: e.target.value })} options={SHUTTER_SPEED_OPTIONS_EXTENDED} />
-                            <SelectInput label="ISO" value={data.iso || 'None'} onChange={(e) => updateSelectedNodeData({ iso: e.target.value })} options={ISO_OPTIONS_EXTENDED} />
-                        </div>
-                        <div className="bg-gray-900/50 p-4 rounded-xl border border-white/5 space-y-4">
-                            <SelectInput label="Film Stock" value={data.filmStock || 'None'} onChange={(e) => updateSelectedNodeData({ filmStock: e.target.value })} options={FILM_STOCK_VALUES} />
-                            <SelectInput label="White Balance" value={data.wb || 'None'} onChange={(e) => updateSelectedNodeData({ wb: e.target.value })} options={WHITE_BALANCE_OPTIONS} />
-                            <SelectInput label="Lens Char." value={data.lensChar || 'None'} onChange={(e) => updateSelectedNodeData({ lensChar: e.target.value })} options={LENS_CHARACTERISTICS} />
-                            <SelectInput label="Grain" value={data.grain || 'None'} onChange={(e) => updateSelectedNodeData({ grain: e.target.value })} options={GRAIN_OPTIONS} />
-                        </div>
+
+                        <SelectInput
+                            label="Camera Body"
+                            value={data.cameraModel || 'None'}
+                            onChange={(e) => updateSelectedNodeData({ cameraModel: e.target.value })}
+                            options={CAMERA_MODELS.map(val => ({ value: val, label: val, description: getDescription(val) }))}
+                        />
+
+                        {attachedLens ? (
+                            <div className="bg-blue-500/10 border border-blue-500/30 p-3 rounded-lg">
+                                <div className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Optics Controlled By</div>
+                                <div className="text-xs text-white flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                                    {attachedLens.data.lensModel || "External Lens Node"}
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <SelectInput label="Lens" value={data.lensModel || 'None'} onChange={(e) => updateSelectedNodeData({ lensModel: e.target.value })} options={["None", ...lensOptions]} />
+                                <div className="bg-gray-900/50 p-4 rounded-xl border border-white/5 grid grid-cols-1 gap-4">
+                                    <SelectInput label="Aperture" value={data.aperture || 'None'} onChange={(e) => updateSelectedNodeData({ aperture: e.target.value })} options={APERTURE_OPTIONS_EXTENDED} />
+                                    <SelectInput label="Shutter" value={data.shutterSpeed || 'None'} onChange={(e) => updateSelectedNodeData({ shutterSpeed: e.target.value })} options={SHUTTER_SPEED_OPTIONS_EXTENDED} />
+                                    <SelectInput label="ISO" value={data.iso || 'None'} onChange={(e) => updateSelectedNodeData({ iso: e.target.value })} options={ISO_OPTIONS_EXTENDED} />
+                                </div>
+                            </>
+                        )}
+
+                        {attachedFilm ? (
+                            <div className="bg-amber-500/10 border border-amber-500/30 p-3 rounded-lg">
+                                <div className="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-1">Film Controlled By</div>
+                                <div className="text-xs text-white flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                                    {attachedFilm.data.filmStock || "External Film Node"}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="bg-gray-900/50 p-4 rounded-xl border border-white/5 space-y-4">
+                                <SelectInput label="Film Stock" value={data.filmStock || 'None'} onChange={(e) => updateSelectedNodeData({ filmStock: e.target.value })} options={FILM_STOCK_VALUES} />
+                                <SelectInput label="White Balance" value={data.wb || 'None'} onChange={(e) => updateSelectedNodeData({ wb: e.target.value })} options={WHITE_BALANCE_OPTIONS} />
+                                <SelectInput label="Lens Char." value={data.lensChar || 'None'} onChange={(e) => updateSelectedNodeData({ lensChar: e.target.value })} options={LENS_CHARACTERISTICS} />
+                                <SelectInput label="Grain" value={data.grain || 'None'} onChange={(e) => updateSelectedNodeData({ grain: e.target.value })} options={GRAIN_OPTIONS} />
+                            </div>
+                        )}
                     </div>
                 );
             }
 
+            if (node.type === NodeType.Lens) {
+                return (
+                    <div className="space-y-6 animate-fade-in pb-8">
+                        <h3 className="text-xl font-bold text-white mb-4">Lens & Optics</h3>
+                        <SelectInput label="Lens Model" value={data.lensModel || 'None'} onChange={(e) => updateSelectedNodeData({ lensModel: e.target.value })} options={["None", ...ALL_LENS_OPTIONS]} />
+                        <SelectInput label="Aperture" value={data.aperture || 'None'} onChange={(e) => updateSelectedNodeData({ aperture: e.target.value })} options={APERTURE_OPTIONS_EXTENDED} />
+                        <SelectInput label="Distortion / Character" value={data.lensChar || 'None'} onChange={(e) => updateSelectedNodeData({ lensChar: e.target.value })} options={LENS_CHARACTERISTICS} />
+                    </div>
+                );
+            }
+
+            if (node.type === NodeType.Film) {
+                return (
+                    <div className="space-y-6 animate-fade-in pb-8">
+                        <h3 className="text-xl font-bold text-white mb-4">Film & Texture</h3>
+                        <SelectInput label="Film Stock" value={data.filmStock || 'None'} onChange={(e) => updateSelectedNodeData({ filmStock: e.target.value })} options={FILM_STOCK_VALUES} />
+                        <SelectInput label="Grain" value={data.grain || 'None'} onChange={(e) => updateSelectedNodeData({ grain: e.target.value })} options={GRAIN_OPTIONS} />
+                        <SelectInput label="White Balance" value={data.wb || 'None'} onChange={(e) => updateSelectedNodeData({ wb: e.target.value })} options={WHITE_BALANCE_OPTIONS} />
+                    </div>
+                );
+            }
+
+            // --- LIGHTING ---
             if (node.type === NodeType.Lighting) {
                 const currentSetups = new Set(data.lightingSetups || []);
                 return (
@@ -601,6 +944,21 @@ const App: React.FC = () => {
                                     </button>
                                 ))}
                             </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (node.type === NodeType.LightSource) {
+                return (
+                    <div className="space-y-6 animate-fade-in pb-8">
+                        <h3 className="text-xl font-bold text-white mb-4">Single Light Source</h3>
+                        <TextInput label="Type / Fixture" value={data.lightSourceType || 'Softbox'} onChange={(e) => updateSelectedNodeData({ lightSourceType: e.target.value })} placeholder="e.g. Softbox, Sun, NeonTube" />
+                        <SelectInput label="Color Temperature" value={data.lightColorTemperature || LightColorTemperature.Neutral} onChange={(e) => updateSelectedNodeData({ lightColorTemperature: e.target.value as LightColorTemperature })} options={LIGHT_COLOR_TEMPERATURE_OPTIONS} />
+
+                        <div className="bg-gray-900/50 p-4 rounded-xl border border-white/5 flex items-center justify-between">
+                            <span className="text-xs text-gray-400 font-bold uppercase">Visible in Frame?</span>
+                            <ToggleSwitch checked={!!data.showEquipment} onChange={(v) => updateSelectedNodeData({ showEquipment: v })} />
                         </div>
                     </div>
                 );
@@ -651,6 +1009,8 @@ const App: React.FC = () => {
             </div>
         );
     };
+
+
 
     const renderLibraryTab = () => (
         <div className="flex-grow overflow-y-auto p-6 bg-gray-950">
@@ -708,6 +1068,16 @@ const App: React.FC = () => {
                         <h2 className="text-2xl font-bold text-white tracking-tight">Generation Gallery</h2>
                         <p className="text-gray-400 text-sm">Browse your creative outputs and artistic studies.</p>
                     </div>
+                    {generatedImages.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); clearGallery(); }}
+                            className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer z-50"
+                        >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            Delete All
+                        </button>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -771,32 +1141,102 @@ const App: React.FC = () => {
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" /></svg>
                                 Gallery
                             </button>
+                            <button
+                                onClick={() => setActiveTab('logs')}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all ${activeTab === 'logs' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-gray-500 hover:text-gray-300'}`}
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                Logs
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('docs')}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all ${activeTab === 'docs' ? 'bg-teal-600 text-white shadow-lg shadow-teal-600/20' : 'text-gray-500 hover:text-gray-300'}`}
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                                Help
+                            </button>
                         </nav>
                     </div>
 
-                    <Header />
+                    <Header currentMode={sessionMode} onModeChange={setSessionMode} />
                 </div>
 
                 <div className="flex-grow flex relative min-h-0">
                     {activeTab === 'library' && renderLibraryTab()}
                     {activeTab === 'gallery' && renderGalleryTab()}
+                    {activeTab === 'logs' && <LogViewer />}
+                    {activeTab === 'docs' && <DocumentationViewer />}
 
                     {activeTab === 'studio' && (
                         <>
                             <div className="hidden md:block flex-grow relative bg-gray-900 overflow-hidden">
-                                <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-                                    <button onClick={() => addNode(NodeType.Subject)} className="bg-rose-900/80 hover:bg-rose-800 text-white px-3 py-1.5 rounded-lg border border-rose-500/30 text-[10px] font-bold uppercase"><span>+ Model</span></button>
-                                    <button onClick={() => addNode(NodeType.Environment)} className="bg-teal-900/80 hover:bg-teal-800 text-white px-3 py-1.5 rounded-lg border border-teal-500/30 text-[10px] font-bold uppercase"><span>+ Room</span></button>
-                                    <button onClick={() => addNode(NodeType.Camera)} className="bg-blue-900/80 hover:bg-blue-800 text-white px-3 py-1.5 rounded-lg border border-blue-500/30 text-[10px] font-bold uppercase"><span>+ Cam</span></button>
-                                    <button onClick={() => addNode(NodeType.Lighting)} className="bg-yellow-900/80 hover:bg-yellow-800 text-white px-3 py-1.5 rounded-lg border border-yellow-500/30 text-[10px] font-bold uppercase"><span>+ Light</span></button>
-                                    <button onClick={() => addNode(NodeType.Composition)} className="bg-purple-900/80 hover:bg-purple-800 text-white px-3 py-1.5 rounded-lg border border-purple-500/30 text-[10px] font-bold uppercase"><span>+ Comp</span></button>
-                                    <div className="w-px h-6 bg-white/10 mx-1 self-center"></div>
-                                    <button onClick={() => setIsLibraryOpen(true)} className="bg-indigo-900/80 hover:bg-indigo-800 text-white px-3 py-1.5 rounded-lg border border-indigo-500/30 text-[10px] font-bold uppercase flex items-center gap-2"><svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg> Library</button>
+                                <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2 pointer-events-none">
+                                    <div className="pointer-events-auto flex items-center bg-gray-900/90 backdrop-blur-md rounded-lg border border-white/10 p-1 shadow-xl">
+                                        {/* Subject Group */}
+
+                                        <button onClick={() => addNode(NodeType.SubjectRoot)} className="px-3 py-1.5 text-[10px] font-bold uppercase text-fuchsia-300 hover:bg-fuchsia-900/30 rounded transition-colors">Subject</button>
+
+                                        <div className="w-px h-6 bg-white/10 mx-1"></div>
+
+                                        {/* Camera Group */}
+                                        <button onClick={() => addNode(NodeType.CameraRoot)} className="px-3 py-1.5 text-[10px] font-bold uppercase text-blue-300 hover:bg-blue-900/30 rounded transition-colors">Camera</button>
+
+                                        <div className="w-px h-6 bg-white/10 mx-1"></div>
+
+                                        {/* Classic/Other Nodes */}
+                                        <button onClick={() => addNode(NodeType.Environment)} className="px-3 py-1.5 text-[10px] font-bold uppercase text-teal-300 hover:bg-teal-900/30 rounded transition-colors">Room</button>
+                                        <button onClick={() => addNode(NodeType.LightSource)} className="px-3 py-1.5 text-[10px] font-bold uppercase text-amber-300 hover:bg-amber-900/30 rounded transition-colors">Light</button>
+
+                                        <div className="w-px h-6 bg-white/10 mx-1"></div>
+
+                                        <button onClick={() => addNode(NodeType.Reference)} className="px-3 py-1.5 text-[10px] font-bold uppercase text-emerald-300 hover:bg-emerald-900/30 rounded transition-colors">Ref Img</button>
+
+                                        <div className="w-px h-6 bg-white/10 mx-1"></div>
+
+                                        <button onClick={layoutNodes} className="px-3 py-1.5 text-[10px] font-bold uppercase text-indigo-400 hover:bg-indigo-900/30 rounded transition-colors flex items-center gap-1" title="Auto-Layout">
+                                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+                                            Layout
+                                        </button>
+
+                                        <div className="w-px h-6 bg-white/10 mx-1"></div>
+
+                                        <button onClick={clearCanvas} className="px-3 py-1.5 text-[10px] font-bold uppercase text-red-400 hover:bg-red-900/30 rounded transition-colors flex items-center gap-1" title="Clear Canvas">
+                                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                            Clear
+                                        </button>
+
+                                    </div>
+
+                                    <button onClick={() => setIsLibraryOpen(true)} className="pointer-events-auto bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg shadow-lg shadow-indigo-500/20 text-[10px] font-bold uppercase flex items-center gap-2 transition-all">
+                                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg> Library
+                                    </button>
+
+
                                 </div>
-                                <NodeGraph
-                                    nodes={nodes} edges={edges} onNodesChange={setNodes} onEdgesChange={setEdges}
-                                    onSelectionChange={setSelectedNodeIds} onDeleteNode={handleDeleteNode} selectedNodeIds={selectedNodeIds}
+
+                                <ReactNodeGraph
+                                    key={graphVersion}
+                                    nodes={nodes}
+                                    edges={edges}
+                                    subjects={subjects}
+                                    onNodesChange={onNodesChange}
+                                    onEdgesChange={onEdgesChange}
+                                    onConnect={onConnect}
+                                    onAddNode={addNode}
+                                    onDeleteNode={deleteNode}
+                                    onToggleCollapse={toggleCollapse}
+                                    onSelectionChange={setSelectedNodeIds}
+                                    onAddConnectedNode={addConnectedNode}
+                                    onDataChange={handleNodeDataChange}
                                 />
+
+                                {mobileMenuOpen && (
+                                    <MobileNodeList
+                                        isOpen={mobileMenuOpen}
+                                        onClose={() => setMobileMenuOpen(false)}
+                                        onAddNode={(type) => { addNode(type); setMobileMenuOpen(false); }}
+                                    />
+                                )}
                             </div>
                             <div className="md:hidden flex-grow flex flex-col w-full h-full bg-gray-950">
                                 <div className="h-14 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-4 flex-shrink-0">
@@ -817,15 +1257,47 @@ const App: React.FC = () => {
                         </>
                     )}
                 </div>
-                <div className="h-[120px] md:h-[200px] bg-gray-950 border-t border-white/5 p-4 flex gap-4 overflow-x-auto custom-scrollbar">
-                    {generatedImages.map((img, idx) => (
-                        <div key={idx} className="flex-shrink-0 w-[100px] md:w-[150px] cursor-pointer group relative" onClick={() => setSelectedImage(img)}>
-                            <img src={img.src} className="w-full h-full object-cover rounded-lg border border-gray-800 transition-all group-hover:border-rose-500/50" />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg">
-                                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
-                            </div>
+                <div className={`flex flex-col bg-gray-950 border-t border-white/5 transition-all duration-300 relative z-50 flex-shrink-0 ${isGalleryMinimized ? 'h-10' : 'h-[160px] md:h-[240px]'}`}>
+                    <div className="flex items-center justify-between px-4 h-10 flex-shrink-0 bg-gray-900/50">
+                        <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Generation Gallery</span>
+                            <span className="text-[10px] font-mono text-gray-600">({generatedImages.length})</span>
                         </div>
-                    ))}
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); clearGallery(); }}
+                                disabled={generatedImages.length === 0}
+                                className={`p-2 rounded-lg transition-colors group relative z-50 ${generatedImages.length > 0 ? 'hover:bg-red-500/10 hover:text-red-400 text-gray-500 cursor-pointer' : 'text-gray-700 cursor-not-allowed'}`}
+                                title="Clear Gallery"
+                            >
+                                <svg className="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                            <div className="w-px h-3 bg-white/10 mx-1"></div>
+                            <button onClick={() => setIsGalleryMinimized(!isGalleryMinimized)} className="p-1 hover:text-white text-gray-500 transition-colors">
+                                {isGalleryMinimized ? (
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                                ) : (
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                    {!isGalleryMinimized && (
+                        <div className="flex-grow p-4 flex gap-4 overflow-x-auto custom-scrollbar">
+                            {generatedImages.map((img, idx) => (
+                                <div key={idx} className="flex-shrink-0 w-[100px] md:w-[150px] cursor-pointer group relative" onClick={() => setSelectedImage(img)}>
+                                    <img src={img.src} className="w-full h-full object-cover rounded-lg border border-gray-800 transition-all group-hover:border-rose-500/50" />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg">
+                                        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                    </div>
+                                </div>
+                            ))}
+                            {generatedImages.length === 0 && (
+                                <div className="text-gray-600 text-xs italic flex items-center justify-center w-full">No generated images yet.</div>
+                            )}
+                        </div>
+                    )}
                 </div>
                 {isLibraryOpen && <SubjectLibrary subjects={subjects} onSave={handleSaveSubject} onDelete={handleDeleteSubject} onClose={() => setIsLibraryOpen(false)} />}
                 {selectedImage && <ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} onUpscale={(img) => upscaleImage(img.src, img.prompt)} onEdit={handleOpenEditor} isUpscaling={isUpscaling} />}

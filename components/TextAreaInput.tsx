@@ -1,18 +1,18 @@
 
-import React from 'react';
+import { FC, ChangeEvent } from 'react';
 
 interface TextAreaInputProps {
   label: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder: string;
 }
 
-const TextAreaInput: React.FC<TextAreaInputProps> = ({ label, value, onChange, placeholder }) => {
+const TextAreaInput: FC<TextAreaInputProps> = ({ label, value, onChange, placeholder }) => {
   const handleClear = () => {
     const syntheticEvent = {
       target: { value: '' }
-    } as React.ChangeEvent<HTMLTextAreaElement>;
+    } as ChangeEvent<HTMLTextAreaElement>;
     onChange(syntheticEvent);
   };
 

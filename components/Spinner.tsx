@@ -1,7 +1,7 @@
 
-import React from 'react';
+import { FC } from 'react';
 
-const Spinner: React.FC = () => {
+const Spinner: FC = () => {
   return (
     <div className="flex justify-center items-center h-full">
       <svg className="animate-spin -ml-1 mr-3 h-10 w-10 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

@@ -1,21 +1,21 @@
-import React from 'react';
+import { FC, ChangeEvent } from 'react';
 
 interface SliderInputProps {
   label: string;
   value: number;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   min: number;
   max: number;
   helpText?: string;
 }
 
-const SliderInput: React.FC<SliderInputProps> = ({ label, value, onChange, min, max, helpText }) => {
+const SliderInput: FC<SliderInputProps> = ({ label, value, onChange, min, max, helpText }) => {
   const getStrengthLabel = (val: number) => {
     if (val > 66) return 'Artistic';
     if (val > 33) return 'Balanced';
     return 'Literal';
   }
-  
+
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-2">

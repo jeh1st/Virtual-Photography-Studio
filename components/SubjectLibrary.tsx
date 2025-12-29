@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState, FC } from 'react';
 import { SubjectProfile, ImageData, Gender, BodyType } from '../types';
 import { GENDER_OPTIONS, BODY_TYPE_OPTIONS, MALE_BODY_TYPE_OPTIONS } from '../constants';
 import Button from './Button';
@@ -15,7 +15,7 @@ interface SubjectLibraryProps {
     onClose: () => void;
 }
 
-const SubjectLibrary: React.FC<SubjectLibraryProps> = ({ subjects, onSave, onDelete, onClose }) => {
+const SubjectLibrary: FC<SubjectLibraryProps> = ({ subjects, onSave, onDelete, onClose }) => {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [formData, setFormData] = useState<Partial<SubjectProfile>>({
         name: '',
@@ -70,11 +70,11 @@ const SubjectLibrary: React.FC<SubjectLibraryProps> = ({ subjects, onSave, onDel
                     <button onClick={onClose} className="text-gray-500 hover:text-white"><svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
                 </div>
                 <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest border-b border-white/5 pb-2">Stored Identities</p>
-                
+
                 <div className="space-y-2 flex-grow overflow-y-auto custom-scrollbar">
                     {subjects.map(s => (
-                        <div 
-                            key={s.id} 
+                        <div
+                            key={s.id}
                             onClick={() => handleEdit(s)}
                             className={`p-3 rounded-lg border cursor-pointer transition-all flex items-center gap-3 ${editingId === s.id ? 'bg-indigo-900/30 border-indigo-500' : 'bg-gray-800 border-gray-700 hover:border-gray-500'}`}
                         >
@@ -100,7 +100,7 @@ const SubjectLibrary: React.FC<SubjectLibraryProps> = ({ subjects, onSave, onDel
                         <div className="flex justify-between items-center">
                             <h3 className="text-2xl font-black text-white uppercase tracking-tighter">{editingId === 'new' ? 'Initialize New Identity' : `Profile: ${formData.name}`}</h3>
                             <div className="flex gap-2">
-                                {editingId !== 'new' && <button onClick={() => {onDelete(editingId); setEditingId(null);}} className="px-4 py-2 text-xs font-bold text-red-500 uppercase hover:bg-red-500/10 rounded transition-colors">Delete Identity</button>}
+                                {editingId !== 'new' && <button onClick={() => { onDelete(editingId); setEditingId(null); }} className="px-4 py-2 text-xs font-bold text-red-500 uppercase hover:bg-red-500/10 rounded transition-colors">Delete Identity</button>}
                                 <button onClick={() => setEditingId(null)} className="px-4 py-2 text-xs font-bold text-gray-500 uppercase hover:text-white transition-colors">Cancel</button>
                                 <Button onClick={handleSave} disabled={!formData.name} variant="primary">Save Identity</Button>
                             </div>
@@ -108,13 +108,13 @@ const SubjectLibrary: React.FC<SubjectLibraryProps> = ({ subjects, onSave, onDel
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-6">
-                                <TextInput label="Identification Name" value={formData.name || ''} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="e.g. Jane Doe" />
+                                <TextInput label="Identification Name" value={formData.name || ''} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="e.g. Jane Doe" />
                                 <div className="grid grid-cols-2 gap-4">
-                                    <SelectInput label="Identity Type" value={formData.type || 'Real Person'} onChange={(e) => setFormData({...formData, type: e.target.value as any})} options={['Real Person', 'Created Character']} />
-                                    <SelectInput label="Base Gender" value={formData.gender || Gender.Woman} onChange={(e) => setFormData({...formData, gender: e.target.value as Gender})} options={GENDER_OPTIONS} />
+                                    <SelectInput label="Identity Type" value={formData.type || 'Real Person'} onChange={(e) => setFormData({ ...formData, type: e.target.value as any })} options={['Real Person', 'Created Character']} />
+                                    <SelectInput label="Base Gender" value={formData.gender || Gender.Woman} onChange={(e) => setFormData({ ...formData, gender: e.target.value as Gender })} options={GENDER_OPTIONS} />
                                 </div>
-                                <SelectInput label="Target Body Type" value={formData.bodyType || BodyType.Average} onChange={(e) => setFormData({...formData, bodyType: e.target.value})} options={[...BODY_TYPE_OPTIONS, ...MALE_BODY_TYPE_OPTIONS]} />
-                                <TextAreaInput label="Permanent Character Notes" value={formData.description || ''} onChange={(e) => setFormData({...formData, description: e.target.value})} placeholder="Distinctive features, ethnicity, age range, permanent tattoos..." />
+                                <SelectInput label="Target Body Type" value={formData.bodyType || BodyType.Average} onChange={(e) => setFormData({ ...formData, bodyType: e.target.value })} options={[...BODY_TYPE_OPTIONS, ...MALE_BODY_TYPE_OPTIONS]} />
+                                <TextAreaInput label="Permanent Character Notes" value={formData.description || ''} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Distinctive features, ethnicity, age range, permanent tattoos..." />
                             </div>
 
                             <div className="space-y-4">

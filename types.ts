@@ -59,24 +59,63 @@ export interface GenerationMetadata {
 }
 
 export enum NodeType {
-    Subject = 'Subject',
-    Environment = 'Environment',
-    Camera = 'Camera',
-    Lighting = 'Lighting',
-    Composition = 'Composition',
-    Group = 'Group',
-    Style = 'Style',
-    Output = 'Output',
-    Cameo = 'Cameo'
+    // Legacy / High-Level Nodes (Keep for backward compat or usage as 'Groups')
+    Subject = 'subject',
+    Camera = 'camera',
+    Lighting = 'lighting',
+    Environment = 'environment',
+    Composition = 'composition',
+    Style = 'style',
+
+    // NEW: Subject Granularity
+    SubjectRoot = 'subject_root', // The anchor for a subject (formerly Subject)
+    Body = 'body',
+    Face = 'face',
+    Hair = 'hair',
+    Attire = 'attire',
+    Pose = 'pose', // New explicit pose node
+
+    // NEW: Camera Granularity
+    CameraRoot = 'camera_root',
+    Lens = 'lens',
+    Film = 'film',
+    CameraSettings = 'camera_settings', // Aperture, Shutter, ISO
+
+    // NEW: Lighting Granularity
+    LightingRoot = 'lighting_root',
+    LightSource = 'light_source', // Individual lights
+    LightModifier = 'light_modifier', // Softbox, grid, etc.
+    GlobalIllumination = 'global_illumination', // HDRI / Ambient
+
+    // NEW: Environment Granularity
+    EnvironmentRoot = 'environment_root',
+    Location = 'location',
+    Atmosphere = 'atmosphere', // Fog, haze, weather
+
+    // NEW: Utility & Workflow
+    // NEW: Utility & Workflow
+    Assembler = 'assembler', // Generic data combiner
+    Reference = 'reference', // For image injection
+    Comment = 'comment',
+    Group = 'group',
+
+    // OUTPUT (Essential)
+    Output = 'output',
+
+    // LEGACY / CAMEO
+    Cameo = 'cameo',
 }
 
 export interface NodeData {
     label?: string;
     activePresetId?: string;
+    isCollapsed?: boolean;
 
     // Linked Library Data
     selectedSubjectId?: string;
 
+    // Allow other properties for React Flow compatibility
+    [key: string]: any;
     // Cameo Data
     cameoType?: 'Subject' | 'Architecture' | 'Landscape';
     cameoShotType?: 'Exterior' | 'Interior';
@@ -99,6 +138,8 @@ export interface NodeData {
     fineArtNude?: boolean;
     consistencyMode?: ConsistencyMode;
     referenceImage?: ImageData | null;
+    liquidColor?: string;
+    liquidThickness?: string;
 
     // Environment Data
     envType?: 'Landscape' | 'Architecture' | 'General';
@@ -150,6 +191,48 @@ export interface NodeData {
     cameraType?: CameraType;
     lightingPreset?: LightingPreset;
     isMannequin?: boolean;
+
+    // --- NEW GRANULAR FIELDS ---
+
+    // Subject Details
+    eyeColor?: string;
+    skinTone?: string;
+    makeup?: string;
+    height?: string;
+    bodyMarkings?: string[]; // Tattoos, scars
+
+    // Attire
+    clothingTop?: string;
+    clothingBottom?: string;
+    footwear?: string;
+    accessories?: string[];
+
+    // Camera Granular
+    sensorSize?: string; // 'Full Frame', 'APS-C', 'Medium Format', etc.
+    shutterAngle?: string; // For cinematic styles
+
+    // Lens Granular
+    maxAperture?: string;
+    minFocusDistance?: string;
+    lensEffect?: string; // 'Swirly Bokeh', 'Anamorphic Flare'
+
+    // Lighting Granular
+    lightSourceType?: string; // 'Softbox', 'Fresnel', 'Sun', 'Window'
+    lightPower?: number; // 0-100 normalized intensity
+    lightColor?: string; // Hex or named color
+    lightPositionRaw?: string; // "High right", "Rim left"
+
+    // Film/Post
+    colorGrade?: string; // 'Teal & Orange', 'B&W Contrast'
+    developProcess?: string; // 'Bleach Bypass', 'Cross Process'
+
+    // Granular Node Specifics
+    fStop?: number;
+    lightType?: string;
+    power?: number;
+    opacity?: number;
+    promptSummary?: string;
+    showEquipment?: boolean;
 }
 
 export interface GraphNode {
@@ -209,5 +292,22 @@ export enum FilmStock {
 }
 export enum LightingPreset { None = 'None', SoftboxKey = 'Softbox Key', DualSoftbox = 'Dual Softbox', TopScrim = 'Top Scrim', RimLight = 'Rim Light', Clamshell = 'Clamshell', WhiteCyc = 'White Cyc', CrossPolarized = 'Cross Polarized', GradientSweep = 'Gradient Sweep', HardFlash = 'Hard Flash', WindowSide = 'Window Side', Underwater = 'Underwater', Backlit = 'Backlit', Atmospheric = 'Atmospheric', NeonSpill = 'Neon Spill', Stadium = 'Stadium', RingLight = 'Ring Light', Practical = 'Practical', HighContrast = 'High Contrast' }
 
+export enum SessionMode {
+    Standard = 'Standard',
+    Nostalgia = 'Nostalgia (June 7th Setup)',
+    ViscosityGore = 'Viscosity Study (October/February Setup)',
+    AbstractArt = 'Abstract Art (Wig/September Setup)'
+}
+
 export interface Concept { id: string; name: string; referenceImage?: ImageData | null; }
 export interface PromptTemplate { id: string; name: string; content: string; }
+
+export interface GenerationLog {
+    id?: number;
+    timestamp: number;
+    status: 'SUCCESS' | 'FAILED';
+    prompt: string;
+    metadata?: GenerationMetadata;
+    error?: string;
+    sessionMode?: SessionMode;
+}

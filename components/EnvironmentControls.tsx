@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, useMemo } from 'react';
+import { FC, useEffect, useState, useMemo } from 'react';
 import { Weather, Season, LocationConfig } from '../types';
 import { WEATHER_OPTIONS, SEASON_OPTIONS } from '../constants';
 import SelectInput from './SelectInput';
@@ -19,9 +19,9 @@ interface EnvironmentControlsProps {
     onSeasonChange: (val: string) => void;
 }
 
-const EnvironmentControls: React.FC<EnvironmentControlsProps> = ({ 
-    location, date, time, weather, season, 
-    onLocationChange, onDateChange, onTimeChange, onWeatherChange, onSeasonChange 
+const EnvironmentControls: FC<EnvironmentControlsProps> = ({
+    location, date, time, weather, season,
+    onLocationChange, onDateChange, onTimeChange, onWeatherChange, onSeasonChange
 }) => {
     const [sunPhase, setSunPhase] = useState<string>("");
     const [geoLoading, setGeoLoading] = useState(false);
@@ -95,7 +95,7 @@ const EnvironmentControls: React.FC<EnvironmentControlsProps> = ({
                 // Remove sunny/clear options that imply daylight if strict, 
                 // but we keep 'clear' as we'll map it to 'starry' in prompt builder
                 // We mainly want to remove "Cloudy" if it blocks stars? No, cloudy night is valid.
-                return true; 
+                return true;
             } else {
                 return true;
             }
@@ -115,7 +115,7 @@ const EnvironmentControls: React.FC<EnvironmentControlsProps> = ({
             <div className="space-y-3">
                 <div className="flex justify-between items-center">
                     <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Location</h3>
-                    <button 
+                    <button
                         onClick={handleGetCurrentLocation}
                         className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1"
                     >
@@ -123,68 +123,68 @@ const EnvironmentControls: React.FC<EnvironmentControlsProps> = ({
                         {geoLoading ? "Locating..." : "Use Current"}
                     </button>
                 </div>
-                <TextInput 
-                    label="" 
-                    value={location.name} 
-                    onChange={(e) => onLocationChange({...location, name: e.target.value, useCurrent: false})} 
-                    placeholder="e.g. Paris, France or 40.7, -74.0" 
+                <TextInput
+                    label=""
+                    value={location.name}
+                    onChange={(e) => onLocationChange({ ...location, name: e.target.value, useCurrent: false })}
+                    placeholder="e.g. Paris, France or 40.7, -74.0"
                 />
             </div>
 
             {/* Time & Date with Dynamic Clock Face */}
             <div className="bg-gray-800/50 rounded-xl p-4 border border-white/5">
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Time</h3>
-                
+
                 <div className="flex items-center gap-5 mb-4">
                     {/* Visual Clock */}
                     <div className={`w-16 h-16 rounded-full border-2 border-gray-600 relative shadow-inner overflow-hidden ${getClockBackground()} flex items-center justify-center`}>
-                         {/* Clock Center Dot */}
-                         <div className="w-1.5 h-1.5 bg-white rounded-full z-10 shadow-sm"></div>
-                         
-                         {/* Hour Hand */}
-                         <div 
+                        {/* Clock Center Dot */}
+                        <div className="w-1.5 h-1.5 bg-white rounded-full z-10 shadow-sm"></div>
+
+                        {/* Hour Hand */}
+                        <div
                             className="absolute w-0.5 h-6 bg-white origin-bottom rounded-full shadow-sm"
-                            style={{ 
-                                bottom: '50%', 
-                                left: 'calc(50% - 1px)', 
-                                transform: `rotate(${getRotation()}deg)` 
+                            style={{
+                                bottom: '50%',
+                                left: 'calc(50% - 1px)',
+                                transform: `rotate(${getRotation()}deg)`
                             }}
-                         ></div>
-                         
-                         {/* Minute Hand */}
-                         <div 
+                        ></div>
+
+                        {/* Minute Hand */}
+                        <div
                             className="absolute w-0.5 h-7 bg-white/70 origin-bottom rounded-full"
-                            style={{ 
-                                bottom: '50%', 
-                                left: 'calc(50% - 1px)', 
-                                transform: `rotate(${Number(time.split(':')[1]) * 6}deg)` 
+                            style={{
+                                bottom: '50%',
+                                left: 'calc(50% - 1px)',
+                                transform: `rotate(${Number(time.split(':')[1]) * 6}deg)`
                             }}
-                         ></div>
-                         
-                         {/* Tick Marks (4 main) */}
-                         <div className="absolute top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-white/50"></div>
-                         <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-white/50"></div>
-                         <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-0.5 bg-white/50"></div>
-                         <div className="absolute right-1 top-1/2 -translate-y-1/2 w-1.5 h-0.5 bg-white/50"></div>
+                        ></div>
+
+                        {/* Tick Marks (4 main) */}
+                        <div className="absolute top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-white/50"></div>
+                        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-white/50"></div>
+                        <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-0.5 bg-white/50"></div>
+                        <div className="absolute right-1 top-1/2 -translate-y-1/2 w-1.5 h-0.5 bg-white/50"></div>
                     </div>
 
                     <div className="flex-grow">
-                         <div className="flex justify-between items-baseline mb-1">
-                             <span className="text-2xl font-mono text-white font-bold tracking-widest">{time}</span>
-                             <span className="text-xs text-purple-300 font-bold uppercase">{sunPhase}</span>
-                         </div>
-                         <input 
-                            type="time" 
-                            value={time} 
+                        <div className="flex justify-between items-baseline mb-1">
+                            <span className="text-2xl font-mono text-white font-bold tracking-widest">{time}</span>
+                            <span className="text-xs text-purple-300 font-bold uppercase">{sunPhase}</span>
+                        </div>
+                        <input
+                            type="time"
+                            value={time}
                             onChange={(e) => onTimeChange(e.target.value)}
                             className="w-full bg-gray-900 border border-gray-700 rounded p-1 text-xs text-gray-400 focus:outline-none focus:border-purple-500"
                         />
                     </div>
                 </div>
 
-                 <input 
-                    type="date" 
-                    value={date} 
+                <input
+                    type="date"
+                    value={date}
                     onChange={(e) => onDateChange(e.target.value)}
                     className="w-full bg-gray-950 border border-gray-700/50 rounded-lg py-2 px-3 text-sm text-gray-200 focus:outline-none focus:ring-1 focus:ring-purple-500"
                 />
@@ -192,18 +192,18 @@ const EnvironmentControls: React.FC<EnvironmentControlsProps> = ({
 
             {/* Weather & Season */}
             <div className="space-y-4">
-                 <SelectInput 
-                    label="Weather Condition" 
-                    value={weather} 
-                    onChange={(e) => onWeatherChange(e.target.value)} 
-                    options={filteredWeatherOptions} 
-                    labelMap={WEATHER_OPTIONS.reduce((acc, w) => ({...acc, [w]: getWeatherLabel(w)}), {})}
+                <SelectInput
+                    label="Weather Condition"
+                    value={weather}
+                    onChange={(e) => onWeatherChange(e.target.value)}
+                    options={filteredWeatherOptions}
+                    labelMap={WEATHER_OPTIONS.reduce((acc, w) => ({ ...acc, [w]: getWeatherLabel(w) }), {})}
                 />
-                 <SelectInput 
-                    label="Season" 
-                    value={season} 
-                    onChange={(e) => onSeasonChange(e.target.value)} 
-                    options={SEASON_OPTIONS} 
+                <SelectInput
+                    label="Season"
+                    value={season}
+                    onChange={(e) => onSeasonChange(e.target.value)}
+                    options={SEASON_OPTIONS}
                 />
             </div>
         </div>

@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import { useState, FC } from 'react';
 
-const PromptTips: React.FC = () => {
+const PromptTips: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -20,7 +20,7 @@ const PromptTips: React.FC = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      
+
       {isOpen && (
         <div className="p-4 pt-0 text-sm text-gray-300 space-y-3 bg-gray-900/30">
           <div>

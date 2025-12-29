@@ -1,5 +1,5 @@
 
-import React from 'react';
+import { FC } from 'react';
 import TextAreaInput from './TextAreaInput';
 
 interface CustomCSSInputProps {
@@ -7,7 +7,7 @@ interface CustomCSSInputProps {
   onChange: (value: string) => void;
 }
 
-const CustomCSSInput: React.FC<CustomCSSInputProps> = ({ value, onChange }) => {
+const CustomCSSInput: FC<CustomCSSInputProps> = ({ value, onChange }) => {
   return (
     <div className="w-full">
       <TextAreaInput

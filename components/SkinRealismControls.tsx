@@ -1,5 +1,5 @@
 
-import React from 'react';
+import { FC, ChangeEvent } from 'react';
 import { SkinRealismConfig } from '../types';
 import ToggleSwitch from './ToggleSwitch';
 import SliderInput from './SliderInput';
@@ -10,13 +10,13 @@ interface SkinRealismControlsProps {
   disabled?: boolean;
 }
 
-const SkinRealismControls: React.FC<SkinRealismControlsProps> = ({ config, onChange, disabled }) => {
+const SkinRealismControls: FC<SkinRealismControlsProps> = ({ config, onChange, disabled }) => {
 
   const handleToggleEnabled = (enabled: boolean) => {
     onChange({ ...config, enabled });
   };
 
-  const handleIntensityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleIntensityChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange({ ...config, intensity: Number(e.target.value) });
   };
 

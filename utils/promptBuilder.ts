@@ -1,6 +1,6 @@
 import {
     NodeData, NodeType, Gender, HairPhysics, LightingPreset, FilmStock,
-    GraphNode, Edge, ImageData, ConsistencyMode, SubjectProfile, StudioImage
+    GraphNode, Edge, ImageData, ConsistencyMode, SubjectProfile, StudioImage, StudioState
 } from '../types';
 import { PHOTOGRAPHIC_STYLE_MAP } from '../constants';
 import { getSunPhase } from './sunMath';
@@ -343,4 +343,90 @@ const sanitizeNouns = (text: string): string => {
     forbidden.forEach(regex => { sanitized = sanitized.replace(regex, ''); });
 
     return sanitized;
+};
+
+export const buildPromptFromState = (state: StudioState, subjectLibrary: SubjectProfile[] = []): { prompt: string, aspectRatio: string } => {
+    let promptParts: string[] = [];
+
+    // 1. Environment
+    const env = state.environment;
+    let envDesc = "";
+    if (env.type === 'Landscape') envDesc += `Landscape: ${env.landscapeType}. `;
+    else if (env.type === 'Architecture') envDesc += `Architecture: ${env.architectureStyle} ${env.buildingType}, ${env.context} ${env.shotType}. `;
+
+    if (env.sceneDescription) envDesc += `Scene: ${env.sceneDescription}. `;
+    if (env.time) envDesc += `Time: ${env.time}. `;
+    if (env.weather) envDesc += `Weather: ${env.weather}. `;
+    if (env.season) envDesc += `Season: ${env.season}. `;
+
+    if (envDesc) promptParts.push(envDesc);
+    else promptParts.push("Setting: Minimalist Studio.");
+
+    // 2. Subject
+    const sub = state.subject;
+    if (sub.isLinked && sub.linkedSubjectId) {
+        const linked = subjectLibrary.find(s => s.id === sub.linkedSubjectId);
+        if (linked) promptParts.push(`Reference Identity: ${linked.name}.`);
+    }
+
+    let subjectDesc = "";
+    if (!sub.isLinked) {
+        // Identity
+        const parts = [sub.age, sub.ethnicity, sub.gender].filter(Boolean);
+        if (parts.length > 0) subjectDesc += `Subject is a ${parts.join(' ')}. `;
+        if (sub.bodyType) subjectDesc += `Physique: ${sub.bodyType}. `;
+
+        // Face
+        const faceFeatures = [];
+        if (sub.face.eyeColor) faceFeatures.push(`${sub.face.eyeColor} eyes`);
+        if (sub.face.makeup) faceFeatures.push(`wearing ${sub.face.makeup}`);
+        if (sub.face.features) faceFeatures.push(sub.face.features);
+        if (faceFeatures.length > 0) subjectDesc += `Features: ${faceFeatures.join(', ')}. `;
+
+        // Skin Realism
+        if (sub.skinRealism.enabled) {
+            let intensityAdjective = 'softly textured';
+            // Simple fallback logic or copy full logic later if needed
+            if (sub.skinRealism.intensity > 80) intensityAdjective = 'hyper-realistic, unretouched dermatological texture';
+            subjectDesc += `Skin texture: ${intensityAdjective}. `;
+        }
+    }
+
+    if (sub.pose) subjectDesc += `Pose: ${sub.pose}. `;
+
+    // Hair (Apply even if linked, sometimes?) - Assuming yes for now if user set it
+    const hair = sub.hair;
+    const hairPhys = hair.physics ? `, ${hair.physics}` : '';
+    // Only add hair if it's not default/empty or if explicitly set. 
+    // Checking for "None" or defaults might be needed, but simplified:
+    if (hair.style || hair.color) subjectDesc += `Hair: ${hair.length} ${hair.style} ${hair.color}${hairPhys}. `;
+
+    // Attire
+    const attire = [sub.attire.top, sub.attire.bottom, sub.attire.footwear].filter(Boolean);
+    if (attire.length > 0) subjectDesc += `Attire: ${attire.join(', ')}. `;
+    if (sub.attire.accessories) subjectDesc += `Accessories: ${sub.attire.accessories}. `;
+
+    promptParts.push(subjectDesc);
+
+    // 3. Camera
+    const cam = state.camera;
+    promptParts.push(`Shot on ${cam.model}, Lens: ${cam.lens}, ${cam.aperture}, ${cam.shutter}, ${cam.iso}.`);
+    if (cam.film !== 'None') promptParts.push(`Film Stock: ${cam.film} (${cam.filmGrain}).`);
+    if (cam.lensCharacter) promptParts.push(`Optics: ${cam.lensCharacter}.`);
+
+    // 4. Lighting
+    const light = state.lighting;
+    promptParts.push(`Lighting: ${light.style}, ${light.colorTemp}.`);
+    if (light.presets.length > 0) promptParts.push(`Modifiers: ${light.presets.join(', ')}.`);
+    if (light.gobo !== 'None') promptParts.push(`Gobo Pattern: ${light.gobo}.`);
+    if (light.visibleEquipment) promptParts.push("Studio lighting equipment visible in frame.");
+
+    // 5. Composition
+    const comp = state.composition;
+    promptParts.push(`Genre: ${comp.genre}. Composition: ${comp.framing}. Vibe: ${comp.vibe}.`);
+
+    return {
+        prompt: sanitizeNouns(promptParts.join(" ")),
+        aspectRatio: comp.aspectRatio || "1:1"
+    };
 };

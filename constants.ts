@@ -147,6 +147,9 @@ export const HAIR_LENGTH_OPTIONS = Object.values(HairLength);
 export const HAIR_STYLE_OPTIONS = Object.values(HairStyle);
 export const HAIR_COLOR_OPTIONS = ['Black', 'Brown', 'Blonde', 'Platinum Blonde', 'Red', 'Auburn', 'Grey', 'White', 'Dyed (Pink)', 'Dyed (Blue)', 'Ombre'];
 
+export const AGE_OPTIONS = ['18', '20s', '30s', '40s', '50s', '60s', '70s', '80s'];
+export const EYE_COLOR_OPTIONS = ['Blue', 'Green', 'Brown', 'Hazel', 'Grey', 'Amber', 'Heterochromia'];
+
 // --- 3. ENVIRONMENT ---
 
 export const LANDSCAPE_TYPE_OPTIONS = Object.values(LandscapeType);

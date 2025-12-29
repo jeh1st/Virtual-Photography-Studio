@@ -235,6 +235,88 @@ export interface NodeData {
     showEquipment?: boolean;
 }
 
+export interface StudioState {
+    // Subject
+    subject: {
+        isLinked: boolean;
+        linkedSubjectId?: string;
+        gender: Gender;
+        age: string;
+        ethnicity: string;
+        bodyType: string;
+        pose: string;
+        face: {
+            eyeColor: string;
+            makeup: string;
+            features: string;
+        };
+        hair: {
+            style: HairStyle;
+            color: string;
+            length: HairLength;
+            physics: HairPhysics;
+        };
+        attire: {
+            top: string;
+            bottom: string;
+            footwear: string;
+            accessories: string;
+        };
+        skinRealism: SkinRealismConfig;
+    };
+
+    // Environment
+    environment: {
+        type: 'General' | 'Landscape' | 'Architecture';
+        location: LocationConfig;
+        time: string;
+        weather: Weather;
+        season: Season;
+        sceneDescription: string;
+        // Architecture specifics
+        architectureStyle: ArchitectureStyle;
+        buildingType: string;
+        shotType: string;
+        context: 'Interior' | 'Exterior';
+        // Landscape specifics
+        landscapeType: LandscapeType;
+        sceneImage?: ImageData | null;
+    };
+
+    // Camera
+    camera: {
+        model: string;
+        lens: string;
+        film: string;
+        aperture: string;
+        shutter: string;
+        iso: string;
+        focalLength: number;
+        lensCharacter: string;
+        filmGrain: string;
+    };
+
+    // Lighting
+    lighting: {
+        style: string;
+        presets: string[]; // Setups
+        colorTemp: LightColorTemperature;
+        gobo: string;
+        visibleEquipment: boolean;
+    };
+
+    // Composition / Global
+    composition: {
+        aspectRatio: AspectRatio;
+        genre: string;
+        vibe: string;
+        framing: string; // e.g., Rule of thirds
+    };
+
+    // Session
+    mode: SessionMode;
+}
+
 export interface GraphNode {
     id: string;
     type: NodeType;

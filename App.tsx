@@ -5,7 +5,8 @@ import * as React from 'react';
 import {
     StudioState, Gender, BodyType, HairLength, HairStyle, HairPhysics,
     LandscapeType, ArchitectureStyle, LightColorTemperature, SkinRealismConfig,
-    Weather, Season, LocationConfig, AspectRatio, SubjectProfile, StudioImage, SessionMode, GenerationMetadata
+    Weather, Season, LocationConfig, AspectRatio, SubjectProfile, StudioImage, SessionMode, GenerationMetadata,
+    ConsistencyMode
 } from './types';
 import { generateImage, upscaleImage } from './services/geminiService';
 import { db } from './services/idbService';
@@ -18,6 +19,7 @@ import Spinner from './components/Spinner';
 import SubjectLibrary from './components/SubjectLibrary';
 import { LogViewer } from './components/LogViewer';
 import { DocumentationViewer } from './components/DocumentationViewer';
+import { RackPlayground } from './components/RackPlayground';
 
 // Lazy load
 const ImageEditor = lazy(() => import('./components/ImageEditor'));
@@ -48,7 +50,8 @@ const INITIAL_STATE: StudioState = {
         face: { eyeColor: '', makeup: '', features: '' },
         hair: { style: HairStyle.Straight, color: 'Brown', length: HairLength.Long, physics: HairPhysics.Static },
         attire: { top: '', bottom: '', footwear: '', accessories: '' },
-        skinRealism: DEFAULT_SKIN_CONFIG
+        skinRealism: DEFAULT_SKIN_CONFIG,
+        consistencyMode: ConsistencyMode.FaceOnly
     },
     environment: {
         type: 'General',
@@ -104,7 +107,7 @@ const App: React.FC = () => {
     const [studioState, setStudioState] = useState<StudioState>(INITIAL_STATE);
 
     // UI State
-    const [activeTab, setActiveTab] = useState<'studio' | 'gallery' | 'logs' | 'docs'>('studio');
+    const [activeTab, setActiveTab] = useState<'studio' | 'gallery' | 'logs' | 'docs' | 'rack-editor'>('studio');
     const [isLibraryOpen, setIsLibraryOpen] = useState(false);
 
     // Generation State
@@ -326,7 +329,11 @@ const App: React.FC = () => {
                     {activeTab === 'logs' && <LogViewer />}
 
                     {/* DOCS TAB */}
+                    {/* DOCS TAB */}
                     {activeTab === 'docs' && <DocumentationViewer />}
+
+                    {/* RACK EDITOR TAB */}
+                    {activeTab === 'rack-editor' && <RackPlayground />}
 
                 </div>
             </div>

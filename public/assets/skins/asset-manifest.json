@@ -1,0 +1,2791 @@
+{
+  "Knobs": [
+    {
+      "file": "Knob_01_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_01_63frames.png",
+      "frames": 63,
+      "width": 180,
+      "frameHeight": 200
+    },
+    {
+      "file": "Knob_02_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_02_63frames.png",
+      "frames": 63,
+      "width": 180,
+      "frameHeight": 200
+    },
+    {
+      "file": "Knob_03_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_03_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "frameHeight": 245
+    },
+    {
+      "file": "Knob_04_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_04_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "frameHeight": 245
+    },
+    {
+      "file": "Knob_05_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_05_63frames.png",
+      "frames": 63,
+      "width": 180,
+      "frameHeight": 200
+    },
+    {
+      "file": "Knob_06_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_06_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "frameHeight": 230
+    },
+    {
+      "file": "Knob_07_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_07_63frames.png",
+      "frames": 63,
+      "width": 130,
+      "frameHeight": 170
+    },
+    {
+      "file": "Knob_08_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_08_63frames.png",
+      "frames": 63,
+      "width": 200,
+      "frameHeight": 210
+    },
+    {
+      "file": "Knob_09_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_09_63frames.png",
+      "frames": 63,
+      "width": 235,
+      "frameHeight": 260
+    },
+    {
+      "file": "Knob_10_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_10_63frames.png",
+      "frames": 63,
+      "width": 230,
+      "frameHeight": 255
+    },
+    {
+      "file": "Knob_11_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_11_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_12_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_12_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_13_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_13_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_14_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_14_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "frameHeight": 205
+    },
+    {
+      "file": "Knob_15_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_15_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "frameHeight": 205
+    },
+    {
+      "file": "Knob_16_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_16_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "frameHeight": 240
+    },
+    {
+      "file": "Knob_17_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_17_63frames.png",
+      "frames": 63,
+      "width": 120,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_18_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_18_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_19_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_19_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_20_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_20_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_21_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_21_63frames.png",
+      "frames": 63,
+      "width": 130,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_22_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_22_63frames.png",
+      "frames": 63,
+      "width": 120,
+      "frameHeight": 140
+    },
+    {
+      "file": "Knob_23_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_23_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "frameHeight": 125
+    },
+    {
+      "file": "Knob_24_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_24_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_25_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_25_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_26_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_26_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_27_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_27_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_28_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_28_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_29_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_29_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "frameHeight": 125
+    },
+    {
+      "file": "Knob_30_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_30_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_31_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_31_63frames.png",
+      "frames": 63,
+      "width": 120,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_32_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_32_63frames.png",
+      "frames": 63,
+      "width": 150,
+      "frameHeight": 170
+    },
+    {
+      "file": "Knob_33_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_33_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_34_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_34_63frames.png",
+      "frames": 63,
+      "width": 140,
+      "frameHeight": 165
+    },
+    {
+      "file": "Knob_35_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_35_63frames.png",
+      "frames": 63,
+      "width": 190,
+      "frameHeight": 215
+    },
+    {
+      "file": "Knob_36_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_36_63frames.png",
+      "frames": 63,
+      "width": 190,
+      "frameHeight": 215
+    },
+    {
+      "file": "Knob_37_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_37_63frames.png",
+      "frames": 63,
+      "width": 325,
+      "frameHeight": 360
+    },
+    {
+      "file": "Knob_38_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_38_63frames.png",
+      "frames": 63,
+      "width": 145,
+      "frameHeight": 175
+    },
+    {
+      "file": "Knob_39_64frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_39_64frames.png",
+      "frames": 64,
+      "width": 90,
+      "frameHeight": 105
+    },
+    {
+      "file": "Knob_40_64frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_40_64frames.png",
+      "frames": 64,
+      "width": 300,
+      "frameHeight": 290
+    },
+    {
+      "file": "Knob_41_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_41_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 145
+    },
+    {
+      "file": "Knob_42_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_42_63frames.png",
+      "frames": 63,
+      "width": 250,
+      "frameHeight": 255
+    },
+    {
+      "file": "Knob_43_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_43_63frames.png",
+      "frames": 63,
+      "width": 250,
+      "frameHeight": 255
+    },
+    {
+      "file": "Knob_44_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_44_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "frameHeight": 160
+    },
+    {
+      "file": "Knob_45_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_45_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "frameHeight": 150
+    },
+    {
+      "file": "Knob_46_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_46_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_47_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_47_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 140
+    },
+    {
+      "file": "Knob_48_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_48_63frames.png",
+      "frames": 63,
+      "width": 85,
+      "frameHeight": 105
+    },
+    {
+      "file": "Knob_49_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_49_63frames.png",
+      "frames": 63,
+      "width": 145,
+      "frameHeight": 160
+    },
+    {
+      "file": "Knob_50_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_50_63frames.png",
+      "frames": 63,
+      "width": 135,
+      "frameHeight": 155
+    },
+    {
+      "file": "Knob_51_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_51_63frames.png",
+      "frames": 63,
+      "width": 95,
+      "frameHeight": 110
+    },
+    {
+      "file": "Knob_52_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_52_63frames.png",
+      "frames": 63,
+      "width": 220,
+      "frameHeight": 245
+    },
+    {
+      "file": "Knob_53_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_53_63frames.png",
+      "frames": 63,
+      "width": 135,
+      "frameHeight": 170
+    },
+    {
+      "file": "Knob_54_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_54_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "frameHeight": 230
+    },
+    {
+      "file": "Knob_55_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_55_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "frameHeight": 215
+    },
+    {
+      "file": "Knob_56_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_56_63frames.png",
+      "frames": 63,
+      "width": 130,
+      "frameHeight": 145
+    },
+    {
+      "file": "Knob_57_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_57_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 130
+    },
+    {
+      "file": "Knob_58_64frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_58_64frames.png",
+      "frames": 64,
+      "width": 265,
+      "frameHeight": 290
+    },
+    {
+      "file": "Knob_59_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_59_63frames.png",
+      "frames": 63,
+      "width": 135,
+      "frameHeight": 170
+    },
+    {
+      "file": "Knob_60_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_60_63frames.png",
+      "frames": 63,
+      "width": 120,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_61_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_61_63frames.png",
+      "frames": 63,
+      "width": 155,
+      "frameHeight": 170
+    },
+    {
+      "file": "Knob_62_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_62_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "frameHeight": 135
+    },
+    {
+      "file": "Knob_63_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_63_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "frameHeight": 125
+    },
+    {
+      "file": "Knob_64_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_64_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "frameHeight": 245
+    },
+    {
+      "file": "Knob_65_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_65_63frames.png",
+      "frames": 63,
+      "width": 150,
+      "frameHeight": 170
+    },
+    {
+      "file": "Knob_66_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_66_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "frameHeight": 120
+    },
+    {
+      "file": "Knob_67_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_67_63frames.png",
+      "frames": 63,
+      "width": 140,
+      "frameHeight": 165
+    },
+    {
+      "file": "Knob_68_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_68_63frames.png",
+      "frames": 63,
+      "width": 95,
+      "frameHeight": 120
+    },
+    {
+      "file": "Knob_69_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_69_63frames.png",
+      "frames": 63,
+      "width": 175,
+      "frameHeight": 200
+    },
+    {
+      "file": "Knob_70_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_70_63frames.png",
+      "frames": 63,
+      "width": 170,
+      "frameHeight": 215
+    },
+    {
+      "file": "Knob_71_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_71_63frames.png",
+      "frames": 63,
+      "width": 230,
+      "frameHeight": 250
+    },
+    {
+      "file": "Knob_72_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_72_63frames.png",
+      "frames": 63,
+      "width": 235,
+      "frameHeight": 250
+    },
+    {
+      "file": "Knob_73_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_73_63frames.png",
+      "frames": 63,
+      "width": 155,
+      "frameHeight": 200
+    },
+    {
+      "file": "Knob_75_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_75_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 145
+    },
+    {
+      "file": "Knob_76_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_76_63frames.png",
+      "frames": 63,
+      "width": 100,
+      "frameHeight": 125
+    },
+    {
+      "file": "Knob_77_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_77_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "frameHeight": 225
+    },
+    {
+      "file": "Knob_78_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_78_63frames.png",
+      "frames": 63,
+      "width": 250,
+      "frameHeight": 270
+    },
+    {
+      "file": "Knob_79_6frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_79_6frames.png",
+      "frames": 6,
+      "width": 210,
+      "frameHeight": 265
+    },
+    {
+      "file": "Knob_80_64frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_80_64frames.png",
+      "frames": 64,
+      "width": 185,
+      "frameHeight": 220
+    },
+    {
+      "file": "Knob_81_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_81_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "frameHeight": 150
+    },
+    {
+      "file": "Knob_82_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_82_63frames.png",
+      "frames": 63,
+      "width": 170,
+      "frameHeight": 185
+    },
+    {
+      "file": "Knob_83_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_83_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "frameHeight": 235
+    },
+    {
+      "file": "Knob_84_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_84_63frames.png",
+      "frames": 63,
+      "width": 130,
+      "frameHeight": 170
+    },
+    {
+      "file": "Knob_85_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_85_63frames.png",
+      "frames": 63,
+      "width": 215,
+      "frameHeight": 245
+    },
+    {
+      "file": "Knob_86_29frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_86_29frames.png",
+      "frames": 29,
+      "width": 325,
+      "frameHeight": 375
+    },
+    {
+      "file": "Knob_87_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_87_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "frameHeight": 170
+    },
+    {
+      "file": "Knob_88_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_88_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "frameHeight": 170
+    },
+    {
+      "file": "Knob_89_64frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_89_64frames.png",
+      "frames": 64,
+      "width": 325,
+      "frameHeight": 375
+    },
+    {
+      "file": "Knob_91_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_91_63frames.png",
+      "frames": 63,
+      "width": 215,
+      "frameHeight": 245
+    },
+    {
+      "file": "Knob_92_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_92_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 145
+    },
+    {
+      "file": "Knob_93_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_93_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 145
+    },
+    {
+      "file": "Knob_94_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_94_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 145
+    },
+    {
+      "file": "Knob_95_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_95_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "frameHeight": 145
+    },
+    {
+      "file": "Knob_96_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_96_63frames.png",
+      "frames": 63,
+      "width": 150,
+      "frameHeight": 165
+    },
+    {
+      "file": "Knob_97_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Knob_97_63frames.png",
+      "frames": 63,
+      "width": 150,
+      "frameHeight": 165
+    },
+    {
+      "file": "Trim_Knob_64frames.png",
+      "path": "/assets/skins/reason/Knobs/Trim_Knob_64frames.png",
+      "frames": 64,
+      "width": 95,
+      "frameHeight": 110
+    },
+    {
+      "file": "Trim_Screw_01_63frames.png",
+      "path": "/assets/skins/reason/Knobs/Trim_Screw_01_63frames.png",
+      "frames": 63,
+      "width": 85,
+      "frameHeight": 85
+    }
+  ],
+  "Faders": [
+    {
+      "file": "Fader_01_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_01_60frames.png",
+      "frames": 60,
+      "width": 610,
+      "frameHeight": 90
+    },
+    {
+      "file": "Fader_02_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_02_60frames.png",
+      "frames": 60,
+      "width": 555,
+      "frameHeight": 80
+    },
+    {
+      "file": "Fader_03_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_03_60frames.png",
+      "frames": 60,
+      "width": 620,
+      "frameHeight": 80
+    },
+    {
+      "file": "Fader_06_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_06_60frames.png",
+      "frames": 60,
+      "width": 545,
+      "frameHeight": 135
+    },
+    {
+      "file": "Fader_07_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_07_60frames.png",
+      "frames": 60,
+      "width": 545,
+      "frameHeight": 90
+    },
+    {
+      "file": "Fader_09_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_09_60frames.png",
+      "frames": 60,
+      "width": 520,
+      "frameHeight": 75
+    },
+    {
+      "file": "Fader_10_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_10_60frames.png",
+      "frames": 60,
+      "width": 525,
+      "frameHeight": 95
+    },
+    {
+      "file": "Fader_14_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_14_60frames.png",
+      "frames": 60,
+      "width": 55,
+      "frameHeight": 405
+    },
+    {
+      "file": "Fader_21_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_21_60frames.png",
+      "frames": 60,
+      "width": 95,
+      "frameHeight": 410
+    },
+    {
+      "file": "Fader_22_60frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_22_60frames.png",
+      "frames": 60,
+      "width": 115,
+      "frameHeight": 290
+    },
+    {
+      "file": "Fader_23_12frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_23_12frames.png",
+      "frames": 12,
+      "width": 155,
+      "frameHeight": 370
+    },
+    {
+      "file": "Fader_24_12frames.png",
+      "path": "/assets/skins/reason/Faders/Fader_24_12frames.png",
+      "frames": 12,
+      "width": 800,
+      "frameHeight": 85
+    }
+  ],
+  "Switches": [
+    {
+      "file": "Switch_01_2frames.png",
+      "path": "/assets/skins/reason/Switches/Switch_01_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "frameHeight": 140
+    },
+    {
+      "file": "Switch_02_2frames.png",
+      "path": "/assets/skins/reason/Switches/Switch_02_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 140
+    },
+    {
+      "file": "Switch_03_2frames.png",
+      "path": "/assets/skins/reason/Switches/Switch_03_2frames.png",
+      "frames": 2,
+      "width": 110,
+      "frameHeight": 180
+    },
+    {
+      "file": "Switch_04_2frames.png",
+      "path": "/assets/skins/reason/Switches/Switch_04_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 140
+    },
+    {
+      "file": "Switch_05_2frames.png",
+      "path": "/assets/skins/reason/Switches/Switch_05_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 140
+    },
+    {
+      "file": "Switch_06_2frames.png",
+      "path": "/assets/skins/reason/Switches/Switch_06_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "frameHeight": 140
+    },
+    {
+      "file": "Switch_07_2frames.png",
+      "path": "/assets/skins/reason/Switches/Switch_07_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 140
+    },
+    {
+      "file": "Switch_08_2frames.png",
+      "path": "/assets/skins/reason/Switches/Switch_08_2frames.png",
+      "frames": 2,
+      "width": 80,
+      "frameHeight": 110
+    },
+    {
+      "file": "Switch_09_2frames.png",
+      "path": "/assets/skins/reason/Switches/Switch_09_2frames.png",
+      "frames": 2,
+      "width": 430,
+      "frameHeight": 230
+    }
+  ],
+  "Buttons": [
+    {
+      "file": "Button_01_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_01_2frames.png",
+      "frames": 2,
+      "width": 195,
+      "frameHeight": 115
+    },
+    {
+      "file": "Button_02_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_02_2frames.png",
+      "frames": 2,
+      "width": 195,
+      "frameHeight": 115
+    },
+    {
+      "file": "Button_03_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_03_2frames.png",
+      "frames": 2,
+      "width": 75,
+      "frameHeight": 80
+    },
+    {
+      "file": "Button_04_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_04_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_06_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_06_2frames.png",
+      "frames": 2,
+      "width": 90,
+      "frameHeight": 95
+    },
+    {
+      "file": "Button_07_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_07_2frames.png",
+      "frames": 2,
+      "width": 180,
+      "frameHeight": 120
+    },
+    {
+      "file": "Button_08_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_08_2frames.png",
+      "frames": 2,
+      "width": 90,
+      "frameHeight": 95
+    },
+    {
+      "file": "Button_100_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_100_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 65
+    },
+    {
+      "file": "Button_101_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_101_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "frameHeight": 90
+    },
+    {
+      "file": "Button_102_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_102_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 95
+    },
+    {
+      "file": "Button_103_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_103_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 95
+    },
+    {
+      "file": "Button_104_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_104_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 95
+    },
+    {
+      "file": "Button_105_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_105_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 95
+    },
+    {
+      "file": "Button_106_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_106_2frames.png",
+      "frames": 2,
+      "width": 45,
+      "frameHeight": 50
+    },
+    {
+      "file": "Button_107_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_107_2frames.png",
+      "frames": 2,
+      "width": 120,
+      "frameHeight": 130
+    },
+    {
+      "file": "Button_109_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_109_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "frameHeight": 125
+    },
+    {
+      "file": "Button_110_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_110_2frames.png",
+      "frames": 2,
+      "width": 80,
+      "frameHeight": 85
+    },
+    {
+      "file": "Button_111_4frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_111_4frames.png",
+      "frames": 4,
+      "width": 130,
+      "frameHeight": 135
+    },
+    {
+      "file": "Button_11_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_11_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "frameHeight": 55
+    },
+    {
+      "file": "Button_13_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_13_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "frameHeight": 60
+    },
+    {
+      "file": "Button_14_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_14_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "frameHeight": 70
+    },
+    {
+      "file": "Button_15_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_15_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "frameHeight": 70
+    },
+    {
+      "file": "Button_16_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_16_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_17_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_17_2frames.png",
+      "frames": 2,
+      "width": 110,
+      "frameHeight": 65
+    },
+    {
+      "file": "Button_18_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_18_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_19_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_19_2frames.png",
+      "frames": 2,
+      "width": 110,
+      "frameHeight": 115
+    },
+    {
+      "file": "Button_20_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_20_2frames.png",
+      "frames": 2,
+      "width": 70,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_21_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_21_2frames.png",
+      "frames": 2,
+      "width": 70,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_22_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_22_2frames.png",
+      "frames": 2,
+      "width": 70,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_23_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_23_2frames.png",
+      "frames": 2,
+      "width": 160,
+      "frameHeight": 160
+    },
+    {
+      "file": "Button_24_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_24_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 100
+    },
+    {
+      "file": "Button_25_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_25_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_26_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_26_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "frameHeight": 90
+    },
+    {
+      "file": "Button_27_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_27_2frames.png",
+      "frames": 2,
+      "width": 75,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_30_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_30_2frames.png",
+      "frames": 2,
+      "width": 145,
+      "frameHeight": 150
+    },
+    {
+      "file": "Button_32_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_32_2frames.png",
+      "frames": 2,
+      "width": 60,
+      "frameHeight": 65
+    },
+    {
+      "file": "Button_33_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_33_2frames.png",
+      "frames": 2,
+      "width": 60,
+      "frameHeight": 65
+    },
+    {
+      "file": "Button_34_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_34_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "frameHeight": 70
+    },
+    {
+      "file": "Button_35_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_35_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "frameHeight": 70
+    },
+    {
+      "file": "Button_38_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_38_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_41_60frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_41_60frames.png",
+      "frames": 60,
+      "width": 85,
+      "frameHeight": 65
+    },
+    {
+      "file": "Button_42_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_42_2frames.png",
+      "frames": 2,
+      "width": 55,
+      "frameHeight": 60
+    },
+    {
+      "file": "Button_43_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_43_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "frameHeight": 70
+    },
+    {
+      "file": "Button_44_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_44_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "frameHeight": 65
+    },
+    {
+      "file": "Button_45_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_45_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "frameHeight": 70
+    },
+    {
+      "file": "Button_50_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_50_2frames.png",
+      "frames": 2,
+      "width": 205,
+      "frameHeight": 135
+    },
+    {
+      "file": "Button_51_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_51_2frames.png",
+      "frames": 2,
+      "width": 80,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_52_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_52_2frames.png",
+      "frames": 2,
+      "width": 75,
+      "frameHeight": 60
+    },
+    {
+      "file": "Button_53_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_53_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_54_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_54_2frames.png",
+      "frames": 2,
+      "width": 75,
+      "frameHeight": 65
+    },
+    {
+      "file": "Button_55_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_55_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "frameHeight": 90
+    },
+    {
+      "file": "Button_56_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_56_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "frameHeight": 90
+    },
+    {
+      "file": "Button_57_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_57_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "frameHeight": 90
+    },
+    {
+      "file": "Button_58_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_58_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "frameHeight": 90
+    },
+    {
+      "file": "Button_59_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_59_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "frameHeight": 70
+    },
+    {
+      "file": "Button_60_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_60_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "frameHeight": 105
+    },
+    {
+      "file": "Button_61_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_61_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "frameHeight": 80
+    },
+    {
+      "file": "Button_62_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_62_2frames.png",
+      "frames": 2,
+      "width": 135,
+      "frameHeight": 135
+    },
+    {
+      "file": "Button_63_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_63_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_64_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_64_2frames.png",
+      "frames": 2,
+      "width": 90,
+      "frameHeight": 60
+    },
+    {
+      "file": "Button_71_4frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_71_4frames.png",
+      "frames": 4,
+      "width": 80,
+      "frameHeight": 85
+    },
+    {
+      "file": "Button_72_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_72_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_75_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_75_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "frameHeight": 130
+    },
+    {
+      "file": "Button_76_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_76_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "frameHeight": 85
+    },
+    {
+      "file": "Button_82_4frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_82_4frames.png",
+      "frames": 4,
+      "width": 140,
+      "frameHeight": 80
+    },
+    {
+      "file": "Button_92_4frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_92_4frames.png",
+      "frames": 4,
+      "width": 80,
+      "frameHeight": 85
+    },
+    {
+      "file": "Button_93_4frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_93_4frames.png",
+      "frames": 4,
+      "width": 140,
+      "frameHeight": 80
+    },
+    {
+      "file": "Button_94_4frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_94_4frames.png",
+      "frames": 4,
+      "width": 140,
+      "frameHeight": 80
+    },
+    {
+      "file": "Button_95_4frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_95_4frames.png",
+      "frames": 4,
+      "width": 80,
+      "frameHeight": 105
+    },
+    {
+      "file": "Button_96_4frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_96_4frames.png",
+      "frames": 4,
+      "width": 115,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_97_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_97_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "frameHeight": 75
+    },
+    {
+      "file": "Button_98_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_98_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "frameHeight": 70
+    },
+    {
+      "file": "Button_99_2frames.png",
+      "path": "/assets/skins/reason/Buttons/Button_99_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "frameHeight": 65
+    }
+  ],
+  "Decorations": [
+    {
+      "file": "OnOffBypassText_black_1frames.png",
+      "path": "/assets/skins/reason/Decorations/OnOffBypassText_black_1frames.png",
+      "frames": 1,
+      "width": 120,
+      "frameHeight": 115
+    },
+    {
+      "file": "OnOffBypassText_bold_black_1frames.png",
+      "path": "/assets/skins/reason/Decorations/OnOffBypassText_bold_black_1frames.png",
+      "frames": 1,
+      "width": 120,
+      "frameHeight": 115
+    },
+    {
+      "file": "OnOffBypassText_bold_dark_1frames.png",
+      "path": "/assets/skins/reason/Decorations/OnOffBypassText_bold_dark_1frames.png",
+      "frames": 1,
+      "width": 120,
+      "frameHeight": 115
+    },
+    {
+      "file": "OnOffBypassText_bold_light_1frames.png",
+      "path": "/assets/skins/reason/Decorations/OnOffBypassText_bold_light_1frames.png",
+      "frames": 1,
+      "width": 120,
+      "frameHeight": 115
+    },
+    {
+      "file": "OnOffBypassText_bold_white_1frames.png",
+      "path": "/assets/skins/reason/Decorations/OnOffBypassText_bold_white_1frames.png",
+      "frames": 1,
+      "width": 120,
+      "frameHeight": 115
+    },
+    {
+      "file": "OnOffBypassText_dark_1frames.png",
+      "path": "/assets/skins/reason/Decorations/OnOffBypassText_dark_1frames.png",
+      "frames": 1,
+      "width": 120,
+      "frameHeight": 115
+    },
+    {
+      "file": "OnOffBypassText_light_1frames.png",
+      "path": "/assets/skins/reason/Decorations/OnOffBypassText_light_1frames.png",
+      "frames": 1,
+      "width": 120,
+      "frameHeight": 115
+    },
+    {
+      "file": "OnOffBypassText_white_1frames.png",
+      "path": "/assets/skins/reason/Decorations/OnOffBypassText_white_1frames.png",
+      "frames": 1,
+      "width": 120,
+      "frameHeight": 115
+    },
+    {
+      "file": "Power_Switch_01_2frames.png",
+      "path": "/assets/skins/reason/Decorations/Power_Switch_01_2frames.png",
+      "frames": 2,
+      "width": 160,
+      "frameHeight": 120
+    },
+    {
+      "file": "Power_Switch_02_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Power_Switch_02_1frames.png",
+      "frames": 1,
+      "width": 95,
+      "frameHeight": 205
+    },
+    {
+      "file": "Powercord_01_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_01_1frames.png",
+      "frames": 1,
+      "width": 545,
+      "frameHeight": 255
+    },
+    {
+      "file": "Powercord_02_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_02_1frames.png",
+      "frames": 1,
+      "width": 230,
+      "frameHeight": 125
+    },
+    {
+      "file": "Powercord_03_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_03_1frames.png",
+      "frames": 1,
+      "width": 400,
+      "frameHeight": 320
+    },
+    {
+      "file": "Powercord_04_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_04_1frames.png",
+      "frames": 1,
+      "width": 380,
+      "frameHeight": 150
+    },
+    {
+      "file": "Powercord_05_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_05_1frames.png",
+      "frames": 1,
+      "width": 520,
+      "frameHeight": 220
+    },
+    {
+      "file": "Powercord_06_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_06_1frames.png",
+      "frames": 1,
+      "width": 520,
+      "frameHeight": 230
+    },
+    {
+      "file": "Powercord_07_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_07_1frames.png",
+      "frames": 1,
+      "width": 520,
+      "frameHeight": 225
+    },
+    {
+      "file": "Powercord_08_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_08_1frames.png",
+      "frames": 1,
+      "width": 520,
+      "frameHeight": 245
+    },
+    {
+      "file": "Powercord_09_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_09_1frames.png",
+      "frames": 1,
+      "width": 815,
+      "frameHeight": 460
+    },
+    {
+      "file": "Powercord_10_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_10_1frames.png",
+      "frames": 1,
+      "width": 475,
+      "frameHeight": 250
+    },
+    {
+      "file": "Powercord_11_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_11_1frames.png",
+      "frames": 1,
+      "width": 530,
+      "frameHeight": 285
+    },
+    {
+      "file": "Powercord_12_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_12_1frames.png",
+      "frames": 1,
+      "width": 510,
+      "frameHeight": 585
+    },
+    {
+      "file": "Powercord_13_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_13_1frames.png",
+      "frames": 1,
+      "width": 480,
+      "frameHeight": 210
+    },
+    {
+      "file": "Powercord_14_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_14_1frames.png",
+      "frames": 1,
+      "width": 635,
+      "frameHeight": 550
+    },
+    {
+      "file": "Powercord_16_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_16_1frames.png",
+      "frames": 1,
+      "width": 720,
+      "frameHeight": 370
+    },
+    {
+      "file": "Powercord_17_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_17_1frames.png",
+      "frames": 1,
+      "width": 405,
+      "frameHeight": 310
+    },
+    {
+      "file": "Powercord_18_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Powercord_18_1frames.png",
+      "frames": 1,
+      "width": 260,
+      "frameHeight": 165
+    },
+    {
+      "file": "Routing_Icon_01_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_01_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Routing_Icon_02_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_02_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Routing_Icon_03_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_03_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Routing_Icon_04_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_04_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Routing_Icon_05_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_05_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Routing_Icon_White_01_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_White_01_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Routing_Icon_White_02_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_White_02_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Routing_Icon_White_03_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_White_03_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Routing_Icon_White_04_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_White_04_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Routing_Icon_White_05_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Routing_Icon_White_05_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 85
+    },
+    {
+      "file": "Screw_01_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_01_1frames.png",
+      "frames": 1,
+      "width": 105,
+      "frameHeight": 110
+    },
+    {
+      "file": "Screw_01_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_01_Back_1frames.png",
+      "frames": 1,
+      "width": 35,
+      "frameHeight": 35
+    },
+    {
+      "file": "Screw_02_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_02_1frames.png",
+      "frames": 1,
+      "width": 60,
+      "frameHeight": 65
+    },
+    {
+      "file": "Screw_02_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_02_Back_1frames.png",
+      "frames": 1,
+      "width": 20,
+      "frameHeight": 20
+    },
+    {
+      "file": "Screw_03_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_03_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 70
+    },
+    {
+      "file": "Screw_03_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_03_Back_1frames.png",
+      "frames": 1,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Screw_04_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_04_1frames.png",
+      "frames": 1,
+      "width": 85,
+      "frameHeight": 90
+    },
+    {
+      "file": "Screw_04_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_04_Back_1frames.png",
+      "frames": 1,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Screw_05_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_05_1frames.png",
+      "frames": 1,
+      "width": 85,
+      "frameHeight": 90
+    },
+    {
+      "file": "Screw_05_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_05_Back_1frames.png",
+      "frames": 1,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Screw_06_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_06_1frames.png",
+      "frames": 1,
+      "width": 95,
+      "frameHeight": 105
+    },
+    {
+      "file": "Screw_06_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_06_Back_1frames.png",
+      "frames": 1,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Screw_07_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_07_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 65
+    },
+    {
+      "file": "Screw_07_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_07_Back_1frames.png",
+      "frames": 1,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Screw_08_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_08_1frames.png",
+      "frames": 1,
+      "width": 90,
+      "frameHeight": 95
+    },
+    {
+      "file": "Screw_08_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_08_Back_1frames.png",
+      "frames": 1,
+      "width": 25,
+      "frameHeight": 25
+    },
+    {
+      "file": "Screw_09_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_09_1frames.png",
+      "frames": 1,
+      "width": 60,
+      "frameHeight": 60
+    },
+    {
+      "file": "Screw_09_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_09_Back_1frames.png",
+      "frames": 1,
+      "width": 15,
+      "frameHeight": 15
+    },
+    {
+      "file": "Screw_10_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_10_1frames.png",
+      "frames": 1,
+      "width": 75,
+      "frameHeight": 75
+    },
+    {
+      "file": "Screw_10_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_10_Back_1frames.png",
+      "frames": 1,
+      "width": 25,
+      "frameHeight": 25
+    },
+    {
+      "file": "Screw_11_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_11_1frames.png",
+      "frames": 1,
+      "width": 60,
+      "frameHeight": 60
+    },
+    {
+      "file": "Screw_11_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_11_Back_1frames.png",
+      "frames": 1,
+      "width": 20,
+      "frameHeight": 20
+    },
+    {
+      "file": "Screw_13_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_13_1frames.png",
+      "frames": 1,
+      "width": 90,
+      "frameHeight": 90
+    },
+    {
+      "file": "Screw_13_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_13_Back_1frames.png",
+      "frames": 1,
+      "width": 25,
+      "frameHeight": 25
+    },
+    {
+      "file": "Screw_14_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_14_1frames.png",
+      "frames": 1,
+      "width": 75,
+      "frameHeight": 75
+    },
+    {
+      "file": "Screw_14_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_14_Back_1frames.png",
+      "frames": 1,
+      "width": 25,
+      "frameHeight": 25
+    },
+    {
+      "file": "Screw_15_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_15_1frames.png",
+      "frames": 1,
+      "width": 90,
+      "frameHeight": 95
+    },
+    {
+      "file": "Screw_15_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_15_Back_1frames.png",
+      "frames": 1,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Screw_16_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_16_1frames.png",
+      "frames": 1,
+      "width": 70,
+      "frameHeight": 70
+    },
+    {
+      "file": "Screw_16_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_16_Back_1frames.png",
+      "frames": 1,
+      "width": 25,
+      "frameHeight": 25
+    },
+    {
+      "file": "Screw_17_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_17_1frames.png",
+      "frames": 1,
+      "width": 95,
+      "frameHeight": 95
+    },
+    {
+      "file": "Screw_17_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_17_Back_1frames.png",
+      "frames": 1,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Screw_18_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_18_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 65
+    },
+    {
+      "file": "Screw_18_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_18_Back_1frames.png",
+      "frames": 1,
+      "width": 20,
+      "frameHeight": 20
+    },
+    {
+      "file": "Screw_19_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_19_1frames.png",
+      "frames": 1,
+      "width": 80,
+      "frameHeight": 80
+    },
+    {
+      "file": "Screw_19_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_19_Back_1frames.png",
+      "frames": 1,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Screw_20_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_20_1frames.png",
+      "frames": 1,
+      "width": 90,
+      "frameHeight": 95
+    },
+    {
+      "file": "Screw_20_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_20_Back_1frames.png",
+      "frames": 1,
+      "width": 25,
+      "frameHeight": 25
+    },
+    {
+      "file": "Screw_21_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_21_1frames.png",
+      "frames": 1,
+      "width": 80,
+      "frameHeight": 80
+    },
+    {
+      "file": "Screw_21_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_21_Back_1frames.png",
+      "frames": 1,
+      "width": 20,
+      "frameHeight": 20
+    },
+    {
+      "file": "Screw_22_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_22_1frames.png",
+      "frames": 1,
+      "width": 55,
+      "frameHeight": 55
+    },
+    {
+      "file": "Screw_22_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_22_Back_1frames.png",
+      "frames": 1,
+      "width": 20,
+      "frameHeight": 20
+    },
+    {
+      "file": "Screw_23_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_23_1frames.png",
+      "frames": 1,
+      "width": 80,
+      "frameHeight": 85
+    },
+    {
+      "file": "Screw_23_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_23_Back_1frames.png",
+      "frames": 1,
+      "width": 20,
+      "frameHeight": 20
+    },
+    {
+      "file": "Screw_24_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_24_1frames.png",
+      "frames": 1,
+      "width": 70,
+      "frameHeight": 75
+    },
+    {
+      "file": "Screw_24_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_24_Back_1frames.png",
+      "frames": 1,
+      "width": 20,
+      "frameHeight": 20
+    },
+    {
+      "file": "Screw_26_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_26_1frames.png",
+      "frames": 1,
+      "width": 80,
+      "frameHeight": 85
+    },
+    {
+      "file": "Screw_26_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_26_Back_1frames.png",
+      "frames": 1,
+      "width": 20,
+      "frameHeight": 20
+    },
+    {
+      "file": "Screw_27_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_27_1frames.png",
+      "frames": 1,
+      "width": 55,
+      "frameHeight": 55
+    },
+    {
+      "file": "Screw_27_Back_1frames.png",
+      "path": "/assets/skins/reason/Decorations/Screw_27_Back_1frames.png",
+      "frames": 1,
+      "width": 20,
+      "frameHeight": 20
+    }
+  ],
+  "Meters": [
+    {
+      "file": "Lamp_01_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_01_2frames.png",
+      "frames": 2,
+      "width": 40,
+      "frameHeight": 40
+    },
+    {
+      "file": "Lamp_02_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_02_2frames.png",
+      "frames": 2,
+      "width": 55,
+      "frameHeight": 30
+    },
+    {
+      "file": "Lamp_03_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_03_2frames.png",
+      "frames": 2,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Lamp_04_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_04_2frames.png",
+      "frames": 2,
+      "width": 15,
+      "frameHeight": 15
+    },
+    {
+      "file": "Lamp_05_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_05_2frames.png",
+      "frames": 2,
+      "width": 55,
+      "frameHeight": 55
+    },
+    {
+      "file": "Lamp_06_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_06_2frames.png",
+      "frames": 2,
+      "width": 70,
+      "frameHeight": 45
+    },
+    {
+      "file": "Lamp_07_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_07_2frames.png",
+      "frames": 2,
+      "width": 40,
+      "frameHeight": 40
+    },
+    {
+      "file": "Lamp_08_16frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_08_16frames.png",
+      "frames": 16,
+      "width": 130,
+      "frameHeight": 135
+    },
+    {
+      "file": "Lamp_09_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_09_2frames.png",
+      "frames": 2,
+      "width": 55,
+      "frameHeight": 55
+    },
+    {
+      "file": "Lamp_10_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_10_2frames.png",
+      "frames": 2,
+      "width": 40,
+      "frameHeight": 40
+    },
+    {
+      "file": "Lamp_11_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_11_2frames.png",
+      "frames": 2,
+      "width": 25,
+      "frameHeight": 25
+    },
+    {
+      "file": "Lamp_18_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_18_2frames.png",
+      "frames": 2,
+      "width": 55,
+      "frameHeight": 30
+    },
+    {
+      "file": "Lamp_19_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_19_2frames.png",
+      "frames": 2,
+      "width": 55,
+      "frameHeight": 30
+    },
+    {
+      "file": "Lamp_20_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_20_2frames.png",
+      "frames": 2,
+      "width": 55,
+      "frameHeight": 30
+    },
+    {
+      "file": "Lamp_21_2frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_21_2frames.png",
+      "frames": 2,
+      "width": 20,
+      "frameHeight": 15
+    },
+    {
+      "file": "Lamp_Row_Double_Vertical_01_11frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_Row_Double_Vertical_01_11frames.png",
+      "frames": 11,
+      "width": 100,
+      "frameHeight": 405
+    },
+    {
+      "file": "Lamp_Row_Single_Vertical_01_11frames.png",
+      "path": "/assets/skins/reason/Meters/Lamp_Row_Single_Vertical_01_11frames.png",
+      "frames": 11,
+      "width": 40,
+      "frameHeight": 405
+    },
+    {
+      "file": "Meter_LED_4frames.png",
+      "path": "/assets/skins/reason/Meters/Meter_LED_4frames.png",
+      "frames": 4,
+      "width": 65,
+      "frameHeight": 75
+    }
+  ],
+  "ModWheels": [
+    {
+      "file": "Mod_Wheel_02_64frames.png",
+      "path": "/assets/skins/reason/ModWheels/Mod_Wheel_02_64frames.png",
+      "frames": 64,
+      "width": 115,
+      "frameHeight": 255
+    },
+    {
+      "file": "Mod_Wheel_03_64frames.png",
+      "path": "/assets/skins/reason/ModWheels/Mod_Wheel_03_64frames.png",
+      "frames": 64,
+      "width": 115,
+      "frameHeight": 350
+    },
+    {
+      "file": "Mod_Wheel_04_64frames.png",
+      "path": "/assets/skins/reason/ModWheels/Mod_Wheel_04_64frames.png",
+      "frames": 64,
+      "width": 85,
+      "frameHeight": 360
+    }
+  ],
+  "Displays": [
+    {
+      "file": "Display_02_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_02_1frames.png",
+      "frames": 1,
+      "width": 1385,
+      "frameHeight": 115
+    },
+    {
+      "file": "Display_03_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_03_1frames.png",
+      "frames": 1,
+      "width": 745,
+      "frameHeight": 90
+    },
+    {
+      "file": "Display_04_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_04_1frames.png",
+      "frames": 1,
+      "width": 1165,
+      "frameHeight": 110
+    },
+    {
+      "file": "Display_05_9frames.png",
+      "path": "/assets/skins/reason/Displays/Display_05_9frames.png",
+      "frames": 9,
+      "width": 175,
+      "frameHeight": 180
+    },
+    {
+      "file": "Display_06_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_06_1frames.png",
+      "frames": 1,
+      "width": 745,
+      "frameHeight": 90
+    },
+    {
+      "file": "Display_07_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_07_1frames.png",
+      "frames": 1,
+      "width": 375,
+      "frameHeight": 95
+    },
+    {
+      "file": "Display_08_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_08_1frames.png",
+      "frames": 1,
+      "width": 1160,
+      "frameHeight": 115
+    },
+    {
+      "file": "Display_09_6frames.png",
+      "path": "/assets/skins/reason/Displays/Display_09_6frames.png",
+      "frames": 6,
+      "width": 295,
+      "frameHeight": 125
+    },
+    {
+      "file": "Display_10_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_10_1frames.png",
+      "frames": 1,
+      "width": 495,
+      "frameHeight": 70
+    },
+    {
+      "file": "Display_11_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_11_1frames.png",
+      "frames": 1,
+      "width": 290,
+      "frameHeight": 65
+    },
+    {
+      "file": "Display_12_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_12_1frames.png",
+      "frames": 1,
+      "width": 120,
+      "frameHeight": 85
+    },
+    {
+      "file": "Display_13_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_13_1frames.png",
+      "frames": 1,
+      "width": 180,
+      "frameHeight": 80
+    },
+    {
+      "file": "Display_15_6frames.png",
+      "path": "/assets/skins/reason/Displays/Display_15_6frames.png",
+      "frames": 6,
+      "width": 145,
+      "frameHeight": 105
+    },
+    {
+      "file": "Display_16_6frames.png",
+      "path": "/assets/skins/reason/Displays/Display_16_6frames.png",
+      "frames": 6,
+      "width": 90,
+      "frameHeight": 105
+    },
+    {
+      "file": "Display_17_6frames.png",
+      "path": "/assets/skins/reason/Displays/Display_17_6frames.png",
+      "frames": 6,
+      "width": 520,
+      "frameHeight": 70
+    },
+    {
+      "file": "Display_18_6frames.png",
+      "path": "/assets/skins/reason/Displays/Display_18_6frames.png",
+      "frames": 6,
+      "width": 520,
+      "frameHeight": 90
+    },
+    {
+      "file": "Display_19_6frames.png",
+      "path": "/assets/skins/reason/Displays/Display_19_6frames.png",
+      "frames": 6,
+      "width": 225,
+      "frameHeight": 160
+    },
+    {
+      "file": "Display_20_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_20_1frames.png",
+      "frames": 1,
+      "width": 175,
+      "frameHeight": 125
+    },
+    {
+      "file": "Display_21_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_21_1frames.png",
+      "frames": 1,
+      "width": 165,
+      "frameHeight": 90
+    },
+    {
+      "file": "Display_22_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_22_1frames.png",
+      "frames": 1,
+      "width": 1055,
+      "frameHeight": 90
+    },
+    {
+      "file": "Display_23_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_23_1frames.png",
+      "frames": 1,
+      "width": 250,
+      "frameHeight": 95
+    },
+    {
+      "file": "Display_24_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_24_1frames.png",
+      "frames": 1,
+      "width": 185,
+      "frameHeight": 70
+    },
+    {
+      "file": "Display_25_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_25_1frames.png",
+      "frames": 1,
+      "width": 1330,
+      "frameHeight": 465
+    },
+    {
+      "file": "Display_26_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_26_1frames.png",
+      "frames": 1,
+      "width": 1600,
+      "frameHeight": 275
+    },
+    {
+      "file": "Display_27_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_27_1frames.png",
+      "frames": 1,
+      "width": 1600,
+      "frameHeight": 145
+    },
+    {
+      "file": "Display_28_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_28_1frames.png",
+      "frames": 1,
+      "width": 390,
+      "frameHeight": 85
+    },
+    {
+      "file": "Display_29_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_29_1frames.png",
+      "frames": 1,
+      "width": 345,
+      "frameHeight": 90
+    },
+    {
+      "file": "Display_30_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_30_1frames.png",
+      "frames": 1,
+      "width": 245,
+      "frameHeight": 100
+    },
+    {
+      "file": "Display_31_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_31_1frames.png",
+      "frames": 1,
+      "width": 165,
+      "frameHeight": 85
+    },
+    {
+      "file": "Display_32_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_32_1frames.png",
+      "frames": 1,
+      "width": 185,
+      "frameHeight": 70
+    },
+    {
+      "file": "Display_33_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_33_1frames.png",
+      "frames": 1,
+      "width": 860,
+      "frameHeight": 115
+    },
+    {
+      "file": "Display_40_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_40_1frames.png",
+      "frames": 1,
+      "width": 1585,
+      "frameHeight": 390
+    },
+    {
+      "file": "Display_41_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_41_1frames.png",
+      "frames": 1,
+      "width": 515,
+      "frameHeight": 75
+    },
+    {
+      "file": "Display_42_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_42_1frames.png",
+      "frames": 1,
+      "width": 130,
+      "frameHeight": 100
+    },
+    {
+      "file": "Display_50_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_50_1frames.png",
+      "frames": 1,
+      "width": 875,
+      "frameHeight": 95
+    },
+    {
+      "file": "Display_51_9frames.png",
+      "path": "/assets/skins/reason/Displays/Display_51_9frames.png",
+      "frames": 9,
+      "width": 180,
+      "frameHeight": 140
+    },
+    {
+      "file": "Display_55_26frames.png",
+      "path": "/assets/skins/reason/Displays/Display_55_26frames.png",
+      "frames": 26,
+      "width": 645,
+      "frameHeight": 400
+    },
+    {
+      "file": "Display_56_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_56_1frames.png",
+      "frames": 1,
+      "width": 1600,
+      "frameHeight": 600
+    },
+    {
+      "file": "Display_57_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_57_1frames.png",
+      "frames": 1,
+      "width": 170,
+      "frameHeight": 100
+    },
+    {
+      "file": "Display_58_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_58_1frames.png",
+      "frames": 1,
+      "width": 260,
+      "frameHeight": 100
+    },
+    {
+      "file": "Display_59_12frames.png",
+      "path": "/assets/skins/reason/Displays/Display_59_12frames.png",
+      "frames": 12,
+      "width": 335,
+      "frameHeight": 215
+    },
+    {
+      "file": "Display_61_1frames.png",
+      "path": "/assets/skins/reason/Displays/Display_61_1frames.png",
+      "frames": 1,
+      "width": 1070,
+      "frameHeight": 90
+    }
+  ],
+  "Panels": [
+    {
+      "file": "Panel_Back_1U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Back_1U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 345
+    },
+    {
+      "file": "Panel_Back_2U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Back_2U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 690
+    },
+    {
+      "file": "Panel_Back_3U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Back_3U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 1035
+    },
+    {
+      "file": "Panel_Back_4U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Back_4U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 1380
+    },
+    {
+      "file": "Panel_Back_5U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Back_5U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 1725
+    },
+    {
+      "file": "Panel_Back_6U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Back_6U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 2070
+    },
+    {
+      "file": "Panel_Back_7U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Back_7U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 2415
+    },
+    {
+      "file": "Panel_Back_8U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Back_8U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 2760
+    },
+    {
+      "file": "Panel_Back_9U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Back_9U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 3105
+    },
+    {
+      "file": "Panel_Folded_Back.png",
+      "path": "/assets/skins/reason/Panels/Panel_Folded_Back.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 150
+    },
+    {
+      "file": "Panel_Folded_Front.png",
+      "path": "/assets/skins/reason/Panels/Panel_Folded_Front.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 150
+    },
+    {
+      "file": "Panel_Front_1U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Front_1U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 345
+    },
+    {
+      "file": "Panel_Front_2U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Front_2U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 690
+    },
+    {
+      "file": "Panel_Front_3U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Front_3U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 1035
+    },
+    {
+      "file": "Panel_Front_4U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Front_4U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 1380
+    },
+    {
+      "file": "Panel_Front_5U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Front_5U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 1725
+    },
+    {
+      "file": "Panel_Front_6U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Front_6U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 2070
+    },
+    {
+      "file": "Panel_Front_7U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Front_7U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 2415
+    },
+    {
+      "file": "Panel_Front_8U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Front_8U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 2760
+    },
+    {
+      "file": "Panel_Front_9U.png",
+      "path": "/assets/skins/reason/Panels/Panel_Front_9U.png",
+      "frames": 1,
+      "width": 3770,
+      "frameHeight": 3105
+    }
+  ],
+  "Special": [
+    {
+      "file": "Fader_Bypass_3frames.png",
+      "path": "/assets/skins/reason/Special/Fader_Bypass_3frames.png",
+      "frames": 3,
+      "width": 65,
+      "frameHeight": 120
+    },
+    {
+      "file": "UpDownButton_01_3frames.png",
+      "path": "/assets/skins/reason/Special/UpDownButton_01_3frames.png",
+      "frames": 3,
+      "width": 65,
+      "frameHeight": 125
+    }
+  ],
+  "Holes": [
+    {
+      "file": "Cable_Origin_1frames.png",
+      "path": "/assets/skins/reason/Holes/Cable_Origin_1frames.png",
+      "frames": 1,
+      "width": 630,
+      "frameHeight": 50
+    },
+    {
+      "file": "Hole_01_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_01_1frames.png",
+      "frames": 1,
+      "width": 35,
+      "frameHeight": 140
+    },
+    {
+      "file": "Hole_02_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_02_1frames.png",
+      "frames": 1,
+      "width": 35,
+      "frameHeight": 240
+    },
+    {
+      "file": "Hole_03_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_03_1frames.png",
+      "frames": 1,
+      "width": 35,
+      "frameHeight": 315
+    },
+    {
+      "file": "Hole_04_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_04_1frames.png",
+      "frames": 1,
+      "width": 295,
+      "frameHeight": 60
+    },
+    {
+      "file": "Hole_05_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_05_1frames.png",
+      "frames": 1,
+      "width": 40,
+      "frameHeight": 120
+    },
+    {
+      "file": "Hole_06_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_06_1frames.png",
+      "frames": 1,
+      "width": 35,
+      "frameHeight": 160
+    },
+    {
+      "file": "Hole_07_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_07_1frames.png",
+      "frames": 1,
+      "width": 110,
+      "frameHeight": 105
+    },
+    {
+      "file": "Hole_08_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_08_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 65
+    },
+    {
+      "file": "Hole_09_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_09_1frames.png",
+      "frames": 1,
+      "width": 60,
+      "frameHeight": 115
+    },
+    {
+      "file": "Hole_10_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_10_1frames.png",
+      "frames": 1,
+      "width": 25,
+      "frameHeight": 345
+    },
+    {
+      "file": "Hole_11_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_11_1frames.png",
+      "frames": 1,
+      "width": 155,
+      "frameHeight": 155
+    },
+    {
+      "file": "Hole_13_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_13_1frames.png",
+      "frames": 1,
+      "width": 305,
+      "frameHeight": 125
+    },
+    {
+      "file": "Hole_Lamp_02_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_Lamp_02_1frames.png",
+      "frames": 1,
+      "width": 50,
+      "frameHeight": 20
+    },
+    {
+      "file": "Hole_Lamp_03_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_Lamp_03_1frames.png",
+      "frames": 1,
+      "width": 30,
+      "frameHeight": 30
+    },
+    {
+      "file": "Hole_Lamp_04_1frames.png",
+      "path": "/assets/skins/reason/Holes/Hole_Lamp_04_1frames.png",
+      "frames": 1,
+      "width": 15,
+      "frameHeight": 15
+    }
+  ],
+  "BuiltIn": [
+    {
+      "file": "Cable_Attachment_Audio_01_1frames.png",
+      "path": "/assets/skins/reason/BuiltIn/Cable_Attachment_Audio_01_1frames.png",
+      "frames": 1,
+      "width": 95,
+      "frameHeight": 105
+    },
+    {
+      "file": "Cable_Attachment_Audio_1frames.png",
+      "path": "/assets/skins/reason/BuiltIn/Cable_Attachment_Audio_1frames.png",
+      "frames": 1,
+      "width": 95,
+      "frameHeight": 105
+    },
+    {
+      "file": "Cable_Attachment_CV_01_1frames.png",
+      "path": "/assets/skins/reason/BuiltIn/Cable_Attachment_CV_01_1frames.png",
+      "frames": 1,
+      "width": 80,
+      "frameHeight": 90
+    },
+    {
+      "file": "Cable_Attachment_CV_1frames.png",
+      "path": "/assets/skins/reason/BuiltIn/Cable_Attachment_CV_1frames.png",
+      "frames": 1,
+      "width": 80,
+      "frameHeight": 90
+    },
+    {
+      "file": "PatchBrowseGroup.png",
+      "path": "/assets/skins/reason/BuiltIn/PatchBrowseGroup.png",
+      "frames": 1,
+      "width": 290,
+      "frameHeight": 110
+    },
+    {
+      "file": "Placeholder.png",
+      "path": "/assets/skins/reason/BuiltIn/Placeholder.png",
+      "frames": 1,
+      "width": 300,
+      "frameHeight": 100
+    },
+    {
+      "file": "SampleBrowseGroup.png",
+      "path": "/assets/skins/reason/BuiltIn/SampleBrowseGroup.png",
+      "frames": 1,
+      "width": 290,
+      "frameHeight": 110
+    },
+    {
+      "file": "SharedAudioJack.png",
+      "path": "/assets/skins/reason/BuiltIn/SharedAudioJack.png",
+      "frames": 1,
+      "width": 95,
+      "frameHeight": 315
+    },
+    {
+      "file": "SharedCVJack.png",
+      "path": "/assets/skins/reason/BuiltIn/SharedCVJack.png",
+      "frames": 1,
+      "width": 80,
+      "frameHeight": 270
+    },
+    {
+      "file": "SharedKnob01.png",
+      "path": "/assets/skins/reason/BuiltIn/SharedKnob01.png",
+      "frames": 1,
+      "width": 100,
+      "frameHeight": 7680
+    },
+    {
+      "file": "SharedKnob01_2.png",
+      "path": "/assets/skins/reason/BuiltIn/SharedKnob01_2.png",
+      "frames": 1,
+      "width": 100,
+      "frameHeight": 7680
+    },
+    {
+      "file": "TapeHorz.png",
+      "path": "/assets/skins/reason/BuiltIn/TapeHorz.png",
+      "frames": 1,
+      "width": 400,
+      "frameHeight": 65
+    },
+    {
+      "file": "TapeVert.png",
+      "path": "/assets/skins/reason/BuiltIn/TapeVert.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 400
+    },
+    {
+      "file": "Tape_Horizontal_1frames.png",
+      "path": "/assets/skins/reason/BuiltIn/Tape_Horizontal_1frames.png",
+      "frames": 1,
+      "width": 400,
+      "frameHeight": 65
+    },
+    {
+      "file": "Tape_Vertical_1frames.png",
+      "path": "/assets/skins/reason/BuiltIn/Tape_Vertical_1frames.png",
+      "frames": 1,
+      "width": 65,
+      "frameHeight": 400
+    },
+    {
+      "file": "TrimKnob.png",
+      "path": "/assets/skins/reason/BuiltIn/TrimKnob.png",
+      "frames": 1,
+      "width": 100,
+      "frameHeight": 100
+    }
+  ]
+}

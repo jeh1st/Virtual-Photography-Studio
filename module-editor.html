@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Editor - Virtual Photography Studio</title>
+    <script src="https://g200kg.github.io/webaudio-controls/webaudio-controls.js"></script>
+    <style>
+        :root {
+            --bg-dark: #1a1a1a;
+            --bg-panel: #252525;
+            --bg-input: #333;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888;
+            --accent: #4a9eff;
+            --accent-hover: #6bb3ff;
+            --border: #444;
+            --grid-color: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TOOLBAR */
+        .toolbar {
+            height: 50px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 16px;
+        }
+
+        .toolbar h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-right: 32px;
+        }
+
+        .toolbar button,
+        .toolbar select {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .toolbar button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .toolbar .spacer {
+            flex: 1;
+        }
+
+        .toolbar .save-btn {
+            background: #2d7d32;
+            border-color: #2d7d32;
+        }
+
+        .toolbar .save-btn:hover {
+            background: #388e3c;
+        }
+
+        /* MAIN LAYOUT */
+        .main-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL - ASSET BROWSER */
+        .asset-browser {
+            width: 280px;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .asset-browser h2 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-tab {
+            padding: 6px 10px;
+            font-size: 11px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .category-tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .asset-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-content: start;
+            justify-content: flex-start;
+        }
+
+        .asset-item {
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 4px;
+        }
+
+        .asset-item:hover {
+            border-color: var(--accent);
+        }
+
+        .asset-item.selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .asset-item img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .asset-item .frame-count {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 9px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--accent);
+            padding: 1px 4px;
+            border-radius: 2px;
+        }
+
+        /* CENTER - CANVAS */
+        .canvas-container {
+            flex: 1;
+            overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e1e1e;
+        }
+
+        .canvas {
+            width: 900px;
+            height: 520px;
+            background:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #2a2a2a;
+            position: relative;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .canvas-element {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+        }
+
+        .canvas-element.selected {
+            outline: 2px dashed var(--accent);
+            outline-offset: 4px;
+        }
+
+        .canvas-element .label {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+
+        .canvas-element .resize-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border: 1px solid white;
+            right: -5px;
+            bottom: -5px;
+            cursor: se-resize;
+            display: none;
+        }
+
+        .canvas-element.selected .resize-handle {
+            display: block;
+        }
+
+        /* RIGHT PANEL - PROPERTIES */
+        .properties-panel {
+            width: 300px;
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .properties-panel h2 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .properties-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .property-group {
+            margin-bottom: 20px;
+        }
+
+        .property-group h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .property-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .property-row label {
+            width: 70px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .property-row input,
+        .property-row select {
+            flex: 1;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .property-row input:focus,
+        .property-row select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .property-row input[type="number"] {
+            width: 60px;
+            flex: none;
+        }
+
+        .property-row .coord-group {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .property-row .coord-group span {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .no-selection {
+            color: var(--text-secondary);
+            font-style: italic;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .current-asset {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 8px;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .current-asset img {
+            max-height: 60px;
+            margin-bottom: 8px;
+        }
+
+        /* ELEMENTS LIST */
+        .elements-list {
+            border-top: 1px solid var(--border);
+            padding: 12px 16px;
+        }
+
+        .elements-list h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .element-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            background: var(--bg-input);
+            border-radius: 4px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .element-item:hover {
+            background: #3a3a3a;
+        }
+
+        .element-item.selected {
+            background: var(--accent);
+        }
+
+        .element-item .type-icon {
+            width: 20px;
+            color: var(--text-secondary);
+        }
+
+        .element-item .delete-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #e53935;
+            cursor: pointer;
+            padding: 2px 6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+        <h1>🎛️ Module Editor</h1>
+
+        <select id="addElementType">
+            <option value="">+ Add Element...</option>
+            <option value="knob">Knob</option>
+            <option value="fader">Fader (Vertical)</option>
+            <option value="hfader">Fader (Horizontal)</option>
+            <option value="switch">Switch</option>
+            <option value="button">Button</option>
+            <option value="display">Display (Dropdown)</option>
+        </select>
+
+        <button onclick="deleteSelected()">🗑️ Delete</button>
+
+        <div class="spacer"></div>
+
+        <span style="color: var(--text-secondary); font-size: 12px;">
+            Module: <strong id="moduleName">Subject</strong>
+        </span>
+
+        <button class="save-btn" onclick="saveConfig()">💾 Save Config</button>
+        <button onclick="exportTSX()">📄 Export TSX</button>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="main-container">
+        <!-- LEFT: ASSET BROWSER -->
+        <div class="asset-browser">
+            <h2>Asset Browser</h2>
+            <div class="category-tabs" id="categoryTabs"></div>
+            <div class="asset-list" id="assetList"></div>
+        </div>
+
+        <!-- CENTER: CANVAS -->
+        <div class="canvas-container">
+            <div class="canvas" id="canvas"></div>
+        </div>
+
+        <!-- RIGHT: PROPERTIES -->
+        <div class="properties-panel">
+            <h2>Properties</h2>
+            <div class="properties-content" id="propertiesContent">
+                <div class="no-selection">Select an element to edit its properties</div>
+            </div>
+
+            <div class="elements-list">
+                <h3>Elements</h3>
+                <div id="elementsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ STATE ============
+        let manifest = {};
+        let currentCategory = 'Knobs';
+        let elements = [];
+        let selectedElementId = null;
+        let dragState = null;
+
+        // Bindable properties from SubjectRackUnit
+        const BINDINGS = [
+            { value: '', label: '-- None --' },
+            { value: 'gender', label: 'Gender' },
+            { value: 'age', label: 'Age' },
+            { value: 'ethnicity', label: 'Ethnicity' },
+            { value: 'bodyType', label: 'Body Type' },
+            { value: 'hair.length', label: 'Hair Length' },
+            { value: 'hair.style', label: 'Hair Style' },
+            { value: 'hair.color', label: 'Hair Color' },
+            { value: 'pose', label: 'Pose' },
+            { value: 'skinRealism.intensity', label: 'Skin Realism Intensity' },
+            { value: 'skinRealism.details.pores', label: 'Skin: Pores' },
+            { value: 'skinRealism.details.freckles', label: 'Skin: Freckles' },
+            { value: 'skinRealism.details.veins', label: 'Skin: Veins' },
+            { value: 'skinRealism.details.blemishes', label: 'Skin: Blemishes' },
+            { value: 'attire.top', label: 'Attire: Top' },
+            { value: 'attire.bottom', label: 'Attire: Bottom' },
+            { value: 'attire.footwear', label: 'Attire: Footwear' },
+            { value: 'attire.accessories', label: 'Attire: Accessories' },
+            { value: 'isLinked', label: 'Is Linked' },
+            { value: 'linkedSubjectId', label: 'Linked Subject ID' }
+        ];
+
+        // ============ INIT ============
+        async function init() {
+            // Load manifest
+            const res = await fetch('/assets/skins/asset-manifest.json');
+            manifest = await res.json();
+
+            // Build category tabs
+            const tabs = document.getElementById('categoryTabs');
+            Object.keys(manifest).forEach(cat => {
+                const tab = document.createElement('div');
+                tab.className = 'category-tab' + (cat === currentCategory ? ' active' : '');
+                tab.textContent = cat;
+                tab.onclick = () => selectCategory(cat);
+                tabs.appendChild(tab);
+            });
+
+            // Load assets for initial category
+            renderAssetList();
+
+            // Load saved config if exists
+            await loadConfig();
+
+            // Canvas click to deselect
+            document.getElementById('canvas').addEventListener('click', (e) => {
+                if (e.target.id === 'canvas') {
+                    selectElement(null);
+                }
+            });
+        }
+
+        // ============ ASSET BROWSER ============
+        function selectCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-tab').forEach(t => {
+                t.classList.toggle('active', t.textContent === cat);
+            });
+            renderAssetList();
+        }
+
+        function renderAssetList() {
+            const list = document.getElementById('assetList');
+            list.innerHTML = '';
+
+            let assets = [...(manifest[currentCategory] || [])];
+
+            // Sort by frame area (width * frameHeight) - largest first for better layout
+            assets.sort((a, b) => (b.width * b.frameHeight) - (a.width * a.frameHeight));
+
+            // Category-specific sizing
+            let maxSize = 45; // default for Knobs
+            switch (currentCategory) {
+                case 'Faders':
+                    maxSize = 70; // bigger faders
+                    break;
+                case 'Switches':
+                    maxSize = 56; // 25% bigger than default (45 * 1.25)
+                    break;
+                case 'Displays':
+                case 'Panels':
+                    maxSize = 90; // double size
+                    break;
+                case 'Buttons':
+                    maxSize = 50;
+                    break;
+            }
+
+            assets.forEach(asset => {
+                const item = document.createElement('div');
+                item.className = 'asset-item';
+                item.onclick = () => assignAssetToSelected(asset);
+                item.title = `${asset.file}\n${asset.width}×${asset.frameHeight}px • ${asset.frames} frames`;
+
+                const img = document.createElement('img');
+                img.src = asset.path;
+
+                // Scale to fit the category max size while preserving aspect ratio
+                const scale = Math.min(maxSize / asset.width, maxSize / asset.frameHeight, 1);
+                const scaledWidth = Math.max(asset.width * scale, 20);
+                const scaledFrameHeight = Math.max(asset.frameHeight * scale, 20);
+
+                // Set image dimensions - show only first frame
+                img.style.width = scaledWidth + 'px';
+                img.style.height = (scaledFrameHeight * asset.frames) + 'px';
+                img.style.objectFit = 'cover';
+                img.style.objectPosition = 'top';
+
+                // Wrapper clips to first frame only
+                const wrapper = document.createElement('div');
+                wrapper.style.width = scaledWidth + 'px';
+                wrapper.style.height = scaledFrameHeight + 'px';
+                wrapper.style.overflow = 'hidden';
+
+                wrapper.appendChild(img);
+                item.appendChild(wrapper);
+
+                const frameCount = document.createElement('span');
+                frameCount.className = 'frame-count';
+                frameCount.textContent = asset.frames + 'f';
+                item.appendChild(frameCount);
+
+                list.appendChild(item);
+            });
+        }
+
+        function assignAssetToSelected(asset) {
+            if (!selectedElementId) {
+                alert('Select an element first, or add a new one');
+                return;
+            }
+
+            const el = elements.find(e => e.id === selectedElementId);
+            if (el) {
+                el.asset = asset;
+                // Update size based on asset dims
+                el.width = asset.width;
+                el.height = asset.frameHeight;
+                renderCanvas();
+                renderProperties();
+            }
+        }
+
+        // ============ ELEMENTS ============
+        function generateId() {
+            return 'el-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function addElement(type) {
+            const id = generateId();
+
+            // Default asset based on type
+            let defaultAsset = null;
+            let category = 'Knobs';
+            switch (type) {
+                case 'knob':
+                    category = 'Knobs';
+                    break;
+                case 'fader':
+                case 'hfader':
+                    category = 'Faders';
+                    break;
+                case 'switch':
+                    category = 'Switches';
+                    break;
+                case 'button':
+                    category = 'Buttons';
+                    break;
+                case 'display':
+                    category = 'Displays';
+                    break;
+            }
+            defaultAsset = manifest[category]?.[0] || null;
+
+            const el = {
+                id,
+                type,
+                label: type.charAt(0).toUpperCase() + type.slice(1),
+                binding: '',
+                asset: defaultAsset,
+                x: 100 + (elements.length * 30) % 400,
+                y: 100 + Math.floor(elements.length / 5) * 80,
+                width: defaultAsset?.width || 80,
+                height: defaultAsset?.frameHeight || 80,
+                scale: 1
+            };
+
+            elements.push(el);
+            selectElement(id);
+            renderCanvas();
+            renderElementsList();
+        }
+
+        function deleteSelected() {
+            if (!selectedElementId) return;
+            elements = elements.filter(e => e.id !== selectedElementId);
+            selectedElementId = null;
+            renderCanvas();
+            renderElementsList();
+            renderProperties();
+        }
+
+        function selectElement(id) {
+            selectedElementId = id;
+            renderCanvas();
+            renderElementsList();
+            renderProperties();
+        }
+
+        // ============ CANVAS ============
+        function renderCanvas() {
+            const canvas = document.getElementById('canvas');
+            canvas.innerHTML = '';
+
+            elements.forEach(el => {
+                const div = document.createElement('div');
+                div.className = 'canvas-element' + (el.id === selectedElementId ? ' selected' : '');
+                div.style.left = el.x + 'px';
+                div.style.top = el.y + 'px';
+                div.style.width = (el.width * el.scale) + 'px';
+                div.style.height = (el.height * el.scale) + 'px';
+
+                // Render the actual webaudio control
+                if (el.asset) {
+                    let control;
+                    const w = el.width * el.scale;
+                    const h = el.height * el.scale;
+
+                    if (el.type === 'knob') {
+                        control = document.createElement('webaudio-knob');
+                        control.setAttribute('src', el.asset.path);
+                        // Use width for diameter (knobs can be non-square)
+                        control.setAttribute('diameter', Math.max(el.width, el.height));
+                        control.setAttribute('width', el.width);
+                        control.setAttribute('height', el.height);
+                        control.setAttribute('sprites', el.asset.frames);
+                        control.style.transform = `scale(${el.scale})`;
+                        control.style.transformOrigin = '0 0';
+                    } else if (el.type === 'fader') {
+                        control = document.createElement('webaudio-slider');
+                        control.setAttribute('src', el.asset.path);
+                        control.setAttribute('direction', 'vert');
+                        control.setAttribute('width', el.width);
+                        control.setAttribute('height', el.height);
+                        control.setAttribute('sprites', el.asset.frames);
+                        control.style.transform = `scale(${el.scale})`;
+                        control.style.transformOrigin = '0 0';
+                    } else if (el.type === 'hfader') {
+                        control = document.createElement('webaudio-slider');
+                        control.setAttribute('src', el.asset.path);
+                        control.setAttribute('direction', 'horz');
+                        control.setAttribute('width', el.width);
+                        control.setAttribute('height', el.height);
+                        control.setAttribute('sprites', el.asset.frames);
+                        control.style.transform = `scale(${el.scale})`;
+                        control.style.transformOrigin = '0 0';
+                    } else if (el.type === 'switch') {
+                        control = document.createElement('webaudio-switch');
+                        control.setAttribute('src', el.asset.path);
+                        control.setAttribute('width', el.width);
+                        control.setAttribute('height', el.height);
+                        control.setAttribute('sprites', el.asset.frames);
+                        control.style.transform = `scale(${el.scale})`;
+                        control.style.transformOrigin = '0 0';
+                    } else if (el.type === 'button') {
+                        control = document.createElement('webaudio-switch');
+                        control.setAttribute('src', el.asset.path);
+                        control.setAttribute('width', el.width);
+                        control.setAttribute('height', el.height);
+                        control.setAttribute('sprites', el.asset.frames);
+                        control.style.transform = `scale(${el.scale})`;
+                        control.style.transformOrigin = '0 0';
+                    } else if (el.type === 'display') {
+                        // Display is a static image background for dropdown text overlay
+                        control = document.createElement('img');
+                        control.src = el.asset.path;
+                        control.style.width = el.width + 'px';
+                        control.style.height = el.height + 'px';
+                        control.style.transform = `scale(${el.scale})`;
+                        control.style.transformOrigin = '0 0';
+                        control.style.objectFit = 'cover';
+                        control.style.objectPosition = 'top';
+                    }
+
+                    if (control) {
+                        control.style.pointerEvents = 'none';
+                        div.appendChild(control);
+                    }
+                }
+
+                // Label
+                if (el.label) {
+                    const label = document.createElement('div');
+                    label.className = 'label';
+                    label.textContent = el.label;
+                    div.appendChild(label);
+                }
+
+                // Resize handle
+                const handle = document.createElement('div');
+                handle.className = 'resize-handle';
+                handle.onmousedown = (e) => startResize(e, el);
+                div.appendChild(handle);
+
+                // Drag
+                div.onmousedown = (e) => {
+                    if (e.target.className !== 'resize-handle') {
+                        startDrag(e, el);
+                    }
+                };
+
+                canvas.appendChild(div);
+            });
+        }
+
+        function startDrag(e, el) {
+            e.preventDefault();
+            selectElement(el.id);
+            dragState = {
+                type: 'move',
+                el,
+                startX: e.clientX,
+                startY: e.clientY,
+                origX: el.x,
+                origY: el.y
+            };
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('mouseup', endDrag);
+        }
+
+        function startResize(e, el) {
+            e.preventDefault();
+            e.stopPropagation();
+            dragState = {
+                type: 'resize',
+                el,
+                startX: e.clientX,
+                startY: e.clientY,
+                origScale: el.scale
+            };
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('mouseup', endDrag);
+        }
+
+        function onDrag(e) {
+            if (!dragState) return;
+
+            if (dragState.type === 'move') {
+                const dx = e.clientX - dragState.startX;
+                const dy = e.clientY - dragState.startY;
+                dragState.el.x = Math.max(0, dragState.origX + dx);
+                dragState.el.y = Math.max(0, dragState.origY + dy);
+            } else if (dragState.type === 'resize') {
+                const dx = e.clientX - dragState.startX;
+                const scaleDelta = dx / 100;
+                dragState.el.scale = Math.max(0.1, Math.min(3, dragState.origScale + scaleDelta));
+            }
+
+            renderCanvas();
+            renderProperties();
+        }
+
+        function endDrag() {
+            dragState = null;
+            document.removeEventListener('mousemove', onDrag);
+            document.removeEventListener('mouseup', endDrag);
+        }
+
+        // ============ PROPERTIES PANEL ============
+        function renderProperties() {
+            const container = document.getElementById('propertiesContent');
+
+            if (!selectedElementId) {
+                container.innerHTML = '<div class="no-selection">Select an element to edit its properties</div>';
+                return;
+            }
+
+            const el = elements.find(e => e.id === selectedElementId);
+            if (!el) return;
+
+            container.innerHTML = `
+                <div class="property-group">
+                    <h3>General</h3>
+                    <div class="property-row">
+                        <label>Type</label>
+                        <input type="text" value="${el.type}" readonly style="opacity: 0.6">
+                    </div>
+                    <div class="property-row">
+                        <label>Label</label>
+                        <input type="text" id="propLabel" value="${el.label}" oninput="updateProperty('label', this.value)">
+                    </div>
+                    <div class="property-row">
+                        <label>Binding</label>
+                        <select id="propBinding" onchange="updateProperty('binding', this.value)">
+                            ${BINDINGS.map(b => `<option value="${b.value}" ${el.binding === b.value ? 'selected' : ''}>${b.label}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="property-group">
+                    <h3>Position</h3>
+                    <div class="property-row">
+                        <label>X / Y</label>
+                        <div class="coord-group">
+                            <input type="number" id="propX" value="${Math.round(el.x)}" onchange="updateProperty('x', parseFloat(this.value))">
+                            <span>,</span>
+                            <input type="number" id="propY" value="${Math.round(el.y)}" onchange="updateProperty('y', parseFloat(this.value))">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-group">
+                    <h3>Size</h3>
+                    <div class="property-row">
+                        <label>W / H</label>
+                        <div class="coord-group">
+                            <input type="number" id="propW" value="${el.width}" onchange="updateProperty('width', parseFloat(this.value))">
+                            <span>×</span>
+                            <input type="number" id="propH" value="${el.height}" onchange="updateProperty('height', parseFloat(this.value))">
+                        </div>
+                    </div>
+                    <div class="property-row">
+                        <label>Scale</label>
+                        <input type="range" min="0.1" max="2" step="0.05" value="${el.scale}" style="flex: 1" oninput="updateProperty('scale', parseFloat(this.value))">
+                        <span style="width: 40px; text-align: right">${(el.scale * 100).toFixed(0)}%</span>
+                    </div>
+                </div>
+                
+                <div class="property-group">
+                    <h3>Asset</h3>
+                    <div class="current-asset">
+                        ${el.asset ? `
+                            <img src="${el.asset.path}" style="clip-path: inset(0 0 ${((el.asset.frames - 1) / el.asset.frames) * 100}% 0)">
+                            <div>${el.asset.file}</div>
+                            <div style="color: var(--text-secondary)">${el.asset.frames} frames • ${el.asset.width}×${el.asset.frameHeight}px</div>
+                        ` : '<div>No asset selected</div>'}
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">
+                        Click an asset in the browser to apply it
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateProperty(prop, value) {
+            const el = elements.find(e => e.id === selectedElementId);
+            if (el) {
+                el[prop] = value;
+                renderCanvas();
+                // Don't re-render properties to avoid losing focus
+                if (prop === 'scale') {
+                    document.querySelector('.property-group:nth-child(3) span:last-child').textContent = (value * 100).toFixed(0) + '%';
+                }
+            }
+        }
+
+        // ============ ELEMENTS LIST ============
+        function renderElementsList() {
+            const list = document.getElementById('elementsList');
+            list.innerHTML = '';
+
+            if (elements.length === 0) {
+                list.innerHTML = '<div style="color: var(--text-secondary); font-size: 12px; padding: 8px;">No elements yet</div>';
+                return;
+            }
+
+            elements.forEach(el => {
+                const item = document.createElement('div');
+                item.className = 'element-item' + (el.id === selectedElementId ? ' selected' : '');
+                item.onclick = () => selectElement(el.id);
+
+                const icon = document.createElement('span');
+                icon.className = 'type-icon';
+                icon.textContent = el.type === 'knob' ? '⚙' : el.type === 'fader' || el.type === 'hfader' ? '↕' : el.type === 'switch' ? '⏻' : '◉';
+                item.appendChild(icon);
+
+                const name = document.createElement('span');
+                name.textContent = el.label || el.type;
+                item.appendChild(name);
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-btn';
+                delBtn.textContent = '×';
+                delBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    elements = elements.filter(x => x.id !== el.id);
+                    if (selectedElementId === el.id) selectedElementId = null;
+                    renderCanvas();
+                    renderElementsList();
+                    renderProperties();
+                };
+                item.appendChild(delBtn);
+
+                list.appendChild(item);
+            });
+        }
+
+        // ============ SAVE/LOAD ============
+        async function saveConfig() {
+            const config = {
+                module: 'Subject',
+                canvasSize: { width: 900, height: 520 },
+                elements: elements.map(el => ({
+                    id: el.id,
+                    type: el.type,
+                    label: el.label,
+                    binding: el.binding,
+                    asset: el.asset ? {
+                        path: el.asset.path,
+                        file: el.asset.file,
+                        frames: el.asset.frames,
+                        width: el.asset.width,
+                        frameHeight: el.asset.frameHeight
+                    } : null,
+                    x: Math.round(el.x),
+                    y: Math.round(el.y),
+                    width: el.width,
+                    height: el.height,
+                    scale: el.scale
+                }))
+            };
+
+            // Download as JSON (can't write directly from browser)
+            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'subject.json';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert('Config downloaded as subject.json\nMove it to data/module-configs/ to persist');
+        }
+
+        async function loadConfig() {
+            try {
+                const res = await fetch('/data/module-configs/subject.json');
+                if (res.ok) {
+                    const config = await res.json();
+                    elements = config.elements.map(el => ({
+                        ...el,
+                        asset: el.asset
+                    }));
+                    renderCanvas();
+                    renderElementsList();
+                }
+            } catch (e) {
+                console.log('No saved config found');
+            }
+        }
+
+        function exportTSX() {
+            if (elements.length === 0) {
+                alert('No elements to export!');
+                return;
+            }
+
+            // Generate TSX code for the module
+            let tsxCode = `// Generated by Module Editor\n`;
+            tsxCode += `// Module: Subject\n\n`;
+            tsxCode += `const ASSETS = {\n`;
+
+            // Collect unique assets
+            const usedAssets = new Map();
+            elements.forEach(el => {
+                if (el.asset) {
+                    const key = el.label.toUpperCase().replace(/\s+/g, '_');
+                    usedAssets.set(key, el.asset.path);
+                }
+            });
+            usedAssets.forEach((path, key) => {
+                tsxCode += `    ${key}: "${path}",\n`;
+            });
+            tsxCode += `};\n\n`;
+
+            tsxCode += `// Element configurations\n`;
+            tsxCode += `const MODULE_ELEMENTS = [\n`;
+
+            elements.forEach(el => {
+                tsxCode += `    {\n`;
+                tsxCode += `        id: "${el.id}",\n`;
+                tsxCode += `        type: "${el.type}",\n`;
+                tsxCode += `        label: "${el.label}",\n`;
+                tsxCode += `        binding: "${el.binding}",\n`;
+                tsxCode += `        position: { x: ${Math.round(el.x)}, y: ${Math.round(el.y)} },\n`;
+                tsxCode += `        size: { width: ${el.width}, height: ${el.height} },\n`;
+                tsxCode += `        scale: ${el.scale.toFixed(2)},\n`;
+                if (el.asset) {
+                    tsxCode += `        asset: {\n`;
+                    tsxCode += `            path: "${el.asset.path}",\n`;
+                    tsxCode += `            frames: ${el.asset.frames},\n`;
+                    tsxCode += `        },\n`;
+                }
+                tsxCode += `    },\n`;
+            });
+
+            tsxCode += `];\n`;
+
+            // Download as TSX file
+            const blob = new Blob([tsxCode], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'SubjectModule.generated.tsx';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert('TSX exported! Check your downloads folder.');
+        }
+
+        // ============ ADD ELEMENT DROPDOWN ============
+        document.getElementById('addElementType').addEventListener('change', (e) => {
+            if (e.target.value) {
+                addElement(e.target.value);
+                e.target.value = '';
+            }
+        });
+
+        // ============ START ============
+        init();
+    </script>
+</body>
+
+</html>

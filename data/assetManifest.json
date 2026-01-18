@@ -1,0 +1,1568 @@
+{
+  "knobs": [
+    {
+      "id": "Knob_01_63frames",
+      "filename": "Knob_01_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_01_63frames.png",
+      "frames": 63,
+      "width": 180,
+      "height": 200
+    },
+    {
+      "id": "Knob_02_63frames",
+      "filename": "Knob_02_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_02_63frames.png",
+      "frames": 63,
+      "width": 180,
+      "height": 200
+    },
+    {
+      "id": "Knob_03_63frames",
+      "filename": "Knob_03_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_03_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "height": 245
+    },
+    {
+      "id": "Knob_04_63frames",
+      "filename": "Knob_04_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_04_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "height": 245
+    },
+    {
+      "id": "Knob_05_63frames",
+      "filename": "Knob_05_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_05_63frames.png",
+      "frames": 63,
+      "width": 180,
+      "height": 200
+    },
+    {
+      "id": "Knob_06_63frames",
+      "filename": "Knob_06_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_06_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "height": 230
+    },
+    {
+      "id": "Knob_07_63frames",
+      "filename": "Knob_07_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_07_63frames.png",
+      "frames": 63,
+      "width": 130,
+      "height": 170
+    },
+    {
+      "id": "Knob_08_63frames",
+      "filename": "Knob_08_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_08_63frames.png",
+      "frames": 63,
+      "width": 200,
+      "height": 210
+    },
+    {
+      "id": "Knob_09_63frames",
+      "filename": "Knob_09_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_09_63frames.png",
+      "frames": 63,
+      "width": 235,
+      "height": 260
+    },
+    {
+      "id": "Knob_10_63frames",
+      "filename": "Knob_10_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_10_63frames.png",
+      "frames": 63,
+      "width": 230,
+      "height": 255
+    },
+    {
+      "id": "Knob_11_63frames",
+      "filename": "Knob_11_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_11_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 135
+    },
+    {
+      "id": "Knob_12_63frames",
+      "filename": "Knob_12_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_12_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 135
+    },
+    {
+      "id": "Knob_13_63frames",
+      "filename": "Knob_13_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_13_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "height": 135
+    },
+    {
+      "id": "Knob_14_63frames",
+      "filename": "Knob_14_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_14_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "height": 205
+    },
+    {
+      "id": "Knob_15_63frames",
+      "filename": "Knob_15_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_15_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "height": 205
+    },
+    {
+      "id": "Knob_16_63frames",
+      "filename": "Knob_16_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_16_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "height": 240
+    },
+    {
+      "id": "Knob_17_63frames",
+      "filename": "Knob_17_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_17_63frames.png",
+      "frames": 63,
+      "width": 120,
+      "height": 130
+    },
+    {
+      "id": "Knob_18_63frames",
+      "filename": "Knob_18_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_18_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 135
+    },
+    {
+      "id": "Knob_19_63frames",
+      "filename": "Knob_19_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_19_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "height": 135
+    },
+    {
+      "id": "Knob_20_63frames",
+      "filename": "Knob_20_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_20_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "height": 130
+    },
+    {
+      "id": "Knob_21_63frames",
+      "filename": "Knob_21_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_21_63frames.png",
+      "frames": 63,
+      "width": 130,
+      "height": 135
+    },
+    {
+      "id": "Knob_22_63frames",
+      "filename": "Knob_22_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_22_63frames.png",
+      "frames": 63,
+      "width": 120,
+      "height": 140
+    },
+    {
+      "id": "Knob_23_63frames",
+      "filename": "Knob_23_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_23_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "height": 125
+    },
+    {
+      "id": "Knob_24_63frames",
+      "filename": "Knob_24_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_24_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "height": 130
+    },
+    {
+      "id": "Knob_25_63frames",
+      "filename": "Knob_25_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_25_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "height": 130
+    },
+    {
+      "id": "Knob_26_63frames",
+      "filename": "Knob_26_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_26_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "height": 130
+    },
+    {
+      "id": "Knob_27_63frames",
+      "filename": "Knob_27_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_27_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "height": 135
+    },
+    {
+      "id": "Knob_28_63frames",
+      "filename": "Knob_28_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_28_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "height": 130
+    },
+    {
+      "id": "Knob_29_63frames",
+      "filename": "Knob_29_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_29_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "height": 125
+    },
+    {
+      "id": "Knob_30_63frames",
+      "filename": "Knob_30_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_30_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "height": 130
+    },
+    {
+      "id": "Knob_31_63frames",
+      "filename": "Knob_31_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_31_63frames.png",
+      "frames": 63,
+      "width": 120,
+      "height": 135
+    },
+    {
+      "id": "Knob_32_63frames",
+      "filename": "Knob_32_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_32_63frames.png",
+      "frames": 63,
+      "width": 150,
+      "height": 170
+    },
+    {
+      "id": "Knob_33_63frames",
+      "filename": "Knob_33_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_33_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 130
+    },
+    {
+      "id": "Knob_34_63frames",
+      "filename": "Knob_34_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_34_63frames.png",
+      "frames": 63,
+      "width": 140,
+      "height": 165
+    },
+    {
+      "id": "Knob_35_63frames",
+      "filename": "Knob_35_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_35_63frames.png",
+      "frames": 63,
+      "width": 190,
+      "height": 215
+    },
+    {
+      "id": "Knob_36_63frames",
+      "filename": "Knob_36_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_36_63frames.png",
+      "frames": 63,
+      "width": 190,
+      "height": 215
+    },
+    {
+      "id": "Knob_37_63frames",
+      "filename": "Knob_37_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_37_63frames.png",
+      "frames": 63,
+      "width": 325,
+      "height": 360
+    },
+    {
+      "id": "Knob_38_63frames",
+      "filename": "Knob_38_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_38_63frames.png",
+      "frames": 63,
+      "width": 145,
+      "height": 175
+    },
+    {
+      "id": "Knob_39_64frames",
+      "filename": "Knob_39_64frames.png",
+      "path": "/assets/gui/Knobs/Knob_39_64frames.png",
+      "frames": 64,
+      "width": 90,
+      "height": 105
+    },
+    {
+      "id": "Knob_40_64frames",
+      "filename": "Knob_40_64frames.png",
+      "path": "/assets/gui/Knobs/Knob_40_64frames.png",
+      "frames": 64,
+      "width": 300,
+      "height": 290
+    },
+    {
+      "id": "Knob_41_63frames",
+      "filename": "Knob_41_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_41_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 145
+    },
+    {
+      "id": "Knob_42_63frames",
+      "filename": "Knob_42_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_42_63frames.png",
+      "frames": 63,
+      "width": 250,
+      "height": 255
+    },
+    {
+      "id": "Knob_43_63frames",
+      "filename": "Knob_43_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_43_63frames.png",
+      "frames": 63,
+      "width": 250,
+      "height": 255
+    },
+    {
+      "id": "Knob_44_63frames",
+      "filename": "Knob_44_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_44_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "height": 160
+    },
+    {
+      "id": "Knob_45_63frames",
+      "filename": "Knob_45_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_45_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "height": 150
+    },
+    {
+      "id": "Knob_46_63frames",
+      "filename": "Knob_46_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_46_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "height": 130
+    },
+    {
+      "id": "Knob_47_63frames",
+      "filename": "Knob_47_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_47_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 140
+    },
+    {
+      "id": "Knob_48_63frames",
+      "filename": "Knob_48_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_48_63frames.png",
+      "frames": 63,
+      "width": 85,
+      "height": 105
+    },
+    {
+      "id": "Knob_49_63frames",
+      "filename": "Knob_49_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_49_63frames.png",
+      "frames": 63,
+      "width": 145,
+      "height": 160
+    },
+    {
+      "id": "Knob_50_63frames",
+      "filename": "Knob_50_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_50_63frames.png",
+      "frames": 63,
+      "width": 135,
+      "height": 155
+    },
+    {
+      "id": "Knob_51_63frames",
+      "filename": "Knob_51_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_51_63frames.png",
+      "frames": 63,
+      "width": 95,
+      "height": 110
+    },
+    {
+      "id": "Knob_52_63frames",
+      "filename": "Knob_52_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_52_63frames.png",
+      "frames": 63,
+      "width": 220,
+      "height": 245
+    },
+    {
+      "id": "Knob_53_63frames",
+      "filename": "Knob_53_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_53_63frames.png",
+      "frames": 63,
+      "width": 135,
+      "height": 170
+    },
+    {
+      "id": "Knob_54_63frames",
+      "filename": "Knob_54_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_54_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "height": 230
+    },
+    {
+      "id": "Knob_55_63frames",
+      "filename": "Knob_55_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_55_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "height": 215
+    },
+    {
+      "id": "Knob_56_63frames",
+      "filename": "Knob_56_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_56_63frames.png",
+      "frames": 63,
+      "width": 130,
+      "height": 145
+    },
+    {
+      "id": "Knob_57_63frames",
+      "filename": "Knob_57_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_57_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 130
+    },
+    {
+      "id": "Knob_58_64frames",
+      "filename": "Knob_58_64frames.png",
+      "path": "/assets/gui/Knobs/Knob_58_64frames.png",
+      "frames": 64,
+      "width": 265,
+      "height": 290
+    },
+    {
+      "id": "Knob_59_63frames",
+      "filename": "Knob_59_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_59_63frames.png",
+      "frames": 63,
+      "width": 135,
+      "height": 170
+    },
+    {
+      "id": "Knob_60_63frames",
+      "filename": "Knob_60_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_60_63frames.png",
+      "frames": 63,
+      "width": 120,
+      "height": 135
+    },
+    {
+      "id": "Knob_61_63frames",
+      "filename": "Knob_61_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_61_63frames.png",
+      "frames": 63,
+      "width": 155,
+      "height": 170
+    },
+    {
+      "id": "Knob_62_63frames",
+      "filename": "Knob_62_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_62_63frames.png",
+      "frames": 63,
+      "width": 110,
+      "height": 135
+    },
+    {
+      "id": "Knob_63_63frames",
+      "filename": "Knob_63_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_63_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "height": 125
+    },
+    {
+      "id": "Knob_64_63frames",
+      "filename": "Knob_64_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_64_63frames.png",
+      "frames": 63,
+      "width": 210,
+      "height": 245
+    },
+    {
+      "id": "Knob_65_63frames",
+      "filename": "Knob_65_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_65_63frames.png",
+      "frames": 63,
+      "width": 150,
+      "height": 170
+    },
+    {
+      "id": "Knob_66_63frames",
+      "filename": "Knob_66_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_66_63frames.png",
+      "frames": 63,
+      "width": 105,
+      "height": 120
+    },
+    {
+      "id": "Knob_67_63frames",
+      "filename": "Knob_67_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_67_63frames.png",
+      "frames": 63,
+      "width": 140,
+      "height": 165
+    },
+    {
+      "id": "Knob_68_63frames",
+      "filename": "Knob_68_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_68_63frames.png",
+      "frames": 63,
+      "width": 95,
+      "height": 120
+    },
+    {
+      "id": "Knob_69_63frames",
+      "filename": "Knob_69_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_69_63frames.png",
+      "frames": 63,
+      "width": 175,
+      "height": 200
+    },
+    {
+      "id": "Knob_70_63frames",
+      "filename": "Knob_70_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_70_63frames.png",
+      "frames": 63,
+      "width": 170,
+      "height": 215
+    },
+    {
+      "id": "Knob_71_63frames",
+      "filename": "Knob_71_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_71_63frames.png",
+      "frames": 63,
+      "width": 230,
+      "height": 250
+    },
+    {
+      "id": "Knob_72_63frames",
+      "filename": "Knob_72_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_72_63frames.png",
+      "frames": 63,
+      "width": 235,
+      "height": 250
+    },
+    {
+      "id": "Knob_73_63frames",
+      "filename": "Knob_73_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_73_63frames.png",
+      "frames": 63,
+      "width": 155,
+      "height": 200
+    },
+    {
+      "id": "Knob_75_63frames",
+      "filename": "Knob_75_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_75_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 145
+    },
+    {
+      "id": "Knob_76_63frames",
+      "filename": "Knob_76_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_76_63frames.png",
+      "frames": 63,
+      "width": 100,
+      "height": 125
+    },
+    {
+      "id": "Knob_77_63frames",
+      "filename": "Knob_77_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_77_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "height": 225
+    },
+    {
+      "id": "Knob_78_63frames",
+      "filename": "Knob_78_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_78_63frames.png",
+      "frames": 63,
+      "width": 250,
+      "height": 270
+    },
+    {
+      "id": "Knob_79_6frames",
+      "filename": "Knob_79_6frames.png",
+      "path": "/assets/gui/Knobs/Knob_79_6frames.png",
+      "frames": 6,
+      "width": 210,
+      "height": 265
+    },
+    {
+      "id": "Knob_80_64frames",
+      "filename": "Knob_80_64frames.png",
+      "path": "/assets/gui/Knobs/Knob_80_64frames.png",
+      "frames": 64,
+      "width": 185,
+      "height": 220
+    },
+    {
+      "id": "Knob_81_63frames",
+      "filename": "Knob_81_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_81_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "height": 150
+    },
+    {
+      "id": "Knob_82_63frames",
+      "filename": "Knob_82_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_82_63frames.png",
+      "frames": 63,
+      "width": 170,
+      "height": 185
+    },
+    {
+      "id": "Knob_83_63frames",
+      "filename": "Knob_83_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_83_63frames.png",
+      "frames": 63,
+      "width": 185,
+      "height": 235
+    },
+    {
+      "id": "Knob_84_63frames",
+      "filename": "Knob_84_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_84_63frames.png",
+      "frames": 63,
+      "width": 130,
+      "height": 170
+    },
+    {
+      "id": "Knob_85_63frames",
+      "filename": "Knob_85_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_85_63frames.png",
+      "frames": 63,
+      "width": 215,
+      "height": 245
+    },
+    {
+      "id": "Knob_86_29frames",
+      "filename": "Knob_86_29frames.png",
+      "path": "/assets/gui/Knobs/Knob_86_29frames.png",
+      "frames": 29,
+      "width": 325,
+      "height": 375
+    },
+    {
+      "id": "Knob_87_63frames",
+      "filename": "Knob_87_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_87_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "height": 170
+    },
+    {
+      "id": "Knob_88_63frames",
+      "filename": "Knob_88_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_88_63frames.png",
+      "frames": 63,
+      "width": 125,
+      "height": 170
+    },
+    {
+      "id": "Knob_89_64frames",
+      "filename": "Knob_89_64frames.png",
+      "path": "/assets/gui/Knobs/Knob_89_64frames.png",
+      "frames": 64,
+      "width": 325,
+      "height": 375
+    },
+    {
+      "id": "Knob_91_63frames",
+      "filename": "Knob_91_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_91_63frames.png",
+      "frames": 63,
+      "width": 215,
+      "height": 245
+    },
+    {
+      "id": "Knob_92_63frames",
+      "filename": "Knob_92_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_92_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 145
+    },
+    {
+      "id": "Knob_93_63frames",
+      "filename": "Knob_93_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_93_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 145
+    },
+    {
+      "id": "Knob_94_63frames",
+      "filename": "Knob_94_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_94_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 145
+    },
+    {
+      "id": "Knob_95_63frames",
+      "filename": "Knob_95_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_95_63frames.png",
+      "frames": 63,
+      "width": 115,
+      "height": 145
+    },
+    {
+      "id": "Knob_96_63frames",
+      "filename": "Knob_96_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_96_63frames.png",
+      "frames": 63,
+      "width": 150,
+      "height": 165
+    },
+    {
+      "id": "Knob_97_63frames",
+      "filename": "Knob_97_63frames.png",
+      "path": "/assets/gui/Knobs/Knob_97_63frames.png",
+      "frames": 63,
+      "width": 150,
+      "height": 165
+    },
+    {
+      "id": "Trim_Knob_64frames",
+      "filename": "Trim_Knob_64frames.png",
+      "path": "/assets/gui/Knobs/Trim_Knob_64frames.png",
+      "frames": 64,
+      "width": 95,
+      "height": 110
+    },
+    {
+      "id": "Trim_Screw_01_63frames",
+      "filename": "Trim_Screw_01_63frames.png",
+      "path": "/assets/gui/Knobs/Trim_Screw_01_63frames.png",
+      "frames": 63,
+      "width": 85,
+      "height": 85
+    }
+  ],
+  "faders": [
+    {
+      "id": "Fader_01_60frames",
+      "filename": "Fader_01_60frames.png",
+      "path": "/assets/gui/Faders/Fader_01_60frames.png",
+      "frames": 60,
+      "width": 610,
+      "height": 90,
+      "direction": "horz"
+    },
+    {
+      "id": "Fader_02_60frames",
+      "filename": "Fader_02_60frames.png",
+      "path": "/assets/gui/Faders/Fader_02_60frames.png",
+      "frames": 60,
+      "width": 555,
+      "height": 80,
+      "direction": "horz"
+    },
+    {
+      "id": "Fader_03_60frames",
+      "filename": "Fader_03_60frames.png",
+      "path": "/assets/gui/Faders/Fader_03_60frames.png",
+      "frames": 60,
+      "width": 620,
+      "height": 80,
+      "direction": "horz"
+    },
+    {
+      "id": "Fader_04_60frames",
+      "filename": "Fader_04_60frames.png",
+      "path": "/assets/gui/Faders/Fader_04_60frames.png",
+      "frames": 60,
+      "width": 140,
+      "height": 555,
+      "direction": "vert"
+    },
+    {
+      "id": "Fader_05_60frames",
+      "filename": "Fader_05_60frames.png",
+      "path": "/assets/gui/Faders/Fader_05_60frames.png",
+      "frames": 60,
+      "width": 140,
+      "height": 555,
+      "direction": "vert"
+    },
+    {
+      "id": "Fader_06_60frames",
+      "filename": "Fader_06_60frames.png",
+      "path": "/assets/gui/Faders/Fader_06_60frames.png",
+      "frames": 60,
+      "width": 545,
+      "height": 135,
+      "direction": "horz"
+    },
+    {
+      "id": "Fader_07_60frames",
+      "filename": "Fader_07_60frames.png",
+      "path": "/assets/gui/Faders/Fader_07_60frames.png",
+      "frames": 60,
+      "width": 545,
+      "height": 90,
+      "direction": "horz"
+    },
+    {
+      "id": "Fader_09_60frames",
+      "filename": "Fader_09_60frames.png",
+      "path": "/assets/gui/Faders/Fader_09_60frames.png",
+      "frames": 60,
+      "width": 520,
+      "height": 75,
+      "direction": "horz"
+    },
+    {
+      "id": "Fader_10_60frames",
+      "filename": "Fader_10_60frames.png",
+      "path": "/assets/gui/Faders/Fader_10_60frames.png",
+      "frames": 60,
+      "width": 525,
+      "height": 95,
+      "direction": "horz"
+    },
+    {
+      "id": "Fader_14_60frames",
+      "filename": "Fader_14_60frames.png",
+      "path": "/assets/gui/Faders/Fader_14_60frames.png",
+      "frames": 60,
+      "width": 55,
+      "height": 405,
+      "direction": "vert"
+    },
+    {
+      "id": "Fader_21_60frames",
+      "filename": "Fader_21_60frames.png",
+      "path": "/assets/gui/Faders/Fader_21_60frames.png",
+      "frames": 60,
+      "width": 95,
+      "height": 410,
+      "direction": "vert"
+    },
+    {
+      "id": "Fader_22_60frames",
+      "filename": "Fader_22_60frames.png",
+      "path": "/assets/gui/Faders/Fader_22_60frames.png",
+      "frames": 60,
+      "width": 115,
+      "height": 290,
+      "direction": "vert"
+    },
+    {
+      "id": "Fader_23_12frames",
+      "filename": "Fader_23_12frames.png",
+      "path": "/assets/gui/Faders/Fader_23_12frames.png",
+      "frames": 12,
+      "width": 155,
+      "height": 370,
+      "direction": "vert"
+    },
+    {
+      "id": "Fader_24_12frames",
+      "filename": "Fader_24_12frames.png",
+      "path": "/assets/gui/Faders/Fader_24_12frames.png",
+      "frames": 12,
+      "width": 800,
+      "height": 85,
+      "direction": "horz"
+    }
+  ],
+  "switches": [
+    {
+      "id": "Switch_01_2frames",
+      "filename": "Switch_01_2frames.png",
+      "path": "/assets/gui/Switches/Switch_01_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "height": 140
+    },
+    {
+      "id": "Switch_02_2frames",
+      "filename": "Switch_02_2frames.png",
+      "path": "/assets/gui/Switches/Switch_02_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 140
+    },
+    {
+      "id": "Switch_03_2frames",
+      "filename": "Switch_03_2frames.png",
+      "path": "/assets/gui/Switches/Switch_03_2frames.png",
+      "frames": 2,
+      "width": 110,
+      "height": 180
+    },
+    {
+      "id": "Switch_04_2frames",
+      "filename": "Switch_04_2frames.png",
+      "path": "/assets/gui/Switches/Switch_04_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 140
+    },
+    {
+      "id": "Switch_05_2frames",
+      "filename": "Switch_05_2frames.png",
+      "path": "/assets/gui/Switches/Switch_05_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 140
+    },
+    {
+      "id": "Switch_06_2frames",
+      "filename": "Switch_06_2frames.png",
+      "path": "/assets/gui/Switches/Switch_06_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "height": 140
+    },
+    {
+      "id": "Switch_07_2frames",
+      "filename": "Switch_07_2frames.png",
+      "path": "/assets/gui/Switches/Switch_07_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 140
+    },
+    {
+      "id": "Switch_08_2frames",
+      "filename": "Switch_08_2frames.png",
+      "path": "/assets/gui/Switches/Switch_08_2frames.png",
+      "frames": 2,
+      "width": 80,
+      "height": 110
+    },
+    {
+      "id": "Switch_09_2frames",
+      "filename": "Switch_09_2frames.png",
+      "path": "/assets/gui/Switches/Switch_09_2frames.png",
+      "frames": 2,
+      "width": 430,
+      "height": 230
+    }
+  ],
+  "buttons": [
+    {
+      "id": "Button_01_2frames",
+      "filename": "Button_01_2frames.png",
+      "path": "/assets/gui/Buttons/Button_01_2frames.png",
+      "frames": 2,
+      "width": 195,
+      "height": 115
+    },
+    {
+      "id": "Button_02_2frames",
+      "filename": "Button_02_2frames.png",
+      "path": "/assets/gui/Buttons/Button_02_2frames.png",
+      "frames": 2,
+      "width": 195,
+      "height": 115
+    },
+    {
+      "id": "Button_03_2frames",
+      "filename": "Button_03_2frames.png",
+      "path": "/assets/gui/Buttons/Button_03_2frames.png",
+      "frames": 2,
+      "width": 75,
+      "height": 80
+    },
+    {
+      "id": "Button_04_2frames",
+      "filename": "Button_04_2frames.png",
+      "path": "/assets/gui/Buttons/Button_04_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "height": 75
+    },
+    {
+      "id": "Button_06_2frames",
+      "filename": "Button_06_2frames.png",
+      "path": "/assets/gui/Buttons/Button_06_2frames.png",
+      "frames": 2,
+      "width": 90,
+      "height": 95
+    },
+    {
+      "id": "Button_07_2frames",
+      "filename": "Button_07_2frames.png",
+      "path": "/assets/gui/Buttons/Button_07_2frames.png",
+      "frames": 2,
+      "width": 180,
+      "height": 120
+    },
+    {
+      "id": "Button_08_2frames",
+      "filename": "Button_08_2frames.png",
+      "path": "/assets/gui/Buttons/Button_08_2frames.png",
+      "frames": 2,
+      "width": 90,
+      "height": 95
+    },
+    {
+      "id": "Button_100_2frames",
+      "filename": "Button_100_2frames.png",
+      "path": "/assets/gui/Buttons/Button_100_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 65
+    },
+    {
+      "id": "Button_101_2frames",
+      "filename": "Button_101_2frames.png",
+      "path": "/assets/gui/Buttons/Button_101_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "height": 90
+    },
+    {
+      "id": "Button_102_2frames",
+      "filename": "Button_102_2frames.png",
+      "path": "/assets/gui/Buttons/Button_102_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 95
+    },
+    {
+      "id": "Button_103_2frames",
+      "filename": "Button_103_2frames.png",
+      "path": "/assets/gui/Buttons/Button_103_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 95
+    },
+    {
+      "id": "Button_104_2frames",
+      "filename": "Button_104_2frames.png",
+      "path": "/assets/gui/Buttons/Button_104_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 95
+    },
+    {
+      "id": "Button_105_2frames",
+      "filename": "Button_105_2frames.png",
+      "path": "/assets/gui/Buttons/Button_105_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 95
+    },
+    {
+      "id": "Button_106_2frames",
+      "filename": "Button_106_2frames.png",
+      "path": "/assets/gui/Buttons/Button_106_2frames.png",
+      "frames": 2,
+      "width": 45,
+      "height": 50
+    },
+    {
+      "id": "Button_107_2frames",
+      "filename": "Button_107_2frames.png",
+      "path": "/assets/gui/Buttons/Button_107_2frames.png",
+      "frames": 2,
+      "width": 120,
+      "height": 130
+    },
+    {
+      "id": "Button_109_2frames",
+      "filename": "Button_109_2frames.png",
+      "path": "/assets/gui/Buttons/Button_109_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "height": 125
+    },
+    {
+      "id": "Button_110_2frames",
+      "filename": "Button_110_2frames.png",
+      "path": "/assets/gui/Buttons/Button_110_2frames.png",
+      "frames": 2,
+      "width": 80,
+      "height": 85
+    },
+    {
+      "id": "Button_111_4frames",
+      "filename": "Button_111_4frames.png",
+      "path": "/assets/gui/Buttons/Button_111_4frames.png",
+      "frames": 4,
+      "width": 130,
+      "height": 135
+    },
+    {
+      "id": "Button_11_2frames",
+      "filename": "Button_11_2frames.png",
+      "path": "/assets/gui/Buttons/Button_11_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "height": 55
+    },
+    {
+      "id": "Button_13_2frames",
+      "filename": "Button_13_2frames.png",
+      "path": "/assets/gui/Buttons/Button_13_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "height": 60
+    },
+    {
+      "id": "Button_14_2frames",
+      "filename": "Button_14_2frames.png",
+      "path": "/assets/gui/Buttons/Button_14_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "height": 70
+    },
+    {
+      "id": "Button_15_2frames",
+      "filename": "Button_15_2frames.png",
+      "path": "/assets/gui/Buttons/Button_15_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "height": 70
+    },
+    {
+      "id": "Button_16_2frames",
+      "filename": "Button_16_2frames.png",
+      "path": "/assets/gui/Buttons/Button_16_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "height": 75
+    },
+    {
+      "id": "Button_17_2frames",
+      "filename": "Button_17_2frames.png",
+      "path": "/assets/gui/Buttons/Button_17_2frames.png",
+      "frames": 2,
+      "width": 110,
+      "height": 65
+    },
+    {
+      "id": "Button_18_2frames",
+      "filename": "Button_18_2frames.png",
+      "path": "/assets/gui/Buttons/Button_18_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "height": 75
+    },
+    {
+      "id": "Button_19_2frames",
+      "filename": "Button_19_2frames.png",
+      "path": "/assets/gui/Buttons/Button_19_2frames.png",
+      "frames": 2,
+      "width": 110,
+      "height": 115
+    },
+    {
+      "id": "Button_20_2frames",
+      "filename": "Button_20_2frames.png",
+      "path": "/assets/gui/Buttons/Button_20_2frames.png",
+      "frames": 2,
+      "width": 70,
+      "height": 75
+    },
+    {
+      "id": "Button_21_2frames",
+      "filename": "Button_21_2frames.png",
+      "path": "/assets/gui/Buttons/Button_21_2frames.png",
+      "frames": 2,
+      "width": 70,
+      "height": 75
+    },
+    {
+      "id": "Button_22_2frames",
+      "filename": "Button_22_2frames.png",
+      "path": "/assets/gui/Buttons/Button_22_2frames.png",
+      "frames": 2,
+      "width": 70,
+      "height": 75
+    },
+    {
+      "id": "Button_23_2frames",
+      "filename": "Button_23_2frames.png",
+      "path": "/assets/gui/Buttons/Button_23_2frames.png",
+      "frames": 2,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "id": "Button_24_2frames",
+      "filename": "Button_24_2frames.png",
+      "path": "/assets/gui/Buttons/Button_24_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 100
+    },
+    {
+      "id": "Button_25_2frames",
+      "filename": "Button_25_2frames.png",
+      "path": "/assets/gui/Buttons/Button_25_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 75
+    },
+    {
+      "id": "Button_26_2frames",
+      "filename": "Button_26_2frames.png",
+      "path": "/assets/gui/Buttons/Button_26_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "height": 90
+    },
+    {
+      "id": "Button_27_2frames",
+      "filename": "Button_27_2frames.png",
+      "path": "/assets/gui/Buttons/Button_27_2frames.png",
+      "frames": 2,
+      "width": 75,
+      "height": 75
+    },
+    {
+      "id": "Button_30_2frames",
+      "filename": "Button_30_2frames.png",
+      "path": "/assets/gui/Buttons/Button_30_2frames.png",
+      "frames": 2,
+      "width": 145,
+      "height": 150
+    },
+    {
+      "id": "Button_32_2frames",
+      "filename": "Button_32_2frames.png",
+      "path": "/assets/gui/Buttons/Button_32_2frames.png",
+      "frames": 2,
+      "width": 60,
+      "height": 65
+    },
+    {
+      "id": "Button_33_2frames",
+      "filename": "Button_33_2frames.png",
+      "path": "/assets/gui/Buttons/Button_33_2frames.png",
+      "frames": 2,
+      "width": 60,
+      "height": 65
+    },
+    {
+      "id": "Button_34_2frames",
+      "filename": "Button_34_2frames.png",
+      "path": "/assets/gui/Buttons/Button_34_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "height": 70
+    },
+    {
+      "id": "Button_35_2frames",
+      "filename": "Button_35_2frames.png",
+      "path": "/assets/gui/Buttons/Button_35_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "height": 70
+    },
+    {
+      "id": "Button_38_2frames",
+      "filename": "Button_38_2frames.png",
+      "path": "/assets/gui/Buttons/Button_38_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "height": 75
+    },
+    {
+      "id": "Button_41_60frames",
+      "filename": "Button_41_60frames.png",
+      "path": "/assets/gui/Buttons/Button_41_60frames.png",
+      "frames": 60,
+      "width": 85,
+      "height": 65
+    },
+    {
+      "id": "Button_42_2frames",
+      "filename": "Button_42_2frames.png",
+      "path": "/assets/gui/Buttons/Button_42_2frames.png",
+      "frames": 2,
+      "width": 55,
+      "height": 60
+    },
+    {
+      "id": "Button_43_2frames",
+      "filename": "Button_43_2frames.png",
+      "path": "/assets/gui/Buttons/Button_43_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "height": 70
+    },
+    {
+      "id": "Button_44_2frames",
+      "filename": "Button_44_2frames.png",
+      "path": "/assets/gui/Buttons/Button_44_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "height": 65
+    },
+    {
+      "id": "Button_45_2frames",
+      "filename": "Button_45_2frames.png",
+      "path": "/assets/gui/Buttons/Button_45_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "height": 70
+    },
+    {
+      "id": "Button_50_2frames",
+      "filename": "Button_50_2frames.png",
+      "path": "/assets/gui/Buttons/Button_50_2frames.png",
+      "frames": 2,
+      "width": 205,
+      "height": 135
+    },
+    {
+      "id": "Button_51_2frames",
+      "filename": "Button_51_2frames.png",
+      "path": "/assets/gui/Buttons/Button_51_2frames.png",
+      "frames": 2,
+      "width": 80,
+      "height": 75
+    },
+    {
+      "id": "Button_52_2frames",
+      "filename": "Button_52_2frames.png",
+      "path": "/assets/gui/Buttons/Button_52_2frames.png",
+      "frames": 2,
+      "width": 75,
+      "height": 60
+    },
+    {
+      "id": "Button_53_2frames",
+      "filename": "Button_53_2frames.png",
+      "path": "/assets/gui/Buttons/Button_53_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "height": 75
+    },
+    {
+      "id": "Button_54_2frames",
+      "filename": "Button_54_2frames.png",
+      "path": "/assets/gui/Buttons/Button_54_2frames.png",
+      "frames": 2,
+      "width": 75,
+      "height": 65
+    },
+    {
+      "id": "Button_55_2frames",
+      "filename": "Button_55_2frames.png",
+      "path": "/assets/gui/Buttons/Button_55_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "height": 90
+    },
+    {
+      "id": "Button_56_2frames",
+      "filename": "Button_56_2frames.png",
+      "path": "/assets/gui/Buttons/Button_56_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "height": 90
+    },
+    {
+      "id": "Button_57_2frames",
+      "filename": "Button_57_2frames.png",
+      "path": "/assets/gui/Buttons/Button_57_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "height": 90
+    },
+    {
+      "id": "Button_58_2frames",
+      "filename": "Button_58_2frames.png",
+      "path": "/assets/gui/Buttons/Button_58_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "height": 90
+    },
+    {
+      "id": "Button_59_2frames",
+      "filename": "Button_59_2frames.png",
+      "path": "/assets/gui/Buttons/Button_59_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "height": 70
+    },
+    {
+      "id": "Button_60_2frames",
+      "filename": "Button_60_2frames.png",
+      "path": "/assets/gui/Buttons/Button_60_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "height": 105
+    },
+    {
+      "id": "Button_61_2frames",
+      "filename": "Button_61_2frames.png",
+      "path": "/assets/gui/Buttons/Button_61_2frames.png",
+      "frames": 2,
+      "width": 100,
+      "height": 80
+    },
+    {
+      "id": "Button_62_2frames",
+      "filename": "Button_62_2frames.png",
+      "path": "/assets/gui/Buttons/Button_62_2frames.png",
+      "frames": 2,
+      "width": 135,
+      "height": 135
+    },
+    {
+      "id": "Button_63_2frames",
+      "filename": "Button_63_2frames.png",
+      "path": "/assets/gui/Buttons/Button_63_2frames.png",
+      "frames": 2,
+      "width": 65,
+      "height": 75
+    },
+    {
+      "id": "Button_64_2frames",
+      "filename": "Button_64_2frames.png",
+      "path": "/assets/gui/Buttons/Button_64_2frames.png",
+      "frames": 2,
+      "width": 90,
+      "height": 60
+    },
+    {
+      "id": "Button_71_4frames",
+      "filename": "Button_71_4frames.png",
+      "path": "/assets/gui/Buttons/Button_71_4frames.png",
+      "frames": 4,
+      "width": 80,
+      "height": 85
+    },
+    {
+      "id": "Button_72_2frames",
+      "filename": "Button_72_2frames.png",
+      "path": "/assets/gui/Buttons/Button_72_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 75
+    },
+    {
+      "id": "Button_75_2frames",
+      "filename": "Button_75_2frames.png",
+      "path": "/assets/gui/Buttons/Button_75_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "height": 130
+    },
+    {
+      "id": "Button_76_2frames",
+      "filename": "Button_76_2frames.png",
+      "path": "/assets/gui/Buttons/Button_76_2frames.png",
+      "frames": 2,
+      "width": 105,
+      "height": 85
+    },
+    {
+      "id": "Button_82_4frames",
+      "filename": "Button_82_4frames.png",
+      "path": "/assets/gui/Buttons/Button_82_4frames.png",
+      "frames": 4,
+      "width": 140,
+      "height": 80
+    },
+    {
+      "id": "Button_92_4frames",
+      "filename": "Button_92_4frames.png",
+      "path": "/assets/gui/Buttons/Button_92_4frames.png",
+      "frames": 4,
+      "width": 80,
+      "height": 85
+    },
+    {
+      "id": "Button_93_4frames",
+      "filename": "Button_93_4frames.png",
+      "path": "/assets/gui/Buttons/Button_93_4frames.png",
+      "frames": 4,
+      "width": 140,
+      "height": 80
+    },
+    {
+      "id": "Button_94_4frames",
+      "filename": "Button_94_4frames.png",
+      "path": "/assets/gui/Buttons/Button_94_4frames.png",
+      "frames": 4,
+      "width": 140,
+      "height": 80
+    },
+    {
+      "id": "Button_95_4frames",
+      "filename": "Button_95_4frames.png",
+      "path": "/assets/gui/Buttons/Button_95_4frames.png",
+      "frames": 4,
+      "width": 80,
+      "height": 105
+    },
+    {
+      "id": "Button_96_4frames",
+      "filename": "Button_96_4frames.png",
+      "path": "/assets/gui/Buttons/Button_96_4frames.png",
+      "frames": 4,
+      "width": 115,
+      "height": 75
+    },
+    {
+      "id": "Button_97_2frames",
+      "filename": "Button_97_2frames.png",
+      "path": "/assets/gui/Buttons/Button_97_2frames.png",
+      "frames": 2,
+      "width": 115,
+      "height": 75
+    },
+    {
+      "id": "Button_98_2frames",
+      "filename": "Button_98_2frames.png",
+      "path": "/assets/gui/Buttons/Button_98_2frames.png",
+      "frames": 2,
+      "width": 85,
+      "height": 70
+    },
+    {
+      "id": "Button_99_2frames",
+      "filename": "Button_99_2frames.png",
+      "path": "/assets/gui/Buttons/Button_99_2frames.png",
+      "frames": 2,
+      "width": 95,
+      "height": 65
+    }
+  ]
+}

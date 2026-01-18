@@ -5,8 +5,8 @@ import { SessionMode } from '../types';
 interface HeaderProps {
   currentMode?: SessionMode;
   onModeChange?: (mode: SessionMode) => void;
-  activeTab: 'studio' | 'gallery' | 'logs' | 'docs';
-  setActiveTab: (tab: 'studio' | 'gallery' | 'logs' | 'docs') => void;
+  activeTab: 'studio' | 'gallery' | 'logs' | 'docs' | 'rack-editor';
+  setActiveTab: (tab: 'studio' | 'gallery' | 'logs' | 'docs' | 'rack-editor') => void;
 }
 
 const Header: FC<HeaderProps> = ({ currentMode = SessionMode.Standard, onModeChange, activeTab, setActiveTab }) => {
@@ -24,6 +24,7 @@ const Header: FC<HeaderProps> = ({ currentMode = SessionMode.Standard, onModeCha
   const tabs = [
     { id: 'studio', label: 'Studio Rack' },
     { id: 'gallery', label: 'Film Roll' },
+    { id: 'rack-editor', label: 'Rack Editor' },
     { id: 'logs', label: 'System Logs' },
     { id: 'docs', label: 'Manual' },
   ];

@@ -1,0 +1,63 @@
+{
+  "module": "Subject",
+  "canvasSize": {
+    "width": 900,
+    "height": 520
+  },
+  "elements": [
+    {
+      "id": "el-1768663930130-hnj5y3na9",
+      "type": "knob",
+      "label": "Gender",
+      "binding": "gender",
+      "asset": {
+        "path": "/assets/skins/reason/Knobs/Knob_40_64frames.png",
+        "file": "Knob_40_64frames.png",
+        "frames": 64,
+        "width": 300,
+        "frameHeight": 290
+      },
+      "x": 100,
+      "y": 100,
+      "width": 300,
+      "height": 290,
+      "scale": 0.2
+    },
+    {
+      "id": "el-age-knob",
+      "type": "knob",
+      "label": "Age",
+      "binding": "age",
+      "asset": {
+        "path": "/assets/skins/reason/Knobs/Knob_01_63frames.png",
+        "file": "Knob_01_63frames.png",
+        "frames": 63,
+        "width": 180,
+        "frameHeight": 200
+      },
+      "x": 200,
+      "y": 100,
+      "width": 180,
+      "height": 200,
+      "scale": 1
+    },
+    {
+      "id": "el-body-style-display",
+      "type": "display",
+      "label": "Body Style",
+      "binding": "bodyStyle",
+      "asset": {
+        "path": "/assets/skins/reason/Displays/Display_22_1frames.png",
+        "file": "Display_22_1frames.png",
+        "frames": 1,
+        "width": 1055,
+        "frameHeight": 90
+      },
+      "x": 457,
+      "y": 96,
+      "width": 1055,
+      "height": 90,
+      "scale": 0.2
+    }
+  ]
+}

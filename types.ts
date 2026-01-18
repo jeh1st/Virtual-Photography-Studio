@@ -263,6 +263,7 @@ export interface StudioState {
             accessories: string;
         };
         skinRealism: SkinRealismConfig;
+        consistencyMode: ConsistencyMode;
     };
 
     // Environment
@@ -393,3 +394,34 @@ export interface GenerationLog {
     error?: string;
     sessionMode?: SessionMode;
 }
+
+export enum RackComponentType {
+    Knob = 'Knob',
+    Slider = 'Slider',
+    Switch = 'Switch',
+    Button = 'Button',
+    Meter = 'Meter',
+    Label = 'Label',
+    Dropdown = 'Dropdown'
+}
+
+export interface RackItem {
+    id: string;
+    type: RackComponentType;
+    assetId: string; // Refers to ID in manifest
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    label?: string;
+    binding?: string; // Path to StudioState
+    config?: {
+        min?: number;
+        max?: number;
+        step?: number;
+        frames?: number;
+        direction?: 'vert' | 'horz';
+        [key: string]: any;
+    };
+}
+

@@ -11,6 +11,7 @@
     ],
     "skipLibCheck": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "allowJs": true,
@@ -22,6 +23,22 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "noImplicitAny": false
-  }
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "types": [
+      "react",
+      "react-dom",
+      "node"
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "declarations.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

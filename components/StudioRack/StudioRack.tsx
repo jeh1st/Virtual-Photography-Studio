@@ -19,7 +19,7 @@ export const StudioRack: React.FC<StudioRackProps> = ({
     state, onUpdate, onGenerate, isGenerating, subjects, onManageLibrary
 }) => {
     return (
-        <div className="flex flex-col h-full bg-gray-950 border-r border-white/5 shadow-2xl relative z-10 w-[400px] shrink-0">
+        <div className="flex flex-col h-full bg-gray-950 shadow-2xl relative z-10 w-full max-w-5xl mx-auto border-x border-white/5">
 
             {/* RACK HEADER / MASTER CONTROL */}
             <div className="p-4 bg-gray-900 border-b border-white/5 shrink-0 z-20">
